@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/texto_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Orçamento"
+            android:textSize="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+        <TextView
+            android:id="@+id/texto_cliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="Cliente:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/texto_titulo"
+            tools:layout_editor_absoluteY="112dp"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
+            android:id="@+id/cliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="                                                            "
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_cliente"
+            app:layout_constraintTop_toBottomOf="@+id/texto_titulo" />
+
+        <TextView
+            android:id="@+id/texto_peca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Peça:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_cliente"
+            app:layout_constraintTop_toBottomOf="@id/texto_cliente" />
+
+        <TextView
+            android:id="@+id/peca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="15dp"
+            android:text="Importar Arquivo"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_peca"
+            app:layout_constraintTop_toBottomOf="@id/texto_cliente" />
+
+        <TextView
+            android:id="@+id/texto_infill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Infill(%):"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_peca"
+            app:layout_constraintTop_toBottomOf="@id/texto_peca" />
+
+        <EditText
+            android:id="@+id/infill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="                                                           "
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_infill"
+            app:layout_constraintTop_toBottomOf="@id/texto_peca" />
+
+        <TextView
+            android:id="@+id/texto_shell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Shell:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_infill"
+            app:layout_constraintTop_toBottomOf="@id/texto_infill" />
+
+        <EditText
+            android:id="@+id/shell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="                                                                "
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_shell"
+            app:layout_constraintTop_toBottomOf="@id/texto_infill" />
+
+        <TextView
+            android:id="@+id/texto_layer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Layer:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_shell"
+            app:layout_constraintTop_toBottomOf="@id/texto_shell" />
+
+        <EditText
+            android:id="@+id/layer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="                                                                "
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_layer"
+            app:layout_constraintTop_toBottomOf="@id/texto_shell" />
+
+        <TextView
+            android:id="@+id/texto_impressora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Impressora:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_layer"
+            app:layout_constraintTop_toBottomOf="@id/texto_layer" />
+
+        <TextView
+            android:id="@+id/impressora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="15dp"
+            android:text="Opções"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_impressora"
+            app:layout_constraintTop_toBottomOf="@id/texto_layer" />
+
+        <TextView
+            android:id="@+id/texto_material"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Material:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_impressora"
+            app:layout_constraintTop_toBottomOf="@id/texto_impressora" />
+
+        <TextView
+            android:id="@+id/material"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="15dp"
+            android:text="Opções"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_material"
+            app:layout_constraintTop_toBottomOf="@id/impressora" />
+
+        <TextView
+            android:id="@+id/texto_maodeobra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Mão de obra:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_material"
+            app:layout_constraintTop_toBottomOf="@id/texto_material"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <EditText
+            android:id="@+id/maodeobra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="                                                   "
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_maodeobra"
+            app:layout_constraintTop_toBottomOf="@id/texto_material" />
+
+        <TextView
+            android:id="@+id/texto_peso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Peso:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_material"
+            app:layout_constraintTop_toBottomOf="@id/button_enviar" />
+
+        <TextView
+            android:id="@+id/peso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:text=""
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_peso"
+            app:layout_constraintTop_toBottomOf="@id/button_enviar" />
+
+        <TextView
+            android:id="@+id/texto_tempo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Tempo:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_peso"
+            app:layout_constraintTop_toBottomOf="@id/texto_peso" />
+
+        <TextView
+            android:id="@+id/tempo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:text=""
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_tempo"
+            app:layout_constraintTop_toBottomOf="@id/texto_peso" />
+
+        <TextView
+            android:id="@+id/texto_valor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Valor:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_tempo"
+            app:layout_constraintTop_toBottomOf="@id/texto_tempo" />
+
+        <TextView
+            android:id="@+id/valor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:text=""
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_valor"
+            app:layout_constraintTop_toBottomOf="@id/texto_tempo" />
+
+
+        <Button
+            android:id="@+id/button_processar"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:text="Processar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_enviar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/texto_maodeobra" />
+
+        <Button
+            android:id="@+id/button_enviar"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:text="Enviar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_processar"
+            app:layout_constraintTop_toBottomOf="@id/texto_maodeobra" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
