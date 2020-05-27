@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         Button buttonFilamentos = findViewById(R.id.button_tiposdefilamento);
 
 
-        final Intent cotacao = new Intent(this, Cotar.class);
+        final Intent cotacao = new Intent(this, Cotacao.class);
 
         //Intent pedidos = new Intent(this, Pedidos.class);
 

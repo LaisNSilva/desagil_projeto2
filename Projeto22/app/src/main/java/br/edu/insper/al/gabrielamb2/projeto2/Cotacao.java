@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class Cotar extends AppCompatActivity {
+public class Cotacao extends AppCompatActivity {
 
     private void showToast(String text) {
 
@@ -20,7 +20,7 @@ public class Cotar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cotar);
+        setContentView(R.layout.activity_cotacao);
 
         Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
