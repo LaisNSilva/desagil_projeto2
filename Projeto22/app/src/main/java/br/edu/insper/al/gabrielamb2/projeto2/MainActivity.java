@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.HashMap;
+import java.util.ResourceBundle;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         Button buttonPedidos = findViewById(R.id.button_orcamento_antigos);
         Button buttonConfiguracao = findViewById(R.id.button_configuracoes);
         Button buttonFilamentos = findViewById(R.id.button_tiposdefilamento);
-
 
         final Intent cotacao = new Intent(this, Cotacao.class);
 
