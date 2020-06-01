@@ -18,10 +18,10 @@ public class RequestMulti {
     }
 
     public String transformada(String texto){
-        texto.replace("\\0", "_");
-        texto.replace("\\r", "_");
-        texto.replace("\\n", "_");
-        texto.replace("\\", "_");
+        texto.replace("\0", "_");
+        texto.replace("\r", "_");
+        texto.replace("\n", "_");
+        texto.replace("\"", "_");
 
         return texto;
     }
