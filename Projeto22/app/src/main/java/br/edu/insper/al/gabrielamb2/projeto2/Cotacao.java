@@ -98,35 +98,44 @@ public class Cotacao extends AppCompatActivity {
                 String material_escolhido = materiais.getSelectedItem().toString();
 
                 String color = null;
+                String densidade = null;
 
                 if (material_escolhido == "ABS"){
                     color = partPriceConfig.getABS_color();
+                    densidade = partPriceConfig.getABS_density();
                 }
                 else if (material_escolhido == "PLA"){
                     color = partPriceConfig.getPLA_color();
+                    densidade = partPriceConfig.getPLA_density();
                 }
                 else if (material_escolhido == "PC"){
                     color = partPriceConfig.getPC_color();
+                    densidade = partPriceConfig.getPC_density();
                 }
                 else if (material_escolhido == "Nylon"){
                     color = partPriceConfig.getNylon_color();
+                    densidade = partPriceConfig.getNylon_density();
                 }
                 else if (material_escolhido == "LayWood"){
                     color = partPriceConfig.getLayWood_color();
+                    densidade = partPriceConfig.getLayWood_density();
                 }
                 else if (material_escolhido == "BendLAY"){
                     color = partPriceConfig.getBendLAY_color();
+                    densidade = partPriceConfig.getBendLAY_density();
                 }
                 else if (material_escolhido == "TPE"){
                     color = partPriceConfig.getTPE_color();
+                    densidade = partPriceConfig.getTPE_density();
                 }
                 else if (material_escolhido == "SoftPLA"){
                     color = partPriceConfig.getSoftPLA_color();
+                    densidade = partPriceConfig.getSoftPLA_density();
                 }
                 else if (material_escolhido == "HIPS"){
                     color = partPriceConfig.getHIPS_color();
+                    densidade = partPriceConfig.getHIPS_density();
                 }
-
 
                 HashMap<String, Object>$_POST = new HashMap<>();
 
@@ -148,8 +157,31 @@ public class Cotacao extends AppCompatActivity {
                 }
                 $_POST.put("shipping", "pickup");
 
-
                 $_POST.put("rushPrinting",false);
+                $_POST.put("density", densidade);
+
+                String boundary = "------WebKitFormBoundary" + "1$#23gf784"
+
+                HashMap<String, Object>$_FILES = new HashMap<>();
+
+                RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
+                String request = requestMulti.buildMultipartPost();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                 String texto_final = "Cliente: "+ text1 + "  " + "Infill: " + text2 + "  " + "Shell: "+ text3 + "  " + "Layer: "+ text4 + "  " + "Mão de Obra: " + text5 + "Peso: " + "  " + "Tempo: " + "  " + "Valor: ";

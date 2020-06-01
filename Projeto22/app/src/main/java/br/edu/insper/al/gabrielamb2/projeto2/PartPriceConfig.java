@@ -25,6 +25,16 @@ public class PartPriceConfig {
     private String SoftPLA_color;
     private String HIPS_color;
 
+    private String ABS_density;
+    private String PLA_density;
+    private String PC_density;
+    private String Nylon_density;
+    private String LayWood_density;
+    private String BendLAY_density;
+    private String TPE_density;
+    private String SoftPLA_density;
+    private String HIPS_density;
+
 
     private HashMap<String,String>printingCost;
 
@@ -55,7 +65,7 @@ public class PartPriceConfig {
                 "#8921FF","#9291B5","#87593E"};
 
         ABS_color = "#000000";
-
+        ABS_density = "1.04";
         HashMap<String, String> priceABS = new HashMap();
         priceABS.put("amount", "0.20");
         priceABS.put("unit", "USD/g");
@@ -77,6 +87,7 @@ public class PartPriceConfig {
                 "#70FF33","#140AA3","#8921FF","#9291B5","#87593E"};
 
         PLA_color = "#000000";
+        PLA_density = "1.25";
 
         HashMap<String, String> pricePLA = new HashMap();
         pricePLA.put("amount", "0.25");
@@ -99,6 +110,7 @@ public class PartPriceConfig {
                 "#140AA3","#8921FF","#9291B5","#87593E"};
 
         PC_color = "#000000";
+        PC_density = "1.20";
 
         HashMap<String, String> pricePC = new HashMap();
         pricePC.put("amount", "0.60");
@@ -120,6 +132,7 @@ public class PartPriceConfig {
                 "#70FF33","#140AA3","clear"};
 
         Nylon_color = "#000000";
+        Nylon_color = "1.25";
 
         HashMap<String, String> priceNylon = new HashMap();
         priceNylon.put("amount", "0.35");
@@ -140,6 +153,7 @@ public class PartPriceConfig {
         String[] colors_LayWood = {"#FFFFFF"};
 
         LayWood_color = "#FFFFFF";
+        LayWood_density = "1.05";
 
         HashMap<String, String> priceLayWood = new HashMap();
         priceLayWood.put("amount", "0.80");
@@ -160,6 +174,7 @@ public class PartPriceConfig {
         String[] colors_BendLAY = {"#87593E"};
 
         BendLAY_color = "#87593E";
+        BendLAY_density = "1.02";
 
         HashMap<String, String> priceBendLAY = new HashMap();
         priceBendLAY.put("amount", "0.50");
@@ -180,6 +195,7 @@ public class PartPriceConfig {
         String[] colors_TPE = {"clear"};
 
         TPE_color = "clear";
+        TPE_density = "1.10";
 
         HashMap<String, String> priceTPE = new HashMap();
         priceTPE.put("amount", "0.60");
@@ -199,7 +215,8 @@ public class PartPriceConfig {
 
         String[] colors_SoftPLA = {"#000000","#FF0F0F","#140AA3","#FFFFFF"};
 
-        SoftPLA_color = "#000000"
+        SoftPLA_color = "#000000";
+        SoftPLA_density = "1.15";
 
         HashMap<String, String> priceSoftPLA = new HashMap();
         priceSoftPLA.put("amount", "0.50");
@@ -220,6 +237,7 @@ public class PartPriceConfig {
         String[] colors_HIPS = {"#FFFAE0"};
 
         HIPS_color = "#FFFAE0";
+        HIPS_density = "1.06";
 
         HashMap<String, String> priceSoftHIPS = new HashMap();
         priceSoftHIPS.put("amount", "0.20");
@@ -337,4 +355,22 @@ public class PartPriceConfig {
     public String getSoftPLA_color() { return SoftPLA_color; }
 
     public String getHIPS_color() { return HIPS_color; }
+
+    public String getABS_density() { return ABS_density; }
+
+    public String getPLA_density() { return PLA_density; }
+
+    public String getPC_density() { return PC_density; }
+
+    public String getNylon_density() { return Nylon_density; }
+
+    public String getLayWood_density() { return LayWood_density; }
+
+    public String getBendLAY_density() { return BendLAY_density; }
+
+    public String getTPE_density() { return TPE_density; }
+
+    public String getSoftPLA_density() { return SoftPLA_density; }
+
+    public String getHIPS_density() { return HIPS_density; }
 }
