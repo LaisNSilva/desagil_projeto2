@@ -3,18 +3,11 @@
     <string-array name="materiais">
         <item>ABS</item>
         <item>PLA</item>
-        <item>PET</item>
-        <item>PETT</item>
-        <item>Nylon</item>
-        <item>PVA</item>
+        <item>Resina Firm</item>
     </string-array>
 
     <string-array name="impressoras">
-        <item>Ultimaker</item>
-        <item>Dremel Digilab 3D45</item>
-        <item>FormLabs Form 2</item>
-        <item>MarkerBot Replicator</item>
-        <item>LulzBot Mini 2</item>
-        <item>Prusa i3</item>
+        <item>Replicator +</item>
+        <item>Replicator Z18</item>
     </string-array>
 </resources>

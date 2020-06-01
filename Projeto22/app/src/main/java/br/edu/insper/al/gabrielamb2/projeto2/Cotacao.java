@@ -14,11 +14,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Cotacao extends AppCompatActivity {
@@ -27,9 +30,6 @@ public class Cotacao extends AppCompatActivity {
     private static final String TAG = "Uri";
     TextView arquivoPeca;
     Button buttonArq;
-
-
-
     private void showToast(String text) {
 
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -40,6 +40,15 @@ public class Cotacao extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
+
+        final EditText cliente = findViewById(R.id.cliente);
+        final EditText infill = findViewById(R.id.infill);
+        final EditText shell = findViewById(R.id.shell);
+        final EditText layer = findViewById(R.id.layer);
+        final EditText mao_de_obra = findViewById(R.id.maodeobra);
+        Button enviar = findViewById(R.id.button_enviar);
+
+        //Spinners (Impressoras e Filamentos)
 
         Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
@@ -55,15 +64,39 @@ public class Cotacao extends AppCompatActivity {
 
         //arquivoPeca = (TextView) findViewById(R.id.peca);
 
-
-
-
-
-
-
-
         buttonArq.setOnClickListener(buttonArqOnClickListener);
 
+        enviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String text1 = cliente.getText().toString();
+                String text2 = infill.getText().toString();
+                String text3 = shell.getText().toString();
+                String text4 = layer.getText().toString();
+                String text5 = mao_de_obra.getText().toString();
+
+                try{
+                    File file = new File("/sdcard/myfile.txt");
+                    file.createNewFile();
+
+                    FileOutputStream fout = new FileOutputStream(file, true);
+
+                    fout.write(text1.getBytes());
+                    fout.write(text2.getBytes());
+                    fout.write(text3.getBytes());
+                    fout.write(text4.getBytes());
+                    fout.write(text5.getBytes());
+                    fout.close();
+
+                    showToast("Texto Adicionado");
+
+                }catch (Exception e){
+                    showToast(e.getMessage());
+                }
+
+            }
+        });
 
     }
 
@@ -81,8 +114,6 @@ public class Cotacao extends AppCompatActivity {
         }
     };
 
-
-
     /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -91,11 +122,8 @@ public class Cotacao extends AppCompatActivity {
             Uri uri = resultData.getData();
             arquivoPeca.setText(uri.toString());
 
-
-
         }
     }
-
 
      */
 
