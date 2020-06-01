@@ -28,8 +28,6 @@ public class Cotacao extends AppCompatActivity {
 
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
-    TextView arquivoPeca;
-    Button buttonArq;
     private void showToast(String text) {
 
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -41,12 +39,17 @@ public class Cotacao extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
 
+        //TextView arquivoPeca = findViewById(R.id.peca);
+
         final EditText cliente = findViewById(R.id.cliente);
         final EditText infill = findViewById(R.id.infill);
         final EditText shell = findViewById(R.id.shell);
         final EditText layer = findViewById(R.id.layer);
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
+
+        Button buttonArq = findViewById(R.id.escolher_arquivo);
         Button enviar = findViewById(R.id.button_enviar);
+
 
         //Spinners (Impressoras e Filamentos)
 
@@ -60,12 +63,22 @@ public class Cotacao extends AppCompatActivity {
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         impressoras.setAdapter(adapter2);
 
-        buttonArq = (Button)findViewById(R.id.escolher_arquivo);
+        //Botao para Importar um arquivo
+        buttonArq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent pasta = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 
-        //arquivoPeca = (TextView) findViewById(R.id.peca);
+                pasta.addCategory(Intent.CATEGORY_OPENABLE);
 
-        buttonArq.setOnClickListener(buttonArqOnClickListener);
+                pasta.setType("*/*");
 
+                startActivityForResult(pasta, READ_REQUEST_CODE);
+
+            }
+        });
+
+        //Botao para Escrever um arquivo txt
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,21 +112,6 @@ public class Cotacao extends AppCompatActivity {
         });
 
     }
-
-    View.OnClickListener buttonArqOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            final Intent pasta = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-
-            pasta.addCategory(Intent.CATEGORY_OPENABLE);
-
-            pasta.setType("*/*");
-
-            startActivityForResult(pasta, READ_REQUEST_CODE);
-
-        }
-    };
-
     /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -126,7 +124,5 @@ public class Cotacao extends AppCompatActivity {
     }
 
      */
-
-
 
 }
