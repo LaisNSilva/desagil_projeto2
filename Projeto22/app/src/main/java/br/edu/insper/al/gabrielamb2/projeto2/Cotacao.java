@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.HashMap;
 
 public class Cotacao extends AppCompatActivity {
 
@@ -56,7 +58,7 @@ public class Cotacao extends AppCompatActivity {
         Button enviar = findViewById(R.id.button_enviar);
 
         //Spinners (Impressoras e Filamentos)
-        Spinner materiais = findViewById(R.id.material);
+        final Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         materiais.setAdapter(adapter1);
@@ -91,6 +93,64 @@ public class Cotacao extends AppCompatActivity {
                 String text3 = shell.getText().toString();
                 String text4 = layer.getText().toString();
                 String text5 = mao_de_obra.getText().toString();
+
+                PartPriceConfig partPriceConfig = new PartPriceConfig();
+                String material_escolhido = materiais.getSelectedItem().toString();
+
+                String color = null;
+
+                if (material_escolhido == "ABS"){
+                    color = partPriceConfig.getABS_color();
+                }
+                else if (material_escolhido == "PLA"){
+                    color = partPriceConfig.getPLA_color();
+                }
+                else if (material_escolhido == "PC"){
+                    color = partPriceConfig.getPC_color();
+                }
+                else if (material_escolhido == "Nylon"){
+                    color = partPriceConfig.getNylon_color();
+                }
+                else if (material_escolhido == "LayWood"){
+                    color = partPriceConfig.getLayWood_color();
+                }
+                else if (material_escolhido == "BendLAY"){
+                    color = partPriceConfig.getBendLAY_color();
+                }
+                else if (material_escolhido == "TPE"){
+                    color = partPriceConfig.getTPE_color();
+                }
+                else if (material_escolhido == "SoftPLA"){
+                    color = partPriceConfig.getSoftPLA_color();
+                }
+                else if (material_escolhido == "HIPS"){
+                    color = partPriceConfig.getHIPS_color();
+                }
+
+
+                HashMap<String, Object>$_POST = new HashMap<>();
+
+                $_POST.put("material", materiais.getSelectedItem().toString());
+                $_POST.put("color", color);
+                $_POST.put("layerHeight", layer.getText().toString());
+                $_POST.put("infillPercentage", infill.getText().toString());
+
+                if(supportRemoval.isSelected() == true){
+                    $_POST.put("supportRemoval", true);
+                }else{
+                    $_POST.put("supportRemoval", false);
+                }
+
+                if (vaporPolishing.isSelected() == true){
+                    $_POST.put("vaporPolishing", true);
+                }else{
+                    $_POST.put("vaporPolishing", false);
+                }
+                $_POST.put("shipping", "pickup");
+
+
+                $_POST.put("rushPrinting",false);
+
 
                 String texto_final = "Cliente: "+ text1 + "  " + "Infill: " + text2 + "  " + "Shell: "+ text3 + "  " + "Layer: "+ text4 + "  " + "Mão de Obra: " + text5 + "Peso: " + "  " + "Tempo: " + "  " + "Valor: ";
                 texto_final = texto_final.replace("  ","\n");
