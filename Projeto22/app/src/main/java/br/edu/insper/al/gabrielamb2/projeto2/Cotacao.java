@@ -25,7 +25,10 @@ public class Cotacao extends AppCompatActivity {
 
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
-    TextView arquivoPeca = findViewById(R.id.peca);
+    TextView arquivoPeca;
+    Button buttonArq;
+
+
 
     private void showToast(String text) {
 
@@ -48,49 +51,53 @@ public class Cotacao extends AppCompatActivity {
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         impressoras.setAdapter(adapter2);
 
-        Button buttonArq = findViewById(R.id.escolher_arquivo);
+        buttonArq = (Button)findViewById(R.id.escolher_arquivo);
+
+        //arquivoPeca = (TextView) findViewById(R.id.peca);
 
 
 
 
-        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
-        // browser.
-        final Intent pasta = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-
-        // Filter to only show results that can be "opened", such as a
-        // file (as opposed to a list of contacts or timezones)
-        pasta.addCategory(Intent.CATEGORY_OPENABLE);
-
-        // Filter to show only images, using the image MIME data type.
-        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
-        // To search for all documents available via installed storage providers,
-        // it would be "*/*".
-        pasta.setType("*/*");
-
-        startActivityForResult(pasta, READ_REQUEST_CODE);
 
 
-        buttonArq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(pasta);
-            }
-        });
+
+
+        buttonArq.setOnClickListener(buttonArqOnClickListener);
 
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData){
-        if (requestCode == READ_REQUEST_CODE && resultCode ==  RESULT_OK){
-            Uri uri = null;
-            if(resultData != null){
-                uri = resultData.getData();
+    View.OnClickListener buttonArqOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final Intent pasta = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 
-            }
+            pasta.addCategory(Intent.CATEGORY_OPENABLE);
+
+            pasta.setType("*/*");
+
+            startActivityForResult(pasta, READ_REQUEST_CODE);
+
+        }
+    };
+
+
+
+    /*
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
+
+            Uri uri = resultData.getData();
+            arquivoPeca.setText(uri.toString());
+
+
+
         }
     }
 
+
+     */
 
 
 

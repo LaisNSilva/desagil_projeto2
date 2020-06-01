@@ -46,6 +46,8 @@
             app:layout_constraintStart_toEndOf="@+id/texto_cliente"
             app:layout_constraintTop_toBottomOf="@+id/texto_titulo" />
 
+
+
         <TextView
             android:id="@+id/texto_peca"
             android:layout_width="wrap_content"
@@ -56,13 +58,13 @@
             app:layout_constraintStart_toStartOf="@+id/texto_cliente"
             app:layout_constraintTop_toBottomOf="@id/texto_cliente" />
 
-        <TextView
-            android:id="@+id/peca"
+        <Button
+            android:id="@+id/escolher_arquivo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="84dp"
             android:layout_marginTop="15dp"
-            android:text="Importar Arquivo"
+            android:text="Escolher Arquivo"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/texto_peca"
             app:layout_constraintTop_toBottomOf="@id/texto_cliente" />
@@ -275,13 +277,7 @@
             app:layout_constraintStart_toEndOf="@+id/button_processar"
             app:layout_constraintTop_toBottomOf="@id/texto_maodeobra" />
 
-        <Button
-            android:id="@+id/escolher_arquivo"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="30dp"
-            android:text="Escolher Arquivo"
-            app:layout_constraintStart_toStartOf="@+id/texto_peso" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
