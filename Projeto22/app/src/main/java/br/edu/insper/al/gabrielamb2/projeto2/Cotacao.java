@@ -43,6 +43,8 @@ public class Cotacao extends AppCompatActivity {
 
         //TextView arquivoPeca = findViewById(R.id.peca);
 
+        final File diretorio = getApplicationContext().getFilesDir();
+
         final EditText cliente = findViewById(R.id.cliente);
         final EditText infill = findViewById(R.id.infill);
         final EditText shell = findViewById(R.id.shell);
@@ -90,12 +92,14 @@ public class Cotacao extends AppCompatActivity {
                 String text4 = layer.getText().toString();
                 String text5 = mao_de_obra.getText().toString();
 
-                String texto_final = "Cliente: "+ text1 + "  " + "Infill: " + text2 + "  " + "Shell: "+ text3 + "  "+ "Layer: "+ text4 + "  " + "Mão de Obra: " + text5 + "Peso: " + "  " + "Tempo: " + "  " + "Valor: ";
+                String texto_final = "Cliente: "+ text1 + "  " + "Infill: " + text2 + "  " + "Shell: "+ text3 + "  " + "Layer: "+ text4 + "  " + "Mão de Obra: " + text5 + "Peso: " + "  " + "Tempo: " + "  " + "Valor: ";
                 texto_final = texto_final.replace("  ","\n");
 
-
                 try{
-                    File file = new File("/sdcard/cotacao_" + text1 + ".txt");
+                    String filename = "/cotacao_"+text1+".txt";
+                    File file = new File(diretorio + filename);
+                    System.out.println(file);
+
                     file.createNewFile();
 
                     FileOutputStream fout = new FileOutputStream(file, true);
@@ -109,7 +113,13 @@ public class Cotacao extends AppCompatActivity {
                 }catch (Exception e){
                     showToast(e.getMessage());
                 }
+            }
+        });
 
+        enviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
             }
         });
 
