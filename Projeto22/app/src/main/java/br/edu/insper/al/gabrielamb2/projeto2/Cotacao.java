@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -61,8 +62,10 @@ public class Cotacao extends AppCompatActivity {
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
 
+        CheckBox supportRemoval = findViewById(R.id.suport_check);
+        CheckBox vaporPolishing = findViewById(R.id.vapor_check);
 
-
+        
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
