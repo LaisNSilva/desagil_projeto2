@@ -52,7 +52,6 @@ public class Cotacao extends AppCompatActivity {
 
 
         //Spinners (Impressoras e Filamentos)
-
         Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -90,7 +89,7 @@ public class Cotacao extends AppCompatActivity {
                 String text5 = mao_de_obra.getText().toString();
 
                 try{
-                    File file = new File("/sdcard/myfile.txt");
+                    File file = new File("/sdcard/cotacao" + text1 + ".txt");
                     file.createNewFile();
 
                     FileOutputStream fout = new FileOutputStream(file, true);
