@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 
 public class Cotacao extends AppCompatActivity {
 
@@ -48,8 +50,8 @@ public class Cotacao extends AppCompatActivity {
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
 
         Button buttonArq = findViewById(R.id.escolher_arquivo);
+        Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
-
 
         //Spinners (Impressoras e Filamentos)
         Spinner materiais = findViewById(R.id.material);
@@ -78,7 +80,7 @@ public class Cotacao extends AppCompatActivity {
         });
 
         //Botao para Escrever um arquivo txt
-        enviar.setOnClickListener(new View.OnClickListener() {
+        processar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -88,17 +90,18 @@ public class Cotacao extends AppCompatActivity {
                 String text4 = layer.getText().toString();
                 String text5 = mao_de_obra.getText().toString();
 
+                String texto_final = "Cliente: "+ text1 + "  " + "Infill: " + text2 + "  " + "Shell: "+ text3 + "  "+ "Layer: "+ text4 + "  " + "Mão de Obra: " + text5 + "Peso: " + "  " + "Tempo: " + "  " + "Valor: ";
+                texto_final = texto_final.replace("  ","\n");
+
+
                 try{
-                    File file = new File("/sdcard/cotacao" + text1 + ".txt");
+                    File file = new File("/sdcard/cotacao_" + text1 + ".txt");
                     file.createNewFile();
 
                     FileOutputStream fout = new FileOutputStream(file, true);
 
-                    fout.write(text1.getBytes());
-                    fout.write(text2.getBytes());
-                    fout.write(text3.getBytes());
-                    fout.write(text4.getBytes());
-                    fout.write(text5.getBytes());
+                    fout.write(texto_final.getBytes());
+
                     fout.close();
 
                     showToast("Texto Adicionado");

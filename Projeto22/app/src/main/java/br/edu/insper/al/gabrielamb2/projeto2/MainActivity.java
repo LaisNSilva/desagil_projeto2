@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         Button buttonCotacao = findViewById(R.id.button_orcamento);
         Button buttonPedidos = findViewById(R.id.button_orcamento_antigos);
         Button buttonConfiguracao = findViewById(R.id.button_configuracoes);
-        Button buttonFilamentos = findViewById(R.id.button_tiposdefilamento);
 
         final Intent cotacao = new Intent(this, Cotacao.class);
 
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
        // Intent configuracao = new Intent(this, Configuracao.class);
 
-        //Intent filamentos = new Intent(this, Filamentos.class);
 
         buttonCotacao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,12 +44,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                // startActivity(configuracao);
-            }
-        });
-        buttonFilamentos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(filamentos);
             }
         });
 
