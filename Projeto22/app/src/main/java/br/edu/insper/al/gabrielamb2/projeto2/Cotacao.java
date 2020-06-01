@@ -3,6 +3,7 @@ package br.edu.insper.al.gabrielamb2.projeto2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,13 +50,18 @@ public class Cotacao extends AppCompatActivity {
 
         final EditText cliente = findViewById(R.id.cliente);
         final EditText infill = findViewById(R.id.infill);
-        final EditText shell = findViewById(R.id.shell);
         final EditText layer = findViewById(R.id.layer);
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
+
+        final TextView peso = findViewById(R.id.peso);
+        final TextView tempo = findViewById(R.id.tempo);
+        final TextView valor = findViewById(R.id.valor);
 
         Button buttonArq = findViewById(R.id.escolher_arquivo);
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
+
+
 
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
@@ -63,7 +69,7 @@ public class Cotacao extends AppCompatActivity {
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         materiais.setAdapter(adapter1);
 
-        Spinner impressoras = findViewById(R.id.impressora);
+        final Spinner impressoras = findViewById(R.id.impressora);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.impressoras, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         impressoras.setAdapter(adapter2);
@@ -87,12 +93,6 @@ public class Cotacao extends AppCompatActivity {
         processar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String text1 = cliente.getText().toString();
-                String text2 = infill.getText().toString();
-                String text3 = shell.getText().toString();
-                String text4 = layer.getText().toString();
-                String text5 = mao_de_obra.getText().toString();
 
                 PartPriceConfig partPriceConfig = new PartPriceConfig();
                 String material_escolhido = materiais.getSelectedItem().toString();
@@ -160,7 +160,7 @@ public class Cotacao extends AppCompatActivity {
                 $_POST.put("rushPrinting",false);
                 $_POST.put("density", densidade);
 
-                String boundary = "------WebKitFormBoundary" + "1$#23gf784"
+                String boundary = "------WebKitFormBoundary" + "1$#23gf784";
 
                 HashMap<String, Object>$_FILES = new HashMap<>();
 
@@ -168,39 +168,34 @@ public class Cotacao extends AppCompatActivity {
                 String request = requestMulti.buildMultipartPost();
 
 
+                String cliente_ = cliente.getText().toString();
+                String infill_ = infill.getText().toString();
+                String layer_ = layer.getText().toString();
+                String impressora = impressoras.getSelectedItem().toString();
+                String maodeobra = mao_de_obra.getText().toString();
 
+                //---------------------------------------------
+                //Calculos
+                //---------------------------------------------
 
+                String peso_ = peso.getText().toString();
+                String tempo_ = tempo.getText().toString();
+                String valor_ = valor.getText().toString();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-                String texto_final = "Cliente: "+ text1 + "  " + "Infill: " + text2 + "  " + "Shell: "+ text3 + "  " + "Layer: "+ text4 + "  " + "Mão de Obra: " + text5 + "Peso: " + "  " + "Tempo: " + "  " + "Valor: ";
+                String texto_final = "Cliente: "+ cliente_ + "  " + "Infill: " + infill_ + "  " + "Layer: "+ layer_ + "  " + "Impressora: " + impressora + "  "
+                        + "Material: " + material_escolhido + "  "+ "Mão de Obra: " + maodeobra + "  " + "Peso: " + peso_ + "  " + "Tempo: " +  tempo_ + "  " +"Valor: " + valor_;
                 texto_final = texto_final.replace("  ","\n");
 
                 try{
-                    String filename = "/cotacao_"+text1+".txt";
-                    File file = new File(diretorio + filename);
-                    System.out.println(file);
+                    String filename = "cotacao_"+cliente_+".txt";
+                    File file = new File(diretorio + "/" + filename);
 
                     file.createNewFile();
 
-                    FileOutputStream fout = new FileOutputStream(file, true);
-
-                    fout.write(texto_final.getBytes());
-
-                    fout.close();
-
-                    showToast("Texto Adicionado");
+                    try (FileOutputStream fos = getApplicationContext().openFileOutput(filename, Context.MODE_PRIVATE)) {
+                        fos.write(texto_final.getBytes());
+                    }
+                    showToast("Arquivo Criado");
 
                 }catch (Exception e){
                     showToast(e.getMessage());

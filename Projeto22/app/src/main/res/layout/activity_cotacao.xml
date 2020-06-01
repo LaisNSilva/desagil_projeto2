@@ -47,12 +47,11 @@
             app:layout_constraintTop_toBottomOf="@+id/texto_titulo" />
 
 
-
         <TextView
             android:id="@+id/texto_peca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="28dp"
             android:text="Peça:"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/texto_cliente"
@@ -60,13 +59,24 @@
 
         <Button
             android:id="@+id/escolher_arquivo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="84dp"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:text="Escolher Arquivo"
+            android:textSize="15dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_peca"
+            app:layout_constraintTop_toBottomOf="@id/texto_cliente" />
+
+        <EditText
+            android:id="@+id/texto_arquivo"
+            android:layout_width="156dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:text=""
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/texto_peca"
+            app:layout_constraintStart_toEndOf="@+id/escolher_arquivo"
             app:layout_constraintTop_toBottomOf="@id/texto_cliente" />
 
         <TextView
@@ -77,7 +87,7 @@
             android:text="Infill(%):"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/texto_peca"
-            app:layout_constraintTop_toBottomOf="@id/texto_peca" />
+            app:layout_constraintTop_toBottomOf="@id/texto_arquivo" />
 
         <EditText
             android:id="@+id/infill"
@@ -87,27 +97,47 @@
             android:text=""
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/texto_infill"
-            app:layout_constraintTop_toBottomOf="@id/texto_peca" />
+            app:layout_constraintTop_toBottomOf="@id/texto_arquivo" />
 
         <TextView
             android:id="@+id/texto_shell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Shell:"
+            android:text="Support Removal:"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/texto_infill"
             app:layout_constraintTop_toBottomOf="@id/texto_infill" />
 
-        <EditText
-            android:id="@+id/shell"
-            android:layout_width="300dp"
+        <CheckBox
+            android:id="@+id/shell_check"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:text=""
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/texto_shell"
-            app:layout_constraintTop_toBottomOf="@id/texto_infill" />
+            app:layout_constraintTop_toBottomOf="@id/infill" />
+
+        <TextView
+            android:id="@+id/texto_vaporpolishing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Vapor Polishing:"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/texto_shell"
+            app:layout_constraintTop_toBottomOf="@id/texto_shell" />
+
+        <CheckBox
+            android:id="@+id/vapor_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="8dp"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/texto_vaporpolishing"
+            app:layout_constraintTop_toBottomOf="@id/shell_check" />
 
         <TextView
             android:id="@+id/texto_layer"
@@ -116,8 +146,8 @@
             android:layout_marginTop="15dp"
             android:text="Layer:"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/texto_shell"
-            app:layout_constraintTop_toBottomOf="@id/texto_shell" />
+            app:layout_constraintStart_toStartOf="@+id/texto_vaporpolishing"
+            app:layout_constraintTop_toBottomOf="@id/texto_vaporpolishing" />
 
         <EditText
             android:id="@+id/layer"
@@ -127,7 +157,7 @@
             android:text=""
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/texto_layer"
-            app:layout_constraintTop_toBottomOf="@id/texto_shell" />
+            app:layout_constraintTop_toBottomOf="@id/texto_vaporpolishing" />
 
         <TextView
             android:id="@+id/texto_impressora"
