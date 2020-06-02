@@ -108,39 +108,39 @@ public class Cotacao extends AppCompatActivity {
                 String color = null;
                 String densidade = null;
 
-                if (material_escolhido == "ABS"){
+                if (material_escolhido.equals("ABS")){
                     color = partPriceConfig.getABS_color();
                     densidade = partPriceConfig.getABS_density();
                 }
-                else if (material_escolhido == "PLA"){
+                else if (material_escolhido.equals("PLA")){
                     color = partPriceConfig.getPLA_color();
                     densidade = partPriceConfig.getPLA_density();
                 }
-                else if (material_escolhido == "PC"){
+                else if (material_escolhido.equals("PC")){
                     color = partPriceConfig.getPC_color();
                     densidade = partPriceConfig.getPC_density();
                 }
-                else if (material_escolhido == "Nylon"){
+                else if (material_escolhido.equals("Nylon")){
                     color = partPriceConfig.getNylon_color();
                     densidade = partPriceConfig.getNylon_density();
                 }
-                else if (material_escolhido == "LayWood"){
+                else if (material_escolhido.equals("LayWood")){
                     color = partPriceConfig.getLayWood_color();
                     densidade = partPriceConfig.getLayWood_density();
                 }
-                else if (material_escolhido == "BendLAY"){
+                else if (material_escolhido.equals("BendLAY")){
                     color = partPriceConfig.getBendLAY_color();
                     densidade = partPriceConfig.getBendLAY_density();
                 }
-                else if (material_escolhido == "TPE"){
+                else if (material_escolhido.equals("TPE")){
                     color = partPriceConfig.getTPE_color();
                     densidade = partPriceConfig.getTPE_density();
                 }
-                else if (material_escolhido == "SoftPLA"){
+                else if (material_escolhido.equals("SoftPLA")){
                     color = partPriceConfig.getSoftPLA_color();
                     densidade = partPriceConfig.getSoftPLA_density();
                 }
-                else if (material_escolhido == "HIPS"){
+                else if (material_escolhido.equals("HIPS")){
                     color = partPriceConfig.getHIPS_color();
                     densidade = partPriceConfig.getHIPS_density();
                 }
@@ -148,9 +148,13 @@ public class Cotacao extends AppCompatActivity {
                 HashMap<String, Object>$_POST = new HashMap<>();
 
                 $_POST.put("material", materiais.getSelectedItem().toString());
+                System.out.println(materiais.getSelectedItem().toString());
                 $_POST.put("color", color);
+                System.out.println(color);
                 $_POST.put("layerHeight", layer.getText().toString());
+                System.out.println(layer.getText().toString());
                 $_POST.put("infillPercentage", infill.getText().toString());
+                System.out.println(infill.getText().toString());
 
                 if(supportRemoval.isSelected() == true){
                     $_POST.put("supportRemoval", true);
@@ -171,9 +175,17 @@ public class Cotacao extends AppCompatActivity {
                 String boundary = "------WebKitFormBoundary" + "1$#23gf784";
 
                 HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
+                HashMap<String, String>values_files = new HashMap<>();
+
+                //values_files.put("name", ???);
+                //values_files.put("type", ???);
+                //values_files.put("tmp_name", ARQUIVO_DA_LAIS);
+
+                $_FILES.put("stlFiles[]", values_files);
 
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
+                System.out.println(output_request);
 
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
