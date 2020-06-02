@@ -22,10 +22,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.HashMap;
@@ -34,6 +37,7 @@ public class Cotacao extends AppCompatActivity {
 
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
+    EditText texto_arquivo;
     private void showToast(String text) {
 
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -53,6 +57,7 @@ public class Cotacao extends AppCompatActivity {
         final EditText infill = findViewById(R.id.infill);
         final EditText layer = findViewById(R.id.layer);
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
+        texto_arquivo = (EditText) findViewById(R.id.texto_arquivo);
 
         final TextView peso = findViewById(R.id.peso);
         final TextView tempo = findViewById(R.id.tempo);
@@ -226,17 +231,49 @@ public class Cotacao extends AppCompatActivity {
         });
 
     }
-    /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
         if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
 
             Uri uri = resultData.getData();
-            arquivoPeca.setText(uri.toString());
+            texto_arquivo.setText(uri.toString());
+            //rquivoPeca.setText(uri.toString());
+            //Creating an InputStream object
+
+            String path = uri.getPath();
+            String filename = path.substring(path.lastIndexOf("/") + 1);
+            String file;
+            if (filename.indexOf(".") > 0) {
+                file = filename.substring(0, filename.lastIndexOf("."));
+            } else {
+                file = filename;
+            }
+            Log.i("nome", filename);
+
+            //System.out.println(uri);
+            InputStream inputStream = null;
+            try {
+                inputStream = getBaseContext().getContentResolver().openInputStream(uri);
+                //creating an InputStreamReader object
+                InputStreamReader isReader = new InputStreamReader(inputStream);
+                //Creating a BufferedReader object
+                BufferedReader reader = new BufferedReader(isReader);
+                StringBuffer sb = new StringBuffer();
+                String str;
+                while ((str = reader.readLine()) != null) {
+                    sb.append(str);
+                }
+                //System.out.println(sb.toString());
+                //Log.i("meuapp", sb.toString());
+                String arquivo = sb.toString();
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
     }
-
-     */
 
 }
