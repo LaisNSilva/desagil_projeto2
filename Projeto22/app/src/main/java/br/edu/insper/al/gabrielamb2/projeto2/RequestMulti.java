@@ -27,11 +27,11 @@ public class RequestMulti {
     }
 
 
-    public String buildMultipartPost(HashMap<String,String> fields, HashMap<String, HashMap<String, String>> files, String boundary){
+    public String buildMultipartPost(HashMap<String, Object> fields, HashMap<String, HashMap<String, String>> files, String boundary){
         String output = "";
-        for (Map.Entry<String,String> dic_interable : fields.entrySet()){
+        for (Map.Entry<String,Object> dic_interable : fields.entrySet()){
             String key = dic_interable.getKey();
-            String value = dic_interable.getValue();
+            String value = dic_interable.getValue().toString();
 
             String new_key = transformada(key);
             String new_value = transformada(value);

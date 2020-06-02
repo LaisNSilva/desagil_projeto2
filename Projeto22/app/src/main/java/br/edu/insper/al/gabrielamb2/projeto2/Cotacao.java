@@ -62,8 +62,8 @@ public class Cotacao extends AppCompatActivity {
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
 
-        CheckBox supportRemoval = findViewById(R.id.suport_check);
-        CheckBox vaporPolishing = findViewById(R.id.vapor_check);
+        final CheckBox supportRemoval = findViewById(R.id.suport_check);
+        final CheckBox vaporPolishing = findViewById(R.id.vapor_check);
 
         
         //Spinners (Impressoras e Filamentos)
@@ -165,11 +165,10 @@ public class Cotacao extends AppCompatActivity {
 
                 String boundary = "------WebKitFormBoundary" + "1$#23gf784";
 
-                HashMap<String, Object>$_FILES = new HashMap<>();
+                HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
 
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
-                String request = requestMulti.buildMultipartPost();
-
+                String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
 
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
@@ -209,6 +208,19 @@ public class Cotacao extends AppCompatActivity {
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String cliente_ = cliente.getText().toString();
+                String filename = "cotacao_"+cliente_+".txt";
+                File outputFile = new File(diretorio+"/"+filename);
+
+                Uri uri = Uri.fromFile(outputFile);
+
+                Intent share = new Intent();
+                share.setAction(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.setPackage("com.whatsapp");
+
+                Cotacao.this.startActivity(share);
                 
             }
         });
