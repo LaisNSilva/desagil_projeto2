@@ -22,6 +22,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -32,9 +41,9 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Cotacao extends AppCompatActivity {
-
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
     EditText texto_arquivo;
@@ -225,20 +234,157 @@ public class Cotacao extends AppCompatActivity {
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cliente_ = cliente.getText().toString();
-                String filename = "cotacao_"+cliente_+".txt";
-                File outputFile = new File(diretorio+"/"+filename);
+              String cliente_ = cliente.getText().toString();
+              String filename = "cotacao_"+cliente_+".txt";
+              File outputFile = new File(diretorio+"/"+filename);
 
-                Uri uri = Uri.fromFile(outputFile);
+              Uri uri = Uri.fromFile(outputFile);
 
-                Intent share = new Intent();
-                share.setAction(Intent.ACTION_SEND);
-                share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_STREAM, uri);
-                share.setPackage("com.whatsapp");
+              //Intent share = new Intent();
+              //share.setAction(Intent.ACTION_SEND);
+             // share.setType("text/plain");
+             // share.putExtra(Intent.EXTRA_STREAM, uri);
+              //share.setPackage("com.whatsapp");
 
-                Cotacao.this.startActivity(share);
-                
+              //Cotacao.this.startActivity(share);
+
+
+
+
+
+                //PARTE DE CRIAR UM EXCEL
+                Workbook wb=new HSSFWorkbook();
+                Cell cell=null;
+                CellStyle cellStyle=wb.createCellStyle();
+                //Now we are creating sheet
+                Sheet sheet=null;
+                sheet = wb.createSheet("Orçamentos Antigos");
+                //Now column and row
+                Row row =sheet.createRow(0);
+                cell=row.createCell(0);
+                cell.setCellValue("Cliente");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(1);
+                cell.setCellValue("Peça");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(2);
+                cell.setCellValue("Infill (%)");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(3);
+                cell.setCellValue("Support Removal");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(4);
+                cell.setCellValue("Vapor Polishing");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(5);
+                cell.setCellValue("Layer");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(6);
+                cell.setCellValue("Impressora");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(7);
+                cell.setCellValue("Material");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(8);
+                cell.setCellValue("Mão de obra");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(9);
+                cell.setCellValue("Peso");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(10);
+                cell.setCellValue("Tempo");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(11);
+                cell.setCellValue("Valor");
+                cell.setCellStyle(cellStyle);
+
+                Row row1 =sheet.createRow(1);
+                cell=row1.createCell(0);
+                cell.setCellValue( cliente.getText().toString());
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(1);
+                cell.setCellValue("Peça");
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(2);
+                cell.setCellValue(infill.getText().toString());
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(3);
+                cell.setCellValue("Support Removal");
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(4);
+                cell.setCellValue("Vapor Polishing");
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(5);
+                cell.setCellValue(layer.getText().toString());
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(6);
+                cell.setCellValue(impressoras.getSelectedItem().toString());
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(7);
+                cell.setCellValue("Material");
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(8);
+                cell.setCellValue(mao_de_obra.getText().toString());
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(9);
+                cell.setCellValue(peso.getText().toString());
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(10);
+                cell.setCellValue( tempo.getText().toString());
+                cell.setCellStyle(cellStyle);
+
+                cell=row1.createCell(11);
+                cell.setCellValue(valor.getText().toString());
+                cell.setCellStyle(cellStyle);
+
+
+                if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                    // External storage is usable
+                    File file = new File(getExternalFilesDir(null),"orcamentoantigo.xls");
+                    FileOutputStream outputStream =null;
+                    try {
+                        outputStream=new FileOutputStream(file);
+                        wb.write(outputStream);
+                        Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+
+                        Toast.makeText(getApplicationContext(),"NO OK",Toast.LENGTH_LONG).show();
+                        try {
+                            outputStream.close();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                } else {
+                    // External storage is not usable
+                    // Try again later
+                }
+
+
+
             }
         });
 
