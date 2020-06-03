@@ -177,33 +177,30 @@ public class Cotacao extends AppCompatActivity {
                 //values_files.put("type", ???);
                 //values_files.put("tmp_name", ARQUIVO_DA_LAIS);
 
-//                $_FILES.put("stlFiles[]", values_files);
 
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
                 System.out.println(output_request);
-
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
                 String layer_ = layer.getText().toString();
                 String impressora = impressoras.getSelectedItem().toString();
                 String maodeobra = mao_de_obra.getText().toString();
-
                 //---------------------------------------------
                 //Calculos
                 //---------------------------------------------
-
                 String peso_ = peso.getText().toString();
                 String tempo_ = tempo.getText().toString();
                 String valor_ = valor.getText().toString();
 
                 String texto_final = "Cliente: "+ cliente_ + "  " + "Infill: " + infill_ + "  " + "Layer: "+ layer_ + "  " + "Impressora: " + impressora + "  "
                         + "Material: " + material_escolhido + "  "+ "Mão de Obra: " + maodeobra + "  " + "Peso: " + peso_ + "  " + "Tempo: " +  tempo_ + "  " +"Valor: " + valor_;
+
                 texto_final = texto_final.replace("  ","\n");
 
                 String filename = "cotacao_"+cliente_+".txt";
-                File file = new File(diretorio + "/" + filename);
 
+                File file = new File(diretorio + "/" + filename);
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     // External storage is usable
