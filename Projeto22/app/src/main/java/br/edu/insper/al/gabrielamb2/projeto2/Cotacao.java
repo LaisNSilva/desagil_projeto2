@@ -389,7 +389,7 @@ public class Cotacao extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
-        final EditText textoarquivo = findViewById(R.id.texto_arquivo);
+        final TextView textoarquivo = findViewById(R.id.texto_arquivo);
 
         if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
 
