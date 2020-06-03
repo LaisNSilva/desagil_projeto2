@@ -1,19 +1,11 @@
 package br.edu.insper.al.gabrielamb2.projeto2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,9 +14,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -33,20 +26,15 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class Cotacao extends AppCompatActivity {
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
-    EditText texto_arquivo;
     private void showToast(String text) {
 
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -60,13 +48,12 @@ public class Cotacao extends AppCompatActivity {
 
         //TextView arquivoPeca = findViewById(R.id.peca);
 
-        final File diretorio = getApplicationContext().getFilesDir();
+        final File diretorio = getApplicationContext().getExternalFilesDir(null);
 
         final EditText cliente = findViewById(R.id.cliente);
         final EditText infill = findViewById(R.id.infill);
         final EditText layer = findViewById(R.id.layer);
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
-        texto_arquivo = (EditText) findViewById(R.id.texto_arquivo);
 
         final TextView peso = findViewById(R.id.peso);
         final TextView tempo = findViewById(R.id.tempo);
@@ -190,7 +177,7 @@ public class Cotacao extends AppCompatActivity {
                 //values_files.put("type", ???);
                 //values_files.put("tmp_name", ARQUIVO_DA_LAIS);
 
-                $_FILES.put("stlFiles[]", values_files);
+//                $_FILES.put("stlFiles[]", values_files);
 
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
@@ -214,19 +201,20 @@ public class Cotacao extends AppCompatActivity {
                         + "Material: " + material_escolhido + "  "+ "Mão de Obra: " + maodeobra + "  " + "Peso: " + peso_ + "  " + "Tempo: " +  tempo_ + "  " +"Valor: " + valor_;
                 texto_final = texto_final.replace("  ","\n");
 
-                try{
-                    String filename = "cotacao_"+cliente_+".txt";
-                    File file = new File(diretorio + "/" + filename);
+                String filename = "cotacao_"+cliente_+".txt";
+                File file = new File(diretorio + "/" + filename);
 
-                    file.createNewFile();
 
-                    try (FileOutputStream fos = getApplicationContext().openFileOutput(filename, Context.MODE_PRIVATE)) {
-                        fos.write(texto_final.getBytes());
+                if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                    // External storage is usable
+                    FileOutputStream outputStream = null;
+                    try {
+                        outputStream= new FileOutputStream(file);
+                        outputStream.write(texto_final.getBytes());
+                        showToast("Arquivo Criado");
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
                     }
-                    showToast("Arquivo Criado");
-
-                }catch (Exception e){
-                    showToast(e.getMessage());
                 }
             }
         });
@@ -234,23 +222,34 @@ public class Cotacao extends AppCompatActivity {
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              String cliente_ = cliente.getText().toString();
-              String filename = "cotacao_"+cliente_+".txt";
-              File outputFile = new File(diretorio+"/"+filename);
 
-              Uri uri = Uri.fromFile(outputFile);
+                String cliente_ = cliente.getText().toString();
+                String filename = "cotacao_"+cliente_+".txt";
+//
+                String path = diretorio+filename;
+//
+                File minhaFile = new File(path);
+//
+                try{
+//
+                    Uri uri = FileProvider.getUriForFile(Cotacao.this, "br.edu.insper.al.gabrielamb2.projeto2.fileprovider", minhaFile);
+//
+                    Intent share = new Intent();
 
-              //Intent share = new Intent();
-              //share.setAction(Intent.ACTION_SEND);
-             // share.setType("text/plain");
-             // share.putExtra(Intent.EXTRA_STREAM, uri);
-              //share.setPackage("com.whatsapp");
+                    share.setAction(Intent.ACTION_SEND);
 
-              //Cotacao.this.startActivity(share);
+                    share.setType("text/plain");
 
+                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
+                    share.putExtra(Intent.EXTRA_STREAM, uri);
+//                    share.setPackage("com.whatsapp");
 
+                    startActivity(share);
 
+                }catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
 
                 //PARTE DE CRIAR UM EXCEL
                 Workbook wb=new HSSFWorkbook();
@@ -362,7 +361,7 @@ public class Cotacao extends AppCompatActivity {
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     // External storage is usable
                     File file = new File(getExternalFilesDir(null),"orcamentoantigo.xls");
-                    FileOutputStream outputStream =null;
+                    FileOutputStream outputStream = null;
                     try {
                         outputStream=new FileOutputStream(file);
                         wb.write(outputStream);
@@ -392,10 +391,13 @@ public class Cotacao extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
+
+        final EditText textoarquivo = findViewById(R.id.texto_arquivo);
+
         if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
 
             Uri uri = resultData.getData();
-            texto_arquivo.setText(uri.toString());
+            textoarquivo.setText(uri.toString());
             //rquivoPeca.setText(uri.toString());
             //Creating an InputStream object
 
