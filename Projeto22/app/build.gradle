@@ -33,4 +33,10 @@ dependencies {
     implementation files('libs/httpclient-4.0.3.jar')
     implementation files('libs/apache-httpcomponents-httpcore.jar')
     implementation files('libs/httpcore-4.0-alpha5.jar')
+    implementation files('libs/quarkus-spring-web-api-5.2.SP4.jar')
+    implementation files('libs/httpcore-4.2.3.jar')
+    implementation files('libs\httpcore-4.2.3.jar')
+    implementation files('libs/httpmime-4.3.jar')
+    implementation files('libs\\httpmime-4.3.jar')
+    implementation files('libs\\httpmime-4.3.jar')
 }

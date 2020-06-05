@@ -1,15 +1,14 @@
 package br.edu.insper.al.gabrielamb2.projeto2;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpEntity;
-
-
+import org.apache.http.impl.client.DefaultHttpClient;
 
 
 public class RequestMulti {
@@ -69,8 +68,13 @@ public class RequestMulti {
         return output+boundary+"--";
     }
 
-    public void Request(String request){
+    public HttpResponse Request(Object request) throws IOException {
+        HttpClient httpclient = new DefaultHttpClient();
         HttpPost post = new HttpPost("http://echo.200please.com");
+        HttpEntity entity = (HttpEntity) request;
+        post.setEntity(entity);
+        HttpResponse response = httpclient.execute(post);
+        return response;
 
     }
 }

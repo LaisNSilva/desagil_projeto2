@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import org.apache.http.HttpResponse;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -172,8 +173,73 @@ public class Cotacao extends AppCompatActivity {
                 $_POST.put("rushPrinting",false);
                 $_POST.put("density", densidade);
 
-                String nada = null;
-                $_POST.put("configFile",nada);
+                String config = "YTo3OntzOjk6Im1hdGVyaWFscyI7YTo5OntzOjM6IkFCUyI7YTo1OntzOjg6ImZ1bGxOY" +
+                        "W1lIjtzOjMxOiJBY3J5bG9uaXRyaWxlIEJ1dGFkaWVuZSBTdHlyZW5lIjtzOjU6InByaWNlIjth" +
+                        "OjI6e3M6NjoiYW1vdW50IjtkOjAuMjtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5" +
+                        "CZVZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS" +
+                        "4wNDtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc6I" +
+                        "iMwMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6IiNG" +
+                        "RjBGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN0Z" +
+                        "GMDAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIxRk" +
+                        "YiO2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjM6IlBMQSI7YTo1O" +
+                        "ntzOjg6ImZ1bGxOYW1lIjtzOjE1OiJQb2x5bGFjdGljIGFjaWQiO3M6NToicHJpY2UiO2E6Mjp7" +
+                        "czo2OiJhbW91bnQiO2Q6MC4yNTtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZVZ" +
+                        "hcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4yNT" +
+                        "tzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc6IiMwM" +
+                        "DAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6IiNGRjBG" +
+                        "MEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN0ZGMDA" +
+                        "iO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIxRkYiO2" +
+                        "k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjI6IlBDIjthOjU6e3M6O" +
+                        "DoiZnVsbE5hbWUiO3M6MTM6IlBvbHljYXJib25hdGUiO3M6NToicHJpY2UiO2E6Mjp7czo2OiJh" +
+                        "bW91bnQiO2Q6MC42O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2x" +
+                        "pc2hlZCI7YjoxO3M6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjI7czo0OiJ1bm" +
+                        "l0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjEyOntpOjA7czo3OiIjMDAwMDAwIjtpO" +
+                        "jE7czo3OiIjRkZGRkZGIjtpOjI7czo3OiIjRkZGQUUwIjtpOjM7czo3OiIjRkYwRjBGIjtpOjQ7" +
+                        "czo3OiIjRkY4MzI0IjtpOjU7czo3OiIjRkZBOEM4IjtpOjY7czo3OiIjRjdGRjAwIjtpOjc7czo" +
+                        "3OiIjNzBGRjMzIjtpOjg7czo3OiIjMTQwQUEzIjtpOjk7czo3OiIjODkyMUZGIjtpOjEwO3M6Nz" +
+                        "oiIzkyOTFCNSI7aToxMTtzOjc6IiM4NzU5M0UiO319czo1OiJOeWxvbiI7YTo1OntzOjg6ImZ1b" +
+                        "GxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4zNTtzOjQ6InVuaXQi" +
+                        "O3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZVZhcG9yUG9saXNoZWQiO2I6MDtzOjc6ImRlbnNpdHk" +
+                        "iO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4yNTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2Oi" +
+                        "Jjb2xvcnMiO2E6Njp7aTowO3M6NzoiIzAwMDAwMCI7aToxO3M6NzoiI0ZGRkZGRiI7aToyO3M6N" +
+                        "zoiI0ZGMEYwRiI7aTozO3M6NzoiIzcwRkYzMyI7aTo0O3M6NzoiIzE0MEFBMyI7aTo1O3M6NToi" +
+                        "Y2xlYXIiO319czo3OiJMYXlXb29kIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwcmljZSI" +
+                        "7YToyOntzOjY6ImFtb3VudCI7ZDowLjg7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxODoiY2" +
+                        "FuQmVWYXBvclBvbGlzaGVkIjtiOjA7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50IjtkO" +
+                        "jEuMDU7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOjc6" +
+                        "IiNGRkZGRkYiO319czo3OiJCZW5kTEFZIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwcml" +
+                        "jZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjU7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxOD" +
+                        "oiY2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50I" +
+                        "jtkOjEuMDI7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtz" +
+                        "Ojc6IiM4NzU5M0UiO319czozOiJUUEUiO2E6NTp7czo4OiJmdWxsTmFtZSI7czoyMzoiVGhlcm1" +
+                        "vcGxhc3RpYyBlbGFzdG9tZXIiO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC42O3" +
+                        "M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M6N" +
+                        "zoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE7czo0OiJ1bml0IjtzOjY6ImcvY21e" +
+                        "MyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOjU6ImNsZWFyIjt9fXM6NzoiU29mdFBMQSI7YTo" +
+                        "1OntzOjg6ImZ1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC41O3" +
+                        "M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M6N" +
+                        "zoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE1O3M6NDoidW5pdCI7czo2OiJnL2Nt" +
+                        "XjMiO31zOjY6ImNvbG9ycyI7YTo0OntpOjA7czo3OiIjMDAwMDAwIjtpOjE7czo3OiIjRkYwRjB" +
+                        "GIjtpOjI7czo3OiIjMTQwQUEzIjtpOjM7czo3OiIjRkZGRkZGIjt9fXM6NDoiSElQUyI7YTo1On" +
+                        "tzOjg6ImZ1bGxOYW1lIjtzOjIzOiJIaWdoLWltcGFjdCBQb2x5c3R5cmVuZSI7czo1OiJwcmljZ" +
+                        "SI7YToyOntzOjY6ImFtb3VudCI7ZDowLjI7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxODoi" +
+                        "Y2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50Ijt" +
+                        "kOjEuMDY7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOj" +
+                        "c6IiNGRkZBRTAiO319fXM6MTI6InByaW50aW5nQ29zdCI7YToyOntzOjY6ImFtb3VudCI7czo0O" +
+                        "iI0LjAwIjtzOjQ6InVuaXQiO3M6ODoiVVNEL2hvdXIiO31zOjY6ImFkZE9ucyI7YTozOntzOjI0" +
+                        "OiJzdXBwb3J0UmVtb3ZhbE11bHRpcGxpZXIiO2Q6MS4zMztzOjI0OiJ2YXBvclBvbGlzaGluZ01" +
+                        "1bHRpcGxpZXIiO2Q6MS4yNTtzOjIyOiJydXNoUHJpbnRpbmdNdWx0aXBsaWVyIjtkOjEuNTt9cz" +
+                        "oxMzoiZGVsaXZlcnlDb3N0cyI7YToyOntzOjQ6ImJhc2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6N" +
+                        "S44O3M6NDoidW5pdCI7czozOiJVU0QiO31zOjExOiJ3ZWlnaHRQcmljZSI7YToyOntzOjY6ImFt" +
+                        "b3VudCI7ZDowLjAxO3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fX1zOjEyOiJzbGljZXJQYXJhbXM" +
+                        "iO2E6MTp7czo3OiJzbGljZXJzIjthOjE6e2k6MDtzOjQ6ImN1cmEiO319czoxMjoibGF5ZXJIZW" +
+                        "lnaHRzIjthOjM6e3M6NzoiZGVmYXVsdCI7YToyOntzOjY6ImFtb3VudCI7czo1OiIwLjI1NCI7c" +
+                        "zo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtaW4iO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4wNzU7" +
+                        "czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtYXgiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC40O3M" +
+                        "6NDoidW5pdCI7czoyOiJtbSI7fX1zOjExOiJwcmludFNwZWVkcyI7YToxOntzOjc6ImRlZmF1bH" +
+                        "QiO2E6Mjp7czo2OiJhbW91bnQiO2k6NTA7czo0OiJ1bml0IjtzOjQ6Im1tL3MiO319fQ%3D%3D";
+
+                $_POST.put("configFile",config);
 
                 String boundary = "------WebKitFormBoundary" + "1$#23gf784";
 
@@ -192,6 +258,15 @@ public class Cotacao extends AppCompatActivity {
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
                 System.out.println(output_request);
+
+                HttpResponse requisição = null;
+                try {
+                    requisição = requestMulti.Request(output_request);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(requisição);
+
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
                 String layer_ = layer.getText().toString();
