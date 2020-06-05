@@ -70,7 +70,6 @@ public class Cotacao extends AppCompatActivity {
         final CheckBox vaporPolishing = findViewById(R.id.vapor_check);
 
         final String arquivo = null;
-
         
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
@@ -266,7 +265,6 @@ public class Cotacao extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 System.out.println(requisição);
-
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
                 String layer_ = layer.getText().toString();
