@@ -79,6 +79,8 @@ public class Cotacao extends AppCompatActivity {
         final CheckBox supportRemoval = findViewById(R.id.suport_check);
         final CheckBox vaporPolishing = findViewById(R.id.vapor_check);
 
+        final String arquivo = null;
+
         
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
@@ -181,14 +183,21 @@ public class Cotacao extends AppCompatActivity {
                 $_POST.put("rushPrinting",false);
                 $_POST.put("density", densidade);
 
+                String nada = null;
+                $_POST.put("configFile",nada);
+
                 String boundary = "------WebKitFormBoundary" + "1$#23gf784";
 
                 HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
                 HashMap<String, String>values_files = new HashMap<>();
 
-                //values_files.put("name", ???);
-                //values_files.put("type", ???);
-                //values_files.put("tmp_name", ARQUIVO_DA_LAIS);
+                values_files.put("name", null);
+                values_files.put("type", "file");
+                if (arquivo.equals(null)){
+                    showToast("Arquivo vazio!");
+                }else{
+                    values_files.put("tmp_name", arquivo);
+                }
 
                 $_FILES.put("stlFiles[]", values_files);
 
