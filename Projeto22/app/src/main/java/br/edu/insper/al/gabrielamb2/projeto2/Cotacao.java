@@ -247,11 +247,14 @@ public class Cotacao extends AppCompatActivity {
 
                 values_files.put("name", null);
                 values_files.put("type", "file");
-                if (arquivo.equals(null)){
-                    showToast("Arquivo vazio!");
-                }else{
+                try{
                     values_files.put("tmp_name", arquivo);
+
+                }catch (Exception e){
+                    showToast("Arquivo vazio!");
+                    System.out.println("crachou");
                 }
+
 
 
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
