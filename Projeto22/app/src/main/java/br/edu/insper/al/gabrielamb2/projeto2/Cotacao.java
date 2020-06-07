@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -33,9 +34,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
-public class Cotacao extends AppCompatActivity {
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+public class Cotacao extends AppCompatActivity implements ValueEventListener{
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
+    int clicou =0;
+
     private void showToast(String text) {
 
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -46,6 +56,13 @@ public class Cotacao extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
+
+
+
+
+
+
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.logo);
 
@@ -336,6 +353,11 @@ public class Cotacao extends AppCompatActivity {
                 }
 
                 //PARTE DE CRIAR UM EXCEL
+                clicou +=1;
+
+                Passandofirebase passandofirebase = new Passandofirebase(clicou);
+                passandofirebase.atualizando(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
+
                 Workbook wb=new HSSFWorkbook();
                 Cell cell=null;
                 CellStyle cellStyle=wb.createCellStyle();
@@ -392,7 +414,7 @@ public class Cotacao extends AppCompatActivity {
                 cell.setCellValue("Valor");
                 cell.setCellStyle(cellStyle);
 
-                Row row1 =sheet.createRow(1);
+                Row row1 =sheet.createRow(clicou+1);
                 cell=row1.createCell(0);
                 cell.setCellValue( cliente.getText().toString());
                 cell.setCellStyle(cellStyle);
@@ -520,4 +542,13 @@ public class Cotacao extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
 }

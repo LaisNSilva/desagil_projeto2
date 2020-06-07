@@ -1,10 +1,40 @@
 {
   "project_info": {
-    "project_number": "190627461686",
-    "firebase_url": "https://projeto2-681c1.firebaseio.com",
-    "project_id": "projeto2-681c1",
-    "storage_bucket": "projeto2-681c1.appspot.com"
+    "project_number": "681296355552",
+    "firebase_url": "https://projeto-delta-f4c62.firebaseio.com",
+    "project_id": "projeto-delta-f4c62",
+    "storage_bucket": "projeto-delta-f4c62.appspot.com"
   },
-  "client": [],
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681296355552:android:4bda80fe5a4c0af4deb085",
+        "android_client_info": {
+          "package_name": "br.edu.insper.al.gabrielamb2.projeto2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681296355552-d23t0sgn1tv7tt5a98hpdgqbr44hj1c2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE2dKQfhvI3jULOL5Cah8wVRwYlfE6xZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681296355552-d23t0sgn1tv7tt5a98hpdgqbr44hj1c2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
   "configuration_version": "1"
 }
