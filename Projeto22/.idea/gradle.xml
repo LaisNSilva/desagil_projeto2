@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/httpclient-4.5.6" />
             <option value="$PROJECT_DIR$/httpcore-4.4.10" />
             <option value="$PROJECT_DIR$/httpmime-4.5.6" />
+            <option value="$PROJECT_DIR$/org-apache-commons-logging" />
             <option value="$PROJECT_DIR$/poi-3.15" />
             <option value="$PROJECT_DIR$/poi-ooxml-3.15" />
             <option value="$PROJECT_DIR$/poi-ooxml-schemas-3.15" />

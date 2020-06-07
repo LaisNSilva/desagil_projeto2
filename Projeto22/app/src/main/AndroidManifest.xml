@@ -17,6 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <uses-library android:name="org.apache.http.legacy"></uses-library>
+
         <activity android:name=".Cotacao">
         </activity>
         <activity android:name=".MainActivity">
