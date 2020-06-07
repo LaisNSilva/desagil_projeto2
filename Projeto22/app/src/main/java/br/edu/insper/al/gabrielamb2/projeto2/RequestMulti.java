@@ -4,7 +4,10 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -57,9 +60,8 @@ public class RequestMulti {
             String type = transformada(value_files.get("type").toString());
 
             try{
-                byte[] tmp_name = Files.readAllBytes((Path) value_files.get("tmp_name"));
+                String tmp_name = (String) value_files.get("tmp_name");
                 output += boundary + "\n" + "Contente-Disposition: form-data; name=\"" + new_key_files + "\"; filename=\"" + name + "\"\n" + "Content-Type: " + type + "\n\n" + tmp_name + "\n";
-
             }catch (Exception e){
                 System.out.println("File error");
 
@@ -69,9 +71,10 @@ public class RequestMulti {
         return output+boundary+"--";
     }
     public HttpResponse Request(Object request) throws IOException {
-        HttpClient httpclient = new DefaultHttpClient();
+        HttpParams params = new BasicHttpParams();
+        HttpClient httpclient = new DefaultHttpClient(params);
         HttpPost post = new HttpPost("http://echo.200please.com");
-        HttpEntity entity = (HttpEntity) request;
+        HttpEntity entity = new StringEntity(request.toString());
         post.setEntity(entity);
         HttpResponse response = httpclient.execute(post);
         return response;

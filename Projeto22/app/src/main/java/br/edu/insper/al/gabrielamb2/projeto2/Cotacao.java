@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -42,6 +43,8 @@ public class Cotacao extends AppCompatActivity {
         toast.show();
     }
 
+    String arquivo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,10 @@ public class Cotacao extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.logo);
 
         //TextView arquivoPeca = findViewById(R.id.peca);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
 
         final File diretorio = getApplicationContext().getExternalFilesDir(null);
 
@@ -68,8 +75,6 @@ public class Cotacao extends AppCompatActivity {
 
         final CheckBox supportRemoval = findViewById(R.id.suport_check);
         final CheckBox vaporPolishing = findViewById(R.id.vapor_check);
-
-        final String arquivo = null;
         
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
@@ -101,6 +106,8 @@ public class Cotacao extends AppCompatActivity {
         processar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                System.out.println("SERA QUE TA NULO?: "+ arquivo);
 
                 PartPriceConfig partPriceConfig = new PartPriceConfig();
                 String material_escolhido = materiais.getSelectedItem().toString();
@@ -148,13 +155,9 @@ public class Cotacao extends AppCompatActivity {
                 HashMap<String, Object>$_POST = new HashMap<>();
 
                 $_POST.put("material", materiais.getSelectedItem().toString());
-                System.out.println(materiais.getSelectedItem().toString());
                 $_POST.put("color", color);
-                System.out.println(color);
                 $_POST.put("layerHeight", layer.getText().toString());
-                System.out.println(layer.getText().toString());
                 $_POST.put("infillPercentage", infill.getText().toString());
-                System.out.println(infill.getText().toString());
 
                 if(supportRemoval.isSelected() == true){
                     $_POST.put("supportRemoval", true);
@@ -245,15 +248,16 @@ public class Cotacao extends AppCompatActivity {
                 HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
                 HashMap<String, String>values_files = new HashMap<>();
 
-                values_files.put("name", null);
+                values_files.put("name", "block100.stl");
                 values_files.put("type", "file");
                 try{
                     values_files.put("tmp_name", arquivo);
 
                 }catch (Exception e){
                     showToast("Arquivo vazio!");
-                    System.out.println("crachou");
+
                 }
+                $_FILES.put("stlFiles[]", values_files);
 
 
 
@@ -455,6 +459,7 @@ public class Cotacao extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(),"NO OK",Toast.LENGTH_LONG).show();
                         try {
+                            assert outputStream != null;
                             outputStream.close();
                         } catch (IOException ex) {
                             ex.printStackTrace();
@@ -511,6 +516,7 @@ public class Cotacao extends AppCompatActivity {
                 //System.out.println(sb.toString());
                 //Log.i("meuapp", sb.toString());
                 String arquivo = sb.toString();
+                System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
 
             } catch (IOException e) {
