@@ -55,22 +55,17 @@ public class Cotacao extends AppCompatActivity{
         toast.show();
     }
 
+
+
     String arquivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
-
-
-
-
-
-
-
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.logo);
-
+        getOrcamentos();
         //TextView arquivoPeca = findViewById(R.id.peca);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -363,28 +358,7 @@ public class Cotacao extends AppCompatActivity{
 
                 Cliente usuario = new Cliente(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
                 mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
-
-                mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        try {
-
-                            // O método getValue recebe como parâmetro uma
-                            // classe Java que representa o tipo de dado
-                            // que você acredita estar lá. Se você errar,
-                            // esse método vai lançar uma DatabaseException.
-
-                            getClientes((Map<String,Object>)dataSnapshot.getValue());
-                        } catch (DatabaseException exception) {
-                            Toast.makeText(getApplicationContext(),"Não conseguiu pegar os dados do cliente",Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(),"Ouve um problema de conexão",Toast.LENGTH_LONG).show();
-                    }
-                });
+                getOrcamentos();
                 Workbook wb=new HSSFWorkbook();
                 Cell cell=null;
                 CellStyle cellStyle=wb.createCellStyle();
@@ -523,24 +497,41 @@ public class Cotacao extends AppCompatActivity{
 
     }
 
-    private void getClientes(Map<String, Object> clientes) {
-        for(Map.Entry<String, Object>entry: clientes.entrySet()){
-            Date newDate = new Date(Long.valueOf(entry.getKey()));
-            Map singleclient = (Map) entry.getValue();
-            Object nome = singleclient.get("cliente");
-            Object impressoras = singleclient.get("impressoras");
-            Object infill = singleclient.get("infill");
-            Object layer = singleclient.get("layer");
-            Object maodeobra = singleclient.get("mao_de_obra");
-            Object materiais = singleclient.get("materiais");
-            Object peso = singleclient.get("peso");
-            Object support = singleclient.get("supportRemoval");
-            Object tempo = singleclient.get("tempo");
-            Object valor = singleclient.get("valor");
-            Object vapor = singleclient.get("vaporPolishing");
-            System.out.println(nome+"LKJVCFGTHYJUKILO,KJMNHBGBGBGBGBGBGNHJKILLLLLLLLLLLLLL");
+    private void getOrcamentos() {
+        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+
+                    // O método getValue recebe como parâmetro uma
+                    // classe Java que representa o tipo de dado
+                    // que você acredita estar lá. Se você errar,
+                    // esse método vai lançar uma DatabaseException.
+                    getClientes((Map<String, Object>)dataSnapshot.getValue());
+                } catch (DatabaseException exception) {
+                    Toast.makeText(getApplicationContext(),"Não conseguiu pegar os dados do cliente",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(),"Ouve um problema de conexão",Toast.LENGTH_LONG).show();
+            }
+        });    }
+
+    private void getClientes(Map<String, Object> cotacoes){
+        for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
+            Map singlecotacao = (Map) entry.getValue();
+            Object nome = singlecotacao.get("cliente");
+            Object impressoras = singlecotacao.get("impressoras");
+            Object infill = singlecotacao.get("infill");
+            Object layer = singlecotacao.get("layer");
+            Object maodeobra = singlecotacao.get("mao_de_obra");
+
+            System.out.println(nome+"OIIIIII é a GABIIIIIIIIIII");
         }
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
