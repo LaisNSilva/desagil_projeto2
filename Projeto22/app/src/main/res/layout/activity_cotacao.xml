@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TextView
             android:id="@+id/texto_titulo"
             android:textColor="@android:color/black"
@@ -24,16 +25,23 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <EditText
-            android:id="@+id/cliente"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cliente1"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:hint="Cliente"
-            android:textSize="20dp"
             android:layout_marginLeft="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/texto_titulo" />
+            app:layout_constraintTop_toBottomOf="@+id/texto_titulo">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cliente2"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:hint="Cliente"
+                android:textSize="20dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         <TextView
@@ -44,8 +52,8 @@
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/cliente"
-            app:layout_constraintTop_toBottomOf="@id/cliente" />
+            app:layout_constraintStart_toStartOf="@+id/cliente1"
+            app:layout_constraintTop_toBottomOf="@id/cliente1" />
 
         <Button
             android:id="@+id/escolher_arquivo"
@@ -55,7 +63,7 @@
             android:textSize="15dp"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@+id/texto_peca"
-            app:layout_constraintTop_toBottomOf="@id/cliente" />
+            app:layout_constraintTop_toBottomOf="@id/cliente1" />
 
         <TextView
             android:id="@+id/texto_arquivo"
@@ -63,7 +71,7 @@
             android:layout_height="50dp"
             android:textSize="5dp"
             app:layout_constraintStart_toEndOf="@+id/escolher_arquivo"
-            app:layout_constraintTop_toBottomOf="@id/cliente" />
+            app:layout_constraintTop_toBottomOf="@id/cliente1" />
 
         <EditText
             android:id="@+id/infill"
@@ -71,7 +79,7 @@
             android:layout_height="50dp"
             android:hint="Infill (%)"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@id/cliente"
+            app:layout_constraintStart_toStartOf="@id/cliente1"
             app:layout_constraintTop_toBottomOf="@id/escolher_arquivo"/>
 
 
@@ -121,7 +129,7 @@
             android:layout_height="50dp"
             android:hint="Layer"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/cliente"
+            app:layout_constraintStart_toStartOf="@+id/cliente1"
             app:layout_constraintTop_toBottomOf="@id/texto_vaporpolishing" />
 
         <TextView
@@ -132,7 +140,7 @@
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/cliente"
+            app:layout_constraintStart_toStartOf="@+id/cliente1"
             app:layout_constraintTop_toBottomOf="@id/layer" />
 
         <Spinner
@@ -170,7 +178,7 @@
             android:layout_height="50dp"
             android:hint="Mão de Obra"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@id/cliente"
+            app:layout_constraintStart_toStartOf="@id/cliente1"
             app:layout_constraintTop_toBottomOf="@id/texto_material" />
 
         <Button

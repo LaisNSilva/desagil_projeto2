@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 import org.apache.http.HttpResponse;
@@ -62,19 +63,13 @@ public class Cotacao extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setIcon(R.drawable.logo);
-//        getSupportActionBar().setIcon();
-
-        //TextView arquivoPeca = findViewById(R.id.peca);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
 
         final File diretorio = getApplicationContext().getExternalFilesDir(null);
 
-        final EditText cliente = findViewById(R.id.cliente);
+        final EditText cliente = findViewById(R.id.cliente1);
         final EditText infill = findViewById(R.id.infill);
         final EditText layer = findViewById(R.id.layer);
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
