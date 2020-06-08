@@ -56,8 +56,6 @@ public class Cotacao extends AppCompatActivity{
         toast.show();
     }
 
-
-
     String arquivo;
 
     @Override
