@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Cotação Impressão 3D</string>
-    <string name="logo">Logo</string>
+
+    <string name="main">Cotação Impressão 3D</string>
+
     <string-array name="materiais">
         <item>ABS</item>
         <item>PLA</item>

@@ -63,9 +63,14 @@ public class Cotacao extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
+
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.logo);
+//        getSupportActionBar().setIcon(R.drawable.logo);
+//        getSupportActionBar().setIcon();
         getOrcamentos();
+
+
         //TextView arquivoPeca = findViewById(R.id.peca);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
