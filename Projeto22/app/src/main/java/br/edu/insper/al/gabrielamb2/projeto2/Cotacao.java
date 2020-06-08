@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 import com.google.firebase.database.DataSnapshot;
@@ -63,15 +64,6 @@ public class Cotacao extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
 
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setIcon(R.drawable.logo);
-//        getSupportActionBar().setIcon();
-        getOrcamentos();
-
-
-        //TextView arquivoPeca = findViewById(R.id.peca);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -90,9 +82,6 @@ public class Cotacao extends AppCompatActivity{
         Button buttonArq = findViewById(R.id.escolher_arquivo);
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
-
-        final CheckBox supportRemoval = findViewById(R.id.suport_check);
-        final CheckBox vaporPolishing = findViewById(R.id.vapor_check);
         
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
@@ -177,17 +166,11 @@ public class Cotacao extends AppCompatActivity{
                 $_POST.put("layerHeight", layer.getText().toString());
                 $_POST.put("infillPercentage", infill.getText().toString());
 
-                if(supportRemoval.isSelected() == true){
-                    $_POST.put("supportRemoval", true);
-                }else{
-                    $_POST.put("supportRemoval", false);
-                }
 
-                if (vaporPolishing.isSelected() == true){
-                    $_POST.put("vaporPolishing", true);
-                }else{
-                    $_POST.put("vaporPolishing", false);
-                }
+                $_POST.put("supportRemoval", false);
+
+                $_POST.put("vaporPolishing", false);
+
                 $_POST.put("shipping", "pickup");
 
                 $_POST.put("rushPrinting",false);
@@ -361,7 +344,7 @@ public class Cotacao extends AppCompatActivity{
                 //PARTE DE CRIAR UM EXCEL
 
 
-                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
+                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),false,false,layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
                 mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
                 getOrcamentos();
                 Workbook wb=new HSSFWorkbook();
@@ -512,7 +495,7 @@ public class Cotacao extends AppCompatActivity{
                     // classe Java que representa o tipo de dado
                     // que você acredita estar lá. Se você errar,
                     // esse método vai lançar uma DatabaseException.
-                    getClientes((Map<String, Object>)dataSnapshot.getValue());
+              //      getClientes((Map<String, Object>)dataSnapshot.getValue());
                 } catch (DatabaseException exception) {
                     Toast.makeText(getApplicationContext(),"Não conseguiu pegar os dados do cliente",Toast.LENGTH_LONG).show();
                 }
@@ -524,18 +507,15 @@ public class Cotacao extends AppCompatActivity{
             }
         });    }
 
-    private void getClientes(Map<String, Object> cotacoes){
-        for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
-            Map singlecotacao = (Map) entry.getValue();
-            Object nome = singlecotacao.get("cliente");
-            Object impressoras = singlecotacao.get("impressoras");
-            Object infill = singlecotacao.get("infill");
-            Object layer = singlecotacao.get("layer");
-            Object maodeobra = singlecotacao.get("mao_de_obra");
+  //  private void getClientes(Map<String, Object> cotacoes){
+    //    for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
+   //         Map singlecotacao = (Map) entry.getValue();
+   //         Object nome = singlecotacao.get("cliente");
 
-            System.out.println(nome+"OIIIIII é a GABIIIIIIIIIII");
-        }
-    }
+
+   //         System.out.println(nome+"OIIIIII é a GABIIIIIIIIIII");
+  //      }
+   // }
 
 
     @Override
