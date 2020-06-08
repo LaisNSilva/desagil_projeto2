@@ -11,20 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/outlinedTextField"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:hint=""
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <TextView
             android:id="@+id/texto_titulo"
             android:textColor="@android:color/black"
@@ -129,24 +115,13 @@
             app:layout_constraintStart_toEndOf="@+id/texto_vaporpolishing"
             app:layout_constraintTop_toBottomOf="@id/suport_check" />
 
-        <TextView
-            android:id="@+id/texto_layer"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="Layer:"
-            android:textColor="@android:color/black"
-            android:gravity="center_vertical"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/texto_vaporpolishing"
-            app:layout_constraintTop_toBottomOf="@id/texto_vaporpolishing" />
-
         <EditText
             android:id="@+id/layer"
-            android:layout_width="200dp"
+            android:layout_width="380dp"
             android:layout_height="50dp"
             android:hint="Layer"
             android:textSize="20dp"
-            app:layout_constraintStart_toEndOf="@+id/texto_layer"
+            app:layout_constraintStart_toStartOf="@+id/cliente"
             app:layout_constraintTop_toBottomOf="@id/texto_vaporpolishing" />
 
         <TextView
@@ -157,17 +132,17 @@
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/texto_layer"
-            app:layout_constraintTop_toBottomOf="@id/texto_layer" />
+            app:layout_constraintStart_toStartOf="@+id/cliente"
+            app:layout_constraintTop_toBottomOf="@id/layer" />
 
         <Spinner
             android:id="@+id/impressora"
-            android:layout_width="200dp"
+            android:layout_width="230dp"
             android:layout_height="50dp"
             android:textSize="20dp"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@+id/texto_impressora"
-            app:layout_constraintTop_toBottomOf="@id/texto_layer" />
+            app:layout_constraintTop_toBottomOf="@id/layer" />
 
         <TextView
             android:id="@+id/texto_material"
@@ -182,7 +157,7 @@
 
         <Spinner
             android:id="@+id/material"
-            android:layout_width="200dp"
+            android:layout_width="230dp"
             android:layout_height="50dp"
             android:textSize="20dp"
             android:textColor="@android:color/black"
@@ -191,12 +166,11 @@
 
         <EditText
             android:id="@+id/maodeobra"
-            android:layout_width="330dp"
+            android:layout_width="380dp"
             android:layout_height="50dp"
-            android:layout_marginStart="15dp"
             android:hint="Mão de Obra"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/cliente"
             app:layout_constraintTop_toBottomOf="@id/texto_material" />
 
         <Button
@@ -278,10 +252,6 @@
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/texto_valor"
             app:layout_constraintTop_toBottomOf="@id/texto_tempo" />
-
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

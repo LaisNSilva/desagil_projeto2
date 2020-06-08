@@ -4,6 +4,7 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/Ikaros-Regular" />
+        android:font="@font/ikaros"
+        tools:ignore="ResourceCycle" />
 
 </font-family>
