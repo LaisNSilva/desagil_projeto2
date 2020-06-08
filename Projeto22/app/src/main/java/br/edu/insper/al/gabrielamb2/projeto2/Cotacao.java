@@ -512,7 +512,7 @@ public class Cotacao extends AppCompatActivity{
                     // classe Java que representa o tipo de dado
                     // que você acredita estar lá. Se você errar,
                     // esse método vai lançar uma DatabaseException.
-                    getClientes((Map<String, Object>)dataSnapshot.getValue());
+              //      getClientes((Map<String, Object>)dataSnapshot.getValue());
                 } catch (DatabaseException exception) {
                     Toast.makeText(getApplicationContext(),"Não conseguiu pegar os dados do cliente",Toast.LENGTH_LONG).show();
                 }
@@ -524,18 +524,15 @@ public class Cotacao extends AppCompatActivity{
             }
         });    }
 
-    private void getClientes(Map<String, Object> cotacoes){
-        for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
-            Map singlecotacao = (Map) entry.getValue();
-            Object nome = singlecotacao.get("cliente");
-            Object impressoras = singlecotacao.get("impressoras");
-            Object infill = singlecotacao.get("infill");
-            Object layer = singlecotacao.get("layer");
-            Object maodeobra = singlecotacao.get("mao_de_obra");
+  //  private void getClientes(Map<String, Object> cotacoes){
+    //    for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
+   //         Map singlecotacao = (Map) entry.getValue();
+   //         Object nome = singlecotacao.get("cliente");
 
-            System.out.println(nome+"OIIIIII é a GABIIIIIIIIIII");
-        }
-    }
+
+   //         System.out.println(nome+"OIIIIII é a GABIIIIIIIIIII");
+  //      }
+   // }
 
 
     @Override
