@@ -8,10 +8,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +60,7 @@ public class RequestMulti {
 
             try{
                 String tmp_name = (String) value_files.get("tmp_name");
-                output += boundary + "\n" + "Contente-Disposition: form-data; name=\"" + new_key_files + "\"; filename=\"" + name + "\"\n" + "Content-Type: " + type + "\n\n" + tmp_name + "\n";
+                output += boundary + "\n" + "Content-Disposition: form-data; name=\"" + new_key_files + "\"; filename=\"" + name + "\"\n" + "Content-Type: " + type + "\n\n" + tmp_name + "\n";
             }catch (Exception e){
                 System.out.println("File error");
 
@@ -70,14 +69,17 @@ public class RequestMulti {
         }
         return output+boundary+"--";
     }
-    public HttpResponse Request(Object request) throws IOException {
+    public String Request(Object request, String boundary) throws IOException {
         HttpParams params = new BasicHttpParams();
         HttpClient httpclient = new DefaultHttpClient(params);
-        HttpPost post = new HttpPost("http://echo.200please.com");
+        HttpPost post = new HttpPost("http://api.3dpartprice.com");
         HttpEntity entity = new StringEntity(request.toString());
         post.setEntity(entity);
+        post.setHeader("Content-Type", "multipart/form-data; boundary="+boundary.substring(2));
         HttpResponse response = httpclient.execute(post);
-        return response;
+        HttpEntity resposta = response.getEntity();
+        String responseString = EntityUtils.toString(resposta, "UTF-8");
+        return responseString;
 
     }
 }

@@ -20,7 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
-import org.apache.http.HttpResponse;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -37,13 +43,6 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class Cotacao extends AppCompatActivity{
     private static final int READ_REQUEST_CODE = 42;
@@ -265,13 +264,14 @@ public class Cotacao extends AppCompatActivity{
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
                 System.out.println(output_request);
 
-                HttpResponse requisição = null;
+                String requisição = null;
                 try {
-                    requisição = requestMulti.Request(output_request);
+                    requisição = requestMulti.Request(output_request, boundary);
+                    System.out.println("requisicao "+requisição);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println(requisição);
+
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
                 String layer_ = layer.getText().toString();
@@ -554,7 +554,7 @@ public class Cotacao extends AppCompatActivity{
                 }
                 //System.out.println(sb.toString());
                 //Log.i("meuapp", sb.toString());
-                String arquivo = sb.toString();
+                arquivo = sb.toString();
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
 
