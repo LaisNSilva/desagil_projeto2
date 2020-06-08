@@ -42,10 +42,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Cotacao extends AppCompatActivity implements ValueEventListener{
+public class Cotacao extends AppCompatActivity{
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
-    int clicou =0;
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     private void showToast(String text) {
 
@@ -357,11 +357,32 @@ public class Cotacao extends AppCompatActivity implements ValueEventListener{
                 }
 
                 //PARTE DE CRIAR UM EXCEL
-                clicou +=1;
 
-                Passandofirebase passandofirebase = new Passandofirebase(clicou);
-                passandofirebase.atualizando(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
 
+                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
+                mDatabase.child("users").child(cliente_).setValue(usuario);
+
+                mDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+
+                            // O método getValue recebe como parâmetro uma
+                            // classe Java que representa o tipo de dado
+                            // que você acredita estar lá. Se você errar,
+                            // esse método vai lançar uma DatabaseException.
+                            Cliente cliente = dataSnapshot.getValue(Cliente.class);
+                            System.out.println("UHULLLLLLLLL"+ cliente.getCliente());
+                        } catch (DatabaseException exception) {
+                            Toast.makeText(getApplicationContext(),"Não conseguiu pegar os dados do cliente",Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(),"Ouve um problema de conexão",Toast.LENGTH_LONG).show();
+                    }
+                });
                 Workbook wb=new HSSFWorkbook();
                 Cell cell=null;
                 CellStyle cellStyle=wb.createCellStyle();
@@ -418,7 +439,7 @@ public class Cotacao extends AppCompatActivity implements ValueEventListener{
                 cell.setCellValue("Valor");
                 cell.setCellStyle(cellStyle);
 
-                Row row1 =sheet.createRow(clicou+1);
+                Row row1 =sheet.createRow(1);
                 cell=row1.createCell(0);
                 cell.setCellValue( cliente.getText().toString());
                 cell.setCellStyle(cellStyle);
@@ -548,13 +569,6 @@ public class Cotacao extends AppCompatActivity implements ValueEventListener{
         }
     }
 
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-    }
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-    }
 }
