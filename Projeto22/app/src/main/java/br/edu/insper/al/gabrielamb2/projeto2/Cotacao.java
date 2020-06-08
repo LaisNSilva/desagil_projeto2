@@ -33,7 +33,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -353,9 +355,9 @@ public class Cotacao extends AppCompatActivity{
 
 
                 Cliente usuario = new Cliente(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
-                mDatabase.child("users").child(cliente_).setValue(usuario);
+                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
 
-                mDatabase.addValueEventListener(new ValueEventListener() {
+                mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         try {
@@ -364,8 +366,8 @@ public class Cotacao extends AppCompatActivity{
                             // classe Java que representa o tipo de dado
                             // que você acredita estar lá. Se você errar,
                             // esse método vai lançar uma DatabaseException.
-                            Cliente cliente = dataSnapshot.getValue(Cliente.class);
-                            System.out.println("UHULLLLLLLLL"+ cliente.getCliente());
+
+                            getClientes((Map<String,Object>)dataSnapshot.getValue());
                         } catch (DatabaseException exception) {
                             Toast.makeText(getApplicationContext(),"Não conseguiu pegar os dados do cliente",Toast.LENGTH_LONG).show();
                         }
@@ -513,6 +515,26 @@ public class Cotacao extends AppCompatActivity{
         });
 
     }
+
+    private void getClientes(Map<String, Object> clientes) {
+        for(Map.Entry<String, Object>entry: clientes.entrySet()){
+            Date newDate = new Date(Long.valueOf(entry.getKey()));
+            Map singleclient = (Map) entry.getValue();
+            Object nome = singleclient.get("cliente");
+            Object impressoras = singleclient.get("impressoras");
+            Object infill = singleclient.get("infill");
+            Object layer = singleclient.get("layer");
+            Object maodeobra = singleclient.get("mao_de_obra");
+            Object materiais = singleclient.get("materiais");
+            Object peso = singleclient.get("peso");
+            Object support = singleclient.get("supportRemoval");
+            Object tempo = singleclient.get("tempo");
+            Object valor = singleclient.get("valor");
+            Object vapor = singleclient.get("vaporPolishing");
+            System.out.println(nome+"LKJVCFGTHYJUKILO,KJMNHBGBGBGBGBGBGNHJKILLLLLLLLLLLLLL");
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
