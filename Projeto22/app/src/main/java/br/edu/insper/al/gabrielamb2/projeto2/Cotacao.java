@@ -65,25 +65,13 @@ public class Cotacao extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
 
-<<<<<<< HEAD
-=======
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setIcon(R.drawable.logo);
-//        getSupportActionBar().setIcon();
-        getOrcamentos();
-
-
-        //TextView arquivoPeca = findViewById(R.id.peca);
-
->>>>>>> c2d95d841e69455c3870ab2f25e455d582d64953
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
 
         final File diretorio = getApplicationContext().getExternalFilesDir(null);
 
-        final EditText cliente = findViewById(R.id.cliente1);
+        final EditText cliente = findViewById(R.id.cliente);
         final EditText infill = findViewById(R.id.infill);
         final EditText layer = findViewById(R.id.layer);
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
@@ -95,9 +83,6 @@ public class Cotacao extends AppCompatActivity{
         Button buttonArq = findViewById(R.id.escolher_arquivo);
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
-
-        final CheckBox supportRemoval = findViewById(R.id.suport_check);
-        final CheckBox vaporPolishing = findViewById(R.id.vapor_check);
         
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
@@ -182,17 +167,11 @@ public class Cotacao extends AppCompatActivity{
                 $_POST.put("layerHeight", layer.getText().toString());
                 $_POST.put("infillPercentage", infill.getText().toString());
 
-                if(supportRemoval.isSelected() == true){
-                    $_POST.put("supportRemoval", true);
-                }else{
-                    $_POST.put("supportRemoval", false);
-                }
 
-                if (vaporPolishing.isSelected() == true){
-                    $_POST.put("vaporPolishing", true);
-                }else{
-                    $_POST.put("vaporPolishing", false);
-                }
+                $_POST.put("supportRemoval", false);
+
+                $_POST.put("vaporPolishing", false);
+
                 $_POST.put("shipping", "pickup");
 
                 $_POST.put("rushPrinting",false);
@@ -365,7 +344,7 @@ public class Cotacao extends AppCompatActivity{
                 //PARTE DE CRIAR UM EXCEL
 
 
-                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
+                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),false,false,layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
                 mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
                 getOrcamentos();
                 Workbook wb=new HSSFWorkbook();
