@@ -46,7 +46,7 @@ public class RequestMulti {
             String new_value = transformada(value);
 
             output += boundary + "\n" + "Content-Disposition: form-data; " +
-                    "name=\"" + new_key + "\"\n\n" + new_value + "\n";
+                    "name=\"" + new_key + "\"\n\n"+ "\n" + new_value + "\n";
         }
 
         for (Map.Entry<String, HashMap<String, String>> dic_interable_files : files.entrySet()){
