@@ -10,10 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
+
         <TextView
             android:id="@+id/texto_titulo"
-            android:textColor="@android:color/black"
+            android:textColor="#042e48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -80,7 +80,8 @@
             android:layout_height="50dp"
             android:text="Escolher Arquivo"
             android:textSize="15dp"
-            android:textColor="@android:color/black"
+            android:background="@drawable/custom"
+            android:textColor="@android:color/white"
             app:layout_constraintStart_toEndOf="@+id/texto_peca"
             app:layout_constraintTop_toBottomOf="@id/maodeobra" />
 
@@ -88,7 +89,7 @@
             android:id="@+id/texto_arquivo"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:textSize="5dp"
+            android:textSize="15dp"
             app:layout_constraintStart_toStartOf="@+id/cliente"
             app:layout_constraintTop_toBottomOf="@id/escolher_arquivo" />
 
@@ -134,24 +135,26 @@
 
         <Button
             android:id="@+id/button_processar"
-            android:layout_width="165dp"
+            android:layout_width="380dp"
             android:layout_height="50dp"
             android:text="Processar"
-            android:textColor="@android:color/black"
+            android:background="@drawable/custom"
+            android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="@id/cliente"
             app:layout_constraintTop_toBottomOf="@id/texto_material" />
 
 
         <Button
             android:id="@+id/button_enviar"
-            android:layout_width="165dp"
+            android:layout_width="380dp"
             android:layout_height="50dp"
             android:text="Enviar"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="@id/maodeobra"
+            android:padding="10dp"
+            android:background="@drawable/custom"
+            android:textColor="@android:color/white"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/button_processar"
-            app:layout_constraintTop_toBottomOf="@id/texto_material" />
+            app:layout_constraintStart_toStartOf="@+id/cliente"
+            app:layout_constraintTop_toBottomOf="@id/valor" />
 
         <TextView
             android:id="@+id/texto_peso"
@@ -172,7 +175,7 @@
             android:layout_marginTop="10dp"
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/texto_peso"
-            app:layout_constraintTop_toBottomOf="@id/button_enviar" />
+            app:layout_constraintTop_toBottomOf="@id/button_processar" />
 
         <TextView
             android:id="@+id/texto_tempo"

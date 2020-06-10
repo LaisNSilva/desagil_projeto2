@@ -11,13 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            layout="@layout/toolbar"/>
+
         <Button
             android:id="@+id/button_orcamento"
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:layout_marginTop="200dp"
             android:text="Fazer um orçamento"
-            android:textColor="@android:color/black"
+            android:background="@drawable/custom"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@+id/button_orcamento_antigos"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
@@ -31,7 +35,8 @@
             android:layout_height="60dp"
             android:layout_marginTop="40dp"
             android:text="Orçamentos Antigos"
-            android:textColor="@android:color/black"
+            android:background="@drawable/custom"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@+id/button_configuracoes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
@@ -45,7 +50,8 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="200dp"
             android:text="Configurações "
-            android:textColor="@android:color/black"
+            android:background="@drawable/custom"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
