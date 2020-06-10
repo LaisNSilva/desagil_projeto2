@@ -11,6 +11,8 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,17 +39,56 @@ public class RequestMulti {
 
 
     public String buildMultipartPost(HashMap<String, Object> fields, HashMap<String, HashMap<String, String>> files, String boundary){
-        String output = "";
+        String output = "\n" + "\n";
+        String material = "";
+        String color = "";
+        String layerHeight = "";
+        String infillPercentage = "";
+        String shipping = "";
+        String configFile = "";
+        String density = "";
+
         for (Map.Entry<String,Object> dic_interable : fields.entrySet()){
             String key = dic_interable.getKey();
+            System.out.println("CHAVE"+ key);
             String value = dic_interable.getValue().toString();
+
+
+            System.out.println("VALOR"+value);
 
             String new_key = transformada(key);
             String new_value = transformada(value);
 
-            output += boundary + "\n" + "Content-Disposition: form-data; " +
-                    "name=\"" + new_key + "\"\n\n" + new_value + "\n";
-        }
+            if(new_key.equals("material")){
+                material += boundary + "\n" + "Content-Disposition: form-data; " +
+                        "name=\"" + new_key + "\"\n\n" + new_value + "\n";
+
+            }else if (new_key.equals("color")){
+                color += boundary + "\n" + "Content-Disposition: form-data; " +
+                        "name=\"" + new_key + "\"\n\n" + new_value + "\n";
+
+            }else if (new_key.equals("layerHeight")){
+                layerHeight += boundary + "\n" + "Content-Disposition: form-data; " +
+                        "name=\"" + new_key + "\"\n\n" + new_value + "\n";
+
+            }else if (new_key.equals("infillPercentage")){
+                infillPercentage += boundary + "\n" + "Content-Disposition: form-data; " +
+                        "name=\"" + new_key + "\"\n\n" + new_value + "\n";
+
+            }else if (new_key.equals("shipping")){
+                shipping += boundary + "\n" + "Content-Disposition: form-data; " +
+                        "name=\"" + new_key + "\"\n\n" + new_value + "\n";
+
+            }else if (new_key.equals("configFile")){
+                configFile += boundary + "\n" + "Content-Disposition: form-data; " +
+                        "name=\"" + new_key + "\"\n\n" + new_value + "\n";
+
+            }else if (new_key.equals("density")){
+                density += boundary + "\n" + "Content-Disposition: form-data; " +
+                            "name=\"" + new_key + "\"\n\n"  + new_value + "\n";
+                }
+            }
+        output += material+color+layerHeight+infillPercentage+shipping+configFile+density;
 
         for (Map.Entry<String, HashMap<String, String>> dic_interable_files : files.entrySet()){
             String key_files = dic_interable_files.getKey();
@@ -60,6 +101,8 @@ public class RequestMulti {
 
             try{
                 String tmp_name = (String) value_files.get("tmp_name");
+                //byte[] tmp_name_byte = Files.readAllBytes((Path) value_files.get("tmp_name"));
+                //String tmp_name = tmp_name_byte.toString();
                 output += boundary + "\n" + "Content-Disposition: form-data; name=\"" + new_key_files + "\"; filename=\"" + name + "\"\n" + "Content-Type: " + type + "\n\n" + tmp_name + "\n";
             }catch (Exception e){
                 System.out.println("File error");
