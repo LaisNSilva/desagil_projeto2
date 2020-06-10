@@ -37,9 +37,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -49,12 +51,15 @@ public class Cotacao extends AppCompatActivity{
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+    private String requisição;
     Workbook wb=new HSSFWorkbook();
     Cell cell=null;
     CellStyle cellStyle=wb.createCellStyle();
     //Now we are creating sheet
     Sheet sheet= wb.createSheet("Orçamentos Antigos");
     int linhas=0;
+
 
     private void showToast(String text) {
 
@@ -183,81 +188,82 @@ public class Cotacao extends AppCompatActivity{
                 $_POST.put("rushPrinting",false);
                 $_POST.put("density", densidade);
 
-                String config = "YTo3OntzOjk6Im1hdGVyaWFscyI7YTo5OntzOjM6IkFCUyI7YTo1OntzOjg6ImZ1bGxOY" +
-                        "W1lIjtzOjMxOiJBY3J5bG9uaXRyaWxlIEJ1dGFkaWVuZSBTdHlyZW5lIjtzOjU6InByaWNlIjth" +
-                        "OjI6e3M6NjoiYW1vdW50IjtkOjAuMjtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5" +
-                        "CZVZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS" +
-                        "4wNDtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc6I" +
-                        "iMwMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6IiNG" +
-                        "RjBGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN0Z" +
-                        "GMDAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIxRk" +
-                        "YiO2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjM6IlBMQSI7YTo1O" +
-                        "ntzOjg6ImZ1bGxOYW1lIjtzOjE1OiJQb2x5bGFjdGljIGFjaWQiO3M6NToicHJpY2UiO2E6Mjp7" +
-                        "czo2OiJhbW91bnQiO2Q6MC4yNTtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZVZ" +
-                        "hcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4yNT" +
-                        "tzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc6IiMwM" +
-                        "DAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6IiNGRjBG" +
-                        "MEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN0ZGMDA" +
-                        "iO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIxRkYiO2" +
-                        "k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjI6IlBDIjthOjU6e3M6O" +
-                        "DoiZnVsbE5hbWUiO3M6MTM6IlBvbHljYXJib25hdGUiO3M6NToicHJpY2UiO2E6Mjp7czo2OiJh" +
-                        "bW91bnQiO2Q6MC42O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2x" +
-                        "pc2hlZCI7YjoxO3M6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjI7czo0OiJ1bm" +
-                        "l0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjEyOntpOjA7czo3OiIjMDAwMDAwIjtpO" +
-                        "jE7czo3OiIjRkZGRkZGIjtpOjI7czo3OiIjRkZGQUUwIjtpOjM7czo3OiIjRkYwRjBGIjtpOjQ7" +
-                        "czo3OiIjRkY4MzI0IjtpOjU7czo3OiIjRkZBOEM4IjtpOjY7czo3OiIjRjdGRjAwIjtpOjc7czo" +
-                        "3OiIjNzBGRjMzIjtpOjg7czo3OiIjMTQwQUEzIjtpOjk7czo3OiIjODkyMUZGIjtpOjEwO3M6Nz" +
-                        "oiIzkyOTFCNSI7aToxMTtzOjc6IiM4NzU5M0UiO319czo1OiJOeWxvbiI7YTo1OntzOjg6ImZ1b" +
-                        "GxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4zNTtzOjQ6InVuaXQi" +
-                        "O3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZVZhcG9yUG9saXNoZWQiO2I6MDtzOjc6ImRlbnNpdHk" +
-                        "iO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4yNTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2Oi" +
-                        "Jjb2xvcnMiO2E6Njp7aTowO3M6NzoiIzAwMDAwMCI7aToxO3M6NzoiI0ZGRkZGRiI7aToyO3M6N" +
-                        "zoiI0ZGMEYwRiI7aTozO3M6NzoiIzcwRkYzMyI7aTo0O3M6NzoiIzE0MEFBMyI7aTo1O3M6NToi" +
-                        "Y2xlYXIiO319czo3OiJMYXlXb29kIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwcmljZSI" +
-                        "7YToyOntzOjY6ImFtb3VudCI7ZDowLjg7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxODoiY2" +
-                        "FuQmVWYXBvclBvbGlzaGVkIjtiOjA7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50IjtkO" +
-                        "jEuMDU7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOjc6" +
-                        "IiNGRkZGRkYiO319czo3OiJCZW5kTEFZIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwcml" +
-                        "jZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjU7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxOD" +
+                String config = "YTo3OntzOjk6Im1hdGVyaWFscyI7YTo5OntzOjM6IkFCUyI7YTo1OntzOjg6ImZ1bGx" +
+                        "OYW1lIjtzOjMxOiJBY3J5bG9uaXRyaWxlIEJ1dGFkaWVuZSBTdHlyZW5lIjtzOjU6InByaWNlIj" +
+                        "thOjI6e3M6NjoiYW1vdW50IjtkOjAuMjtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjY" +
+                        "W5CZVZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6" +
+                        "MS4wNDtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc" +
+                        "6IiMwMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6Ii" +
+                        "NGRjBGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN" +
+                        "0ZGMDAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIx" +
+                        "RkYiO2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjM6IlBMQSI7YTo" +
+                        "1OntzOjg6ImZ1bGxOYW1lIjtzOjE1OiJQb2x5bGFjdGljIGFjaWQiO3M6NToicHJpY2UiO2E6Mj" +
+                        "p7czo2OiJhbW91bnQiO2Q6MC4yNTtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZ" +
+                        "VZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4y" +
+                        "NTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc6IiM" +
+                        "wMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6IiNGRj" +
+                        "BGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN0ZGM" +
+                        "DAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIxRkYi" +
+                        "O2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjI6IlBDIjthOjU6e3M" +
+                        "6ODoiZnVsbE5hbWUiO3M6MTM6IlBvbHljYXJib25hdGUiO3M6NToicHJpY2UiO2E6Mjp7czo2Oi" +
+                        "JhbW91bnQiO2Q6MC42O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb" +
+                        "2xpc2hlZCI7YjoxO3M6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjI7czo0OiJ1" +
+                        "bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjEyOntpOjA7czo3OiIjMDAwMDAwIjt" +
+                        "pOjE7czo3OiIjRkZGRkZGIjtpOjI7czo3OiIjRkZGQUUwIjtpOjM7czo3OiIjRkYwRjBGIjtpOj" +
+                        "Q7czo3OiIjRkY4MzI0IjtpOjU7czo3OiIjRkZBOEM4IjtpOjY7czo3OiIjRjdGRjAwIjtpOjc7c" +
+                        "zo3OiIjNzBGRjMzIjtpOjg7czo3OiIjMTQwQUEzIjtpOjk7czo3OiIjODkyMUZGIjtpOjEwO3M6" +
+                        "NzoiIzkyOTFCNSI7aToxMTtzOjc6IiM4NzU5M0UiO319czo1OiJOeWxvbiI7YTo1OntzOjg6ImZ" +
+                        "1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4zNTtzOjQ6InVuaX" +
+                        "QiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZVZhcG9yUG9saXNoZWQiO2I6MDtzOjc6ImRlbnNpd" +
+                        "HkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4yNTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2" +
+                        "OiJjb2xvcnMiO2E6Njp7aTowO3M6NzoiIzAwMDAwMCI7aToxO3M6NzoiI0ZGRkZGRiI7aToyO3M" +
+                        "6NzoiI0ZGMEYwRiI7aTozO3M6NzoiIzcwRkYzMyI7aTo0O3M6NzoiIzE0MEFBMyI7aTo1O3M6NT" +
+                        "oiY2xlYXIiO319czo3OiJMYXlXb29kIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwcmljZ" +
+                        "SI7YToyOntzOjY6ImFtb3VudCI7ZDowLjg7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxODoi" +
+                        "Y2FuQmVWYXBvclBvbGlzaGVkIjtiOjA7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50Ijt" +
+                        "kOjEuMDU7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOj" +
+                        "c6IiNGRkZGRkYiO319czo3OiJCZW5kTEFZIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwc" +
+                        "mljZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjU7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czox" +
+                        "ODoiY2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW5" +
+                        "0IjtkOjEuMDI7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MD" +
+                        "tzOjc6IiM4NzU5M0UiO319czozOiJUUEUiO2E6NTp7czo4OiJmdWxsTmFtZSI7czoyMzoiVGhlc" +
+                        "m1vcGxhc3RpYyBlbGFzdG9tZXIiO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC42" +
+                        "O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M" +
+                        "6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE7czo0OiJ1bml0IjtzOjY6ImcvY2" +
+                        "1eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOjU6ImNsZWFyIjt9fXM6NzoiU29mdFBMQSI7Y" +
+                        "To1OntzOjg6ImZ1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC41" +
+                        "O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M" +
+                        "6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE1O3M6NDoidW5pdCI7czo2OiJnL2" +
+                        "NtXjMiO31zOjY6ImNvbG9ycyI7YTo0OntpOjA7czo3OiIjMDAwMDAwIjtpOjE7czo3OiIjRkYwR" +
+                        "jBGIjtpOjI7czo3OiIjMTQwQUEzIjtpOjM7czo3OiIjRkZGRkZGIjt9fXM6NDoiSElQUyI7YTo1" +
+                        "OntzOjg6ImZ1bGxOYW1lIjtzOjIzOiJIaWdoLWltcGFjdCBQb2x5c3R5cmVuZSI7czo1OiJwcml" +
+                        "jZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjI7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxOD" +
                         "oiY2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50I" +
-                        "jtkOjEuMDI7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtz" +
-                        "Ojc6IiM4NzU5M0UiO319czozOiJUUEUiO2E6NTp7czo4OiJmdWxsTmFtZSI7czoyMzoiVGhlcm1" +
-                        "vcGxhc3RpYyBlbGFzdG9tZXIiO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC42O3" +
-                        "M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M6N" +
-                        "zoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE7czo0OiJ1bml0IjtzOjY6ImcvY21e" +
-                        "MyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOjU6ImNsZWFyIjt9fXM6NzoiU29mdFBMQSI7YTo" +
-                        "1OntzOjg6ImZ1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC41O3" +
-                        "M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M6N" +
-                        "zoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE1O3M6NDoidW5pdCI7czo2OiJnL2Nt" +
-                        "XjMiO31zOjY6ImNvbG9ycyI7YTo0OntpOjA7czo3OiIjMDAwMDAwIjtpOjE7czo3OiIjRkYwRjB" +
-                        "GIjtpOjI7czo3OiIjMTQwQUEzIjtpOjM7czo3OiIjRkZGRkZGIjt9fXM6NDoiSElQUyI7YTo1On" +
-                        "tzOjg6ImZ1bGxOYW1lIjtzOjIzOiJIaWdoLWltcGFjdCBQb2x5c3R5cmVuZSI7czo1OiJwcmljZ" +
-                        "SI7YToyOntzOjY6ImFtb3VudCI7ZDowLjI7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxODoi" +
-                        "Y2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50Ijt" +
-                        "kOjEuMDY7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOj" +
-                        "c6IiNGRkZBRTAiO319fXM6MTI6InByaW50aW5nQ29zdCI7YToyOntzOjY6ImFtb3VudCI7czo0O" +
-                        "iI0LjAwIjtzOjQ6InVuaXQiO3M6ODoiVVNEL2hvdXIiO31zOjY6ImFkZE9ucyI7YTozOntzOjI0" +
-                        "OiJzdXBwb3J0UmVtb3ZhbE11bHRpcGxpZXIiO2Q6MS4zMztzOjI0OiJ2YXBvclBvbGlzaGluZ01" +
-                        "1bHRpcGxpZXIiO2Q6MS4yNTtzOjIyOiJydXNoUHJpbnRpbmdNdWx0aXBsaWVyIjtkOjEuNTt9cz" +
-                        "oxMzoiZGVsaXZlcnlDb3N0cyI7YToyOntzOjQ6ImJhc2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6N" +
-                        "S44O3M6NDoidW5pdCI7czozOiJVU0QiO31zOjExOiJ3ZWlnaHRQcmljZSI7YToyOntzOjY6ImFt" +
-                        "b3VudCI7ZDowLjAxO3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fX1zOjEyOiJzbGljZXJQYXJhbXM" +
-                        "iO2E6MTp7czo3OiJzbGljZXJzIjthOjE6e2k6MDtzOjQ6ImN1cmEiO319czoxMjoibGF5ZXJIZW" +
-                        "lnaHRzIjthOjM6e3M6NzoiZGVmYXVsdCI7YToyOntzOjY6ImFtb3VudCI7czo1OiIwLjI1NCI7c" +
-                        "zo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtaW4iO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4wNzU7" +
-                        "czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtYXgiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC40O3M" +
-                        "6NDoidW5pdCI7czoyOiJtbSI7fX1zOjExOiJwcmludFNwZWVkcyI7YToxOntzOjc6ImRlZmF1bH" +
-                        "QiO2E6Mjp7czo2OiJhbW91bnQiO2k6NTA7czo0OiJ1bml0IjtzOjQ6Im1tL3MiO319fQ%3D%3D";
+                        "jtkOjEuMDY7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtz" +
+                        "Ojc6IiNGRkZBRTAiO319fXM6MTI6InByaW50aW5nQ29zdCI7YToyOntzOjY6ImFtb3VudCI7czo" +
+                        "0OiI0LjAwIjtzOjQ6InVuaXQiO3M6ODoiVVNEL2hvdXIiO31zOjY6ImFkZE9ucyI7YTozOntzOj" +
+                        "I0OiJzdXBwb3J0UmVtb3ZhbE11bHRpcGxpZXIiO2Q6MS4zMztzOjI0OiJ2YXBvclBvbGlzaGluZ" +
+                        "011bHRpcGxpZXIiO2Q6MS4yNTtzOjIyOiJydXNoUHJpbnRpbmdNdWx0aXBsaWVyIjtkOjEuNTt9" +
+                        "czoxMzoiZGVsaXZlcnlDb3N0cyI7YToyOntzOjQ6ImJhc2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q" +
+                        "6NS44O3M6NDoidW5pdCI7czozOiJVU0QiO31zOjExOiJ3ZWlnaHRQcmljZSI7YToyOntzOjY6Im" +
+                        "Ftb3VudCI7ZDowLjAxO3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fX1zOjEyOiJzbGljZXJQYXJhb" +
+                        "XMiO2E6MTp7czo3OiJzbGljZXJzIjthOjE6e2k6MDtzOjQ6ImN1cmEiO319czoxMjoibGF5ZXJI" +
+                        "ZWlnaHRzIjthOjM6e3M6NzoiZGVmYXVsdCI7YToyOntzOjY6ImFtb3VudCI7czo1OiIwLjI1NCI" +
+                        "7czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtaW4iO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4wNz" +
+                        "U7czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtYXgiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC40O" +
+                        "3M6NDoidW5pdCI7czoyOiJtbSI7fX1zOjExOiJwcmludFNwZWVkcyI7YToxOntzOjc6ImRlZmF1" +
+                        "bHQiO2E6Mjp7czo2OiJhbW91bnQiO2k6NTA7czo0OiJ1bml0IjtzOjQ6Im1tL3MiO319fQ%3D%3D";
+
 
                 $_POST.put("configFile",config);
 
-                String boundary = "------WebKitFormBoundary" + "1$#23gf784";
+                String boundary = "------WebKitFormBoundary" + "b511c710cb33734f";
 
                 HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
                 HashMap<String, String>values_files = new HashMap<>();
 
                 values_files.put("name", "block100.stl");
-                values_files.put("type", "file");
+                values_files.put("type", "model/stl");
                 try{
                     values_files.put("tmp_name", arquivo);
 
@@ -273,13 +279,13 @@ public class Cotacao extends AppCompatActivity{
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
                 System.out.println(output_request);
 
-                String requisição = null;
                 try {
                     requisição = requestMulti.Request(output_request, boundary);
                     System.out.println("requisicao "+requisição);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
 
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
@@ -572,7 +578,7 @@ public class Cotacao extends AppCompatActivity{
                 StringBuffer sb = new StringBuffer();
                 String str;
                 while ((str = reader.readLine()) != null) {
-                    sb.append(str);
+                    sb.append(str + "\n");
                 }
                 //System.out.println(sb.toString());
                 //Log.i("meuapp", sb.toString());
