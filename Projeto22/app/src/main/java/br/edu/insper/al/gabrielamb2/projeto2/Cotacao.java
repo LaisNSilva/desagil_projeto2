@@ -74,6 +74,11 @@ public class Cotacao extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
 
+        Toolbar toolbar = findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+//        getSupportActionBar().setLogo(R.drawable.logo);
+        getSupportActionBar().setTitle("Impressão 3D");
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -552,8 +557,6 @@ public class Cotacao extends AppCompatActivity{
 
             Uri uri = resultData.getData();
             textoarquivo.setText(uri.toString());
-            //rquivoPeca.setText(uri.toString());
-            //Creating an InputStream object
 
             String path = uri.getPath();
             String filename = path.substring(path.lastIndexOf("/") + 1);

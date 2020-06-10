@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.mytoolbar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setLogo(R.drawable.logo);
+        getSupportActionBar().setLogo(R.drawable.logo3d);
         getSupportActionBar().setTitle("Impressão 3D");
 
         final Intent cotacao = new Intent(this, Cotacao.class);
