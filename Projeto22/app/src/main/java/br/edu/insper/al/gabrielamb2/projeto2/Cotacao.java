@@ -76,8 +76,7 @@ public class Cotacao extends AppCompatActivity{
 
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setLogo(R.drawable.logo);
-        getSupportActionBar().setTitle("Impressão 3D");
+        getSupportActionBar().setLogo(R.drawable.logo_titulo);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
