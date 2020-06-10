@@ -17,9 +17,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
-import org.apache.http.HttpResponse;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -38,12 +45,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 public class Cotacao extends AppCompatActivity{
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
@@ -53,7 +54,7 @@ public class Cotacao extends AppCompatActivity{
     CellStyle cellStyle=wb.createCellStyle();
     //Now we are creating sheet
     Sheet sheet= wb.createSheet("Orçamentos Antigos");
-    int linhas =0;
+    int linhas=0;
 
     private void showToast(String text) {
 
@@ -69,16 +70,6 @@ public class Cotacao extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cotacao);
-        //getOrcamentos();
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setIcon(R.drawable.logo);
-//        getSupportActionBar().setIcon();
-
-
-
-
-        //TextView arquivoPeca = findViewById(R.id.peca);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
@@ -99,9 +90,6 @@ public class Cotacao extends AppCompatActivity{
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
 
-        final CheckBox supportRemoval = findViewById(R.id.suport_check);
-        final CheckBox vaporPolishing = findViewById(R.id.vapor_check);
-        
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
@@ -132,7 +120,6 @@ public class Cotacao extends AppCompatActivity{
         processar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 System.out.println("SERA QUE TA NULO?: "+ arquivo);
 
@@ -186,17 +173,11 @@ public class Cotacao extends AppCompatActivity{
                 $_POST.put("layerHeight", layer.getText().toString());
                 $_POST.put("infillPercentage", infill.getText().toString());
 
-                if(supportRemoval.isSelected() == true){
-                    $_POST.put("supportRemoval", true);
-                }else{
-                    $_POST.put("supportRemoval", false);
-                }
 
-                if (vaporPolishing.isSelected() == true){
-                    $_POST.put("vaporPolishing", true);
-                }else{
-                    $_POST.put("vaporPolishing", false);
-                }
+                $_POST.put("supportRemoval", false);
+
+                $_POST.put("vaporPolishing", false);
+
                 $_POST.put("shipping", "pickup");
 
                 $_POST.put("rushPrinting",false);
@@ -292,13 +273,14 @@ public class Cotacao extends AppCompatActivity{
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
                 System.out.println(output_request);
 
-                HttpResponse requisição = null;
+                String requisição = null;
                 try {
-                    requisição = requestMulti.Request(output_request);
+                    requisição = requestMulti.Request(output_request, boundary);
+                    System.out.println("requisicao "+requisição);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println(requisição);
+
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
                 String layer_ = layer.getText().toString();
@@ -331,13 +313,9 @@ public class Cotacao extends AppCompatActivity{
                         e.printStackTrace();
                     }
                 }
-
-                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),supportRemoval.isSelected(),vaporPolishing.isSelected(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString());
+                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString());
                 mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
                 getOrcamentos();
-
-
-
             }
         });
 
@@ -378,6 +356,7 @@ public class Cotacao extends AppCompatActivity{
 
 
 
+                //Now column and row
                 Row row =sheet.createRow(0);
                 cell=row.createCell(0);
                 cell.setCellValue("Cliente");
@@ -403,29 +382,29 @@ public class Cotacao extends AppCompatActivity{
                 cell.setCellValue("Materiais");
                 cell.setCellStyle(cellStyle);
 
-                cell=row.createCell(6);
-                cell.setCellValue("Support Removal");
-                cell.setCellStyle(cellStyle);
+                //      cell=row.createCell(6);
+                //     cell.setCellValue("Support Removal");
+                //      cell.setCellStyle(cellStyle);
 
-                cell=row.createCell(7);
-                cell.setCellValue("Vapor Polishing");
-                cell.setCellStyle(cellStyle);
+                //       cell=row.createCell(7);
+                //       cell.setCellValue("Vapor Polishing");
+                //       cell.setCellStyle(cellStyle);
 
-              //  cell=row.createCell(1);
-             //   cell.setCellValue("Peça");
-              //  cell.setCellStyle(cellStyle);
+                //  cell=row.createCell(1);
+                //   cell.setCellValue("Peça");
+                //  cell.setCellStyle(cellStyle);
 
-               // cell=row.createCell(9);
-               // cell.setCellValue("Peso");
-               // cell.setCellStyle(cellStyle);
+                // cell=row.createCell(9);
+                // cell.setCellValue("Peso");
+                // cell.setCellStyle(cellStyle);
 
-               // cell=row.createCell(10);
-               // cell.setCellValue("Tempo");
+                // cell=row.createCell(10);
+                // cell.setCellValue("Tempo");
                 //cell.setCellStyle(cellStyle);
 
-              //  cell=row.createCell(11);
-               // cell.setCellValue("Valor");
-              //  cell.setCellStyle(cellStyle);
+                //  cell=row.createCell(11);
+                // cell.setCellValue("Valor");
+                //  cell.setCellStyle(cellStyle);
 
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -436,7 +415,6 @@ public class Cotacao extends AppCompatActivity{
                         outputStream=new FileOutputStream(file);
                         wb.write(outputStream);
                         Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
-
                     } catch (java.io.IOException e) {
                         e.printStackTrace();
 
@@ -453,10 +431,6 @@ public class Cotacao extends AppCompatActivity{
                     // External storage is not usable
                     // Try again later
                 }
-
-
-
-                
 
 
 
@@ -490,7 +464,7 @@ public class Cotacao extends AppCompatActivity{
 
     private void getClientes(Map<String, Object> cotacoes){
 
-        LinkedList<String>cotcaoinidivual = new LinkedList<>();
+        LinkedList<String> cotcaoinidivual = new LinkedList<>();
         for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
             Map singlecotacao = (Map) entry.getValue();
             Object nome = singlecotacao.get("cliente");
@@ -499,11 +473,9 @@ public class Cotacao extends AppCompatActivity{
             Object layer = singlecotacao.get("layer");
             Object maodeobra = singlecotacao.get("mao_de_obra");
             Object materiais = singlecotacao.get("materiais");
-          //  Object peso = singlecotacao.get("peso");
-            Object support = singlecotacao.get("supportRemoval");
-          //  Object tempo = singlecotacao.get("tempo");
-          //  Object valor = singlecotacao.get("valor");
-            Object vapor = singlecotacao.get("vaporPolishing");
+            //  Object peso = singlecotacao.get("peso");
+            //  Object tempo = singlecotacao.get("tempo");
+            //  Object valor = singlecotacao.get("valor");
 
             cotcaoinidivual.add(nome.toString());
             cotcaoinidivual.add(impressoras.toString());
@@ -511,16 +483,14 @@ public class Cotacao extends AppCompatActivity{
             cotcaoinidivual.add(layer.toString());
             cotcaoinidivual.add(maodeobra.toString());
             cotcaoinidivual.add(materiais.toString());
-          //  cotcaoinidivual.add(peso.toString());
-            cotcaoinidivual.add(support.toString());
-          //  cotcaoinidivual.add(tempo.toString());
-          //  cotcaoinidivual.add(valor.toString());
-            cotcaoinidivual.add(vapor.toString());
+            //  cotcaoinidivual.add(peso.toString());
+            //  cotcaoinidivual.add(tempo.toString());
+            //  cotcaoinidivual.add(valor.toString());
 
             linhas+=1;
-          //  System.out.println(linhas+ "LINHASSSSSSSSSSSS");
+            //  System.out.println(linhas+ "LINHASSSSSSSSSSSS");
 
-        //    System.out.println(cotcaoinidivual.get(0)+ "zerooooooo");
+            //    System.out.println(cotcaoinidivual.get(0)+ "zerooooooo");
 
             System.out.println(cotcaoinidivual+ ",UUUUUUUUUUUUU AMOOOOOOOOOOOO GABI");
             colocarnoexcel(cotcaoinidivual);
@@ -561,19 +531,10 @@ public class Cotacao extends AppCompatActivity{
         cell=row1.createCell(5);
         cell.setCellValue(cotcaoinidivual.get(5));
         cell.setCellStyle(cellStyle);
-
-        cell=row1.createCell(6);
-        cell.setCellValue(cotcaoinidivual.get(6));
-        cell.setCellStyle(cellStyle);
-
-        cell=row1.createCell(7);
-        cell.setCellValue(cotcaoinidivual.get(7));
-        cell.setCellStyle(cellStyle);
+        ;
 
 
     }
-
-
 
 
 
@@ -615,7 +576,7 @@ public class Cotacao extends AppCompatActivity{
                 }
                 //System.out.println(sb.toString());
                 //Log.i("meuapp", sb.toString());
-                String arquivo = sb.toString();
+                arquivo = sb.toString();
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
 
