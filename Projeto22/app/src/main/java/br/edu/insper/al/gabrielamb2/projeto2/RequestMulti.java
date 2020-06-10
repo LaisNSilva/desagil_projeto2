@@ -1,5 +1,7 @@
 package br.edu.insper.al.gabrielamb2.projeto2;
 
+import android.util.Log;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -121,6 +123,7 @@ public class RequestMulti {
         post.setHeader("Content-Type", "multipart/form-data; boundary="+boundary.substring(2));
         HttpResponse response = httpclient.execute(post);
         HttpEntity resposta = response.getEntity();
+        Log.d("request", response.getAllHeaders().toString());
         String responseString = EntityUtils.toString(resposta, "UTF-8");
         return responseString;
 
