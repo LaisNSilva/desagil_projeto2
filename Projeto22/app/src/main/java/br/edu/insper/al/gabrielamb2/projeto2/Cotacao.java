@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,7 +21,6 @@ import androidx.core.content.FileProvider;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -33,15 +31,12 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -572,7 +567,8 @@ public class Cotacao extends AppCompatActivity{
             try {
                 inputStream = getBaseContext().getContentResolver().openInputStream(uri);
                 //creating an InputStreamReader object
-                InputStreamReader isReader = new InputStreamReader(inputStream);
+                /*
+                InputStreamReader isReader = new InputStreamReader(inputStream, "ASCII");
                 //Creating a BufferedReader object
                 BufferedReader reader = new BufferedReader(isReader);
                 StringBuffer sb = new StringBuffer();
@@ -583,6 +579,11 @@ public class Cotacao extends AppCompatActivity{
                 //System.out.println(sb.toString());
                 //Log.i("meuapp", sb.toString());
                 arquivo = sb.toString();
+
+                 */
+                byte[] bytes = IOUtils.toByteArray(inputStream);
+                arquivo = new String(bytes, "ASCII");
+                arquivo = arquivo.replaceAll("\0", "");
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
 
