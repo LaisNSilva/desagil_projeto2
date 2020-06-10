@@ -44,13 +44,22 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Cotacao extends AppCompatActivity{
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
     private String requisição;
+    Workbook wb=new HSSFWorkbook();
+    Cell cell=null;
+    CellStyle cellStyle=wb.createCellStyle();
+    //Now we are creating sheet
+    Sheet sheet= wb.createSheet("Orçamentos Antigos");
+    int linhas=0;
+
 
     private void showToast(String text) {
 
@@ -85,7 +94,7 @@ public class Cotacao extends AppCompatActivity{
         Button buttonArq = findViewById(R.id.escolher_arquivo);
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
-        
+
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
@@ -310,6 +319,9 @@ public class Cotacao extends AppCompatActivity{
                         e.printStackTrace();
                     }
                 }
+                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString());
+                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
+                getOrcamentos();
             }
         });
 
@@ -348,15 +360,8 @@ public class Cotacao extends AppCompatActivity{
                 //PARTE DE CRIAR UM EXCEL
 
 
-                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),false,false,layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(),peso.getText().toString(),tempo.getText().toString(), valor.getText().toString());
-                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
-                getOrcamentos();
-                Workbook wb=new HSSFWorkbook();
-                Cell cell=null;
-                CellStyle cellStyle=wb.createCellStyle();
-                //Now we are creating sheet
-                Sheet sheet=null;
-                sheet = wb.createSheet("Orçamentos Antigos");
+
+
                 //Now column and row
                 Row row =sheet.createRow(0);
                 cell=row.createCell(0);
@@ -364,97 +369,48 @@ public class Cotacao extends AppCompatActivity{
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(1);
-                cell.setCellValue("Peça");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(2);
-                cell.setCellValue("Infill (%)");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(3);
-                cell.setCellValue("Support Removal");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(4);
-                cell.setCellValue("Vapor Polishing");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(5);
-                cell.setCellValue("Layer");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(6);
                 cell.setCellValue("Impressora");
                 cell.setCellStyle(cellStyle);
 
-                cell=row.createCell(7);
-                cell.setCellValue("Material");
+                cell=row.createCell(2);
+                cell.setCellValue("Infill");
                 cell.setCellStyle(cellStyle);
 
-                cell=row.createCell(8);
+                cell=row.createCell(3);
+                cell.setCellValue("Layer");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(4);
                 cell.setCellValue("Mão de obra");
                 cell.setCellStyle(cellStyle);
 
-                cell=row.createCell(9);
-                cell.setCellValue("Peso");
+                cell=row.createCell(5);
+                cell.setCellValue("Materiais");
                 cell.setCellStyle(cellStyle);
 
-                cell=row.createCell(10);
-                cell.setCellValue("Tempo");
-                cell.setCellStyle(cellStyle);
+                //      cell=row.createCell(6);
+                //     cell.setCellValue("Support Removal");
+                //      cell.setCellStyle(cellStyle);
 
-                cell=row.createCell(11);
-                cell.setCellValue("Valor");
-                cell.setCellStyle(cellStyle);
+                //       cell=row.createCell(7);
+                //       cell.setCellValue("Vapor Polishing");
+                //       cell.setCellStyle(cellStyle);
 
-                Row row1 =sheet.createRow(1);
-                cell=row1.createCell(0);
-                cell.setCellValue( cliente.getText().toString());
-                cell.setCellStyle(cellStyle);
+                //  cell=row.createCell(1);
+                //   cell.setCellValue("Peça");
+                //  cell.setCellStyle(cellStyle);
 
-                cell=row1.createCell(1);
-                cell.setCellValue("Peça");
-                cell.setCellStyle(cellStyle);
+                // cell=row.createCell(9);
+                // cell.setCellValue("Peso");
+                // cell.setCellStyle(cellStyle);
 
-                cell=row1.createCell(2);
-                cell.setCellValue(infill.getText().toString());
-                cell.setCellStyle(cellStyle);
+                // cell=row.createCell(10);
+                // cell.setCellValue("Tempo");
+                //cell.setCellStyle(cellStyle);
 
-                cell=row1.createCell(3);
-                cell.setCellValue("Support Removal");
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(4);
-                cell.setCellValue("Vapor Polishing");
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(5);
-                cell.setCellValue(layer.getText().toString());
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(6);
-                cell.setCellValue(impressoras.getSelectedItem().toString());
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(7);
-                cell.setCellValue("Material");
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(8);
-                cell.setCellValue(mao_de_obra.getText().toString());
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(9);
-                cell.setCellValue(peso.getText().toString());
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(10);
-                cell.setCellValue( tempo.getText().toString());
-                cell.setCellStyle(cellStyle);
-
-                cell=row1.createCell(11);
-                cell.setCellValue(valor.getText().toString());
-                cell.setCellStyle(cellStyle);
+                //  cell=row.createCell(11);
+                // cell.setCellValue("Valor");
+                //  cell.setCellStyle(cellStyle);
 
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -493,15 +449,16 @@ public class Cotacao extends AppCompatActivity{
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
+                if(dataSnapshot.getValue() != null) {
 
                     // O método getValue recebe como parâmetro uma
                     // classe Java que representa o tipo de dado
                     // que você acredita estar lá. Se você errar,
                     // esse método vai lançar uma DatabaseException.
-              //      getClientes((Map<String, Object>)dataSnapshot.getValue());
-                } catch (DatabaseException exception) {
-                    Toast.makeText(getApplicationContext(),"Não conseguiu pegar os dados do cliente",Toast.LENGTH_LONG).show();
+                    getClientes((Map<String, Object>)dataSnapshot.getValue());
+
+                } else {
+                    System.out.println("DEU RUIM");
                 }
             }
 
@@ -511,15 +468,80 @@ public class Cotacao extends AppCompatActivity{
             }
         });    }
 
-  //  private void getClientes(Map<String, Object> cotacoes){
-    //    for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
-   //         Map singlecotacao = (Map) entry.getValue();
-   //         Object nome = singlecotacao.get("cliente");
+    private void getClientes(Map<String, Object> cotacoes){
+
+        LinkedList<String> cotcaoinidivual = new LinkedList<>();
+        for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
+            Map singlecotacao = (Map) entry.getValue();
+            Object nome = singlecotacao.get("cliente");
+            Object impressoras = singlecotacao.get("impressoras");
+            Object infill = singlecotacao.get("infill");
+            Object layer = singlecotacao.get("layer");
+            Object maodeobra = singlecotacao.get("mao_de_obra");
+            Object materiais = singlecotacao.get("materiais");
+            //  Object peso = singlecotacao.get("peso");
+            //  Object tempo = singlecotacao.get("tempo");
+            //  Object valor = singlecotacao.get("valor");
+
+            cotcaoinidivual.add(nome.toString());
+            cotcaoinidivual.add(impressoras.toString());
+            cotcaoinidivual.add(infill.toString());
+            cotcaoinidivual.add(layer.toString());
+            cotcaoinidivual.add(maodeobra.toString());
+            cotcaoinidivual.add(materiais.toString());
+            //  cotcaoinidivual.add(peso.toString());
+            //  cotcaoinidivual.add(tempo.toString());
+            //  cotcaoinidivual.add(valor.toString());
+
+            linhas+=1;
+            //  System.out.println(linhas+ "LINHASSSSSSSSSSSS");
+
+            //    System.out.println(cotcaoinidivual.get(0)+ "zerooooooo");
+
+            System.out.println(cotcaoinidivual+ ",UUUUUUUUUUUUU AMOOOOOOOOOOOO GABI");
+            colocarnoexcel(cotcaoinidivual);
+            cotcaoinidivual = new LinkedList<>();
+        }
+    }
+
+    private void colocarnoexcel(LinkedList<String> cotcaoinidivual) {
+
+        Row row1 =sheet.createRow(linhas);
+
+        //for(int i =0; i<=cotcaoinidivual.size();i++ ){
+        //        cell=row1.createCell(i);
+        //        cell.setCellValue(cotcaoinidivual.get(i));
+        //        cell.setCellStyle(cellStyle);
+        //    }
+
+        cell=row1.createCell(0);
+        cell.setCellValue(cotcaoinidivual.get(0));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(1);
+        cell.setCellValue(cotcaoinidivual.get(1));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(2);
+        cell.setCellValue(cotcaoinidivual.get(2));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(3);
+        cell.setCellValue(cotcaoinidivual.get(3));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(4);
+        cell.setCellValue(cotcaoinidivual.get(4));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(5);
+        cell.setCellValue(cotcaoinidivual.get(5));
+        cell.setCellStyle(cellStyle);
+        ;
 
 
-   //         System.out.println(nome+"OIIIIII é a GABIIIIIIIIIII");
-  //      }
-   // }
+    }
+
 
 
     @Override
