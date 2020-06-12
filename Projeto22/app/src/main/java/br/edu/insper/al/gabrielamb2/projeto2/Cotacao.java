@@ -279,6 +279,11 @@ public class Cotacao extends AppCompatActivity{
                 try {
                     requisição = requestMulti.Request(output_request, boundary);
                     System.out.println("requisicao "+requisição);
+                    requestMulti.getJsonTempo(requisição);
+                    requestMulti.getJsonPeso(requisição);
+                    tempo.setText(requestMulti.getJsonTempo(requisição));
+                    peso.setText(requestMulti.getJsonPeso(requisição));
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -582,8 +587,7 @@ public class Cotacao extends AppCompatActivity{
 
                  */
                 byte[] bytes = IOUtils.toByteArray(inputStream);
-                arquivo = new String(bytes, "ASCII");
-                arquivo = arquivo.replaceAll("\0", "");
+                arquivo = new String(bytes, "ISO-8859-1");
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
 
