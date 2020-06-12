@@ -50,12 +50,7 @@ public class RequestMulti {
 
         for (Map.Entry<String, Object> dic_interable : fields.entrySet()) {
             String key = dic_interable.getKey();
-            System.out.println("CHAVE" + key);
             String value = dic_interable.getValue().toString();
-
-
-            System.out.println("VALOR" + value);
-
             String new_key = transformada(key);
             String new_value = transformada(value);
 
@@ -129,23 +124,24 @@ public class RequestMulti {
     }
 
     public String getJsonTempo(String jsonObject){
-        String tempo = null;
         String possivel = null;
+        String tempo_final = null;
+
         try {
-            for (int i = 0; i < jsonObject.length() - 60; i++) {
+            for (int i = 0; i < jsonObject.length() - 14; i++) {
                 String palavra = jsonObject.substring(i, i + 13);
                 if (palavra.equals("printDuration")) {
                     possivel = jsonObject.substring(i + 13 + 25, i + 13 + 25 + 15);
-                    System.out.println("POSSIVEL :" + possivel);
                     break;
                 }
             }
             if (possivel != null) {
                 for (int c = 0; c < possivel.length(); c++) {
                     char letra = possivel.charAt(c);
-                    System.out.println("POSSIVEL :" + letra);
                     if (letra == '"') {
-                        tempo = possivel.substring(0, c);
+                        String tempo = possivel.substring(0, c);
+                        int tempo_inteiro = Integer.parseInt(tempo)/60;
+                        tempo_final = String.valueOf(tempo_inteiro) + " min";
                         break;
 
                     }
@@ -154,7 +150,7 @@ public class RequestMulti {
         }catch (Exception e){
             System.out.println("");
         }
-        return tempo;
+        return tempo_final;
     }
 
     public String getJsonPeso(String jsonObject){
@@ -163,28 +159,34 @@ public class RequestMulti {
         try {
             for (int e = 0; e < jsonObject.length() - 60; e++) {
                 String pesopalavra = jsonObject.substring(e, e + 12);
-                System.out.println("PESO :" + pesopalavra);
                 if (pesopalavra.equals("filamentUsed")) {
                     pesopeca = jsonObject.substring(e + 11 + 22, e + 11 + 22 + 15);
-                    //System.out.println("PESO :" + pesopeca);
                     break;
                 }
             }
             if (pesopeca != null) {
                 for (int d = 0; d < pesopeca.length(); d++) {
                     char pesoletra = pesopeca.charAt(d);
-                    System.out.println("PESO_POSSIVEL :" + pesoletra);
                     if (pesoletra == '.') {
                         peso = pesopeca.substring(1, d+3);
+                        peso = peso.replace(".", ",") + " g";
                         break;
-
                     }
                 }
             }
         }catch (Exception e){
-            System.out.println("");
+            System.out.println("COLOCAR AVISO");
         }
         return peso;
+    }
+
+    public String calculaPreço(String tempo, String peso, String vel){
+        int tempo_inteiro = Integer.parseInt(tempo);
+        int peso_inteiro = Integer.parseInt(peso);
+        int vel_inteiro = Integer.parseInt(vel);
+
+        return tempo;
+
     }
 }
 

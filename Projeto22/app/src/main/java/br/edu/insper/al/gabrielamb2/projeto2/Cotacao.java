@@ -180,7 +180,7 @@ public class Cotacao extends AppCompatActivity{
 
                 $_POST.put("vaporPolishing", false);
 
-                $_POST.put("shipping", "pickup");
+                $_POST.put("shipping", "delivery");
 
                 $_POST.put("rushPrinting",false);
                 $_POST.put("density", densidade);
@@ -259,7 +259,7 @@ public class Cotacao extends AppCompatActivity{
                 HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
                 HashMap<String, String>values_files = new HashMap<>();
 
-                values_files.put("name", "block100.stl");
+                values_files.put("name", "Cube_3d_printing_sample.stl");
                 values_files.put("type", "model/stl");
                 try{
                     values_files.put("tmp_name", arquivo);
@@ -352,7 +352,6 @@ public class Cotacao extends AppCompatActivity{
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                     share.putExtra(Intent.EXTRA_STREAM, uri);
-//                    share.setPackage("com.whatsapp");
 
                     startActivity(share);
 
@@ -361,9 +360,6 @@ public class Cotacao extends AppCompatActivity{
                 }
 
                 //PARTE DE CRIAR UM EXCEL
-
-
-
 
                 //Now column and row
                 Row row =sheet.createRow(0);
@@ -398,24 +394,6 @@ public class Cotacao extends AppCompatActivity{
                 cell=row.createCell(7);
                 cell.setCellValue("Tempo");
                 cell.setCellStyle(cellStyle);
-
-
-                //      cell=row.createCell(6);
-                //     cell.setCellValue("Support Removal");
-                //      cell.setCellStyle(cellStyle);
-
-                //       cell=row.createCell(7);
-                //       cell.setCellValue("Vapor Polishing");
-                //       cell.setCellStyle(cellStyle);
-
-                //  cell=row.createCell(1);
-                //   cell.setCellValue("Peça");
-                //  cell.setCellStyle(cellStyle);
-
-                //  cell=row.createCell(11);
-                // cell.setCellValue("Valor");
-                //  cell.setCellStyle(cellStyle);
-
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     // External storage is usable
@@ -485,7 +463,6 @@ public class Cotacao extends AppCompatActivity{
             Object materiais = singlecotacao.get("materiais");
             Object peso = singlecotacao.get("peso");
             Object tempo = singlecotacao.get("tempo");
-            //  Object valor = singlecotacao.get("valor");
 
             cotcaoinidivual.add(nome.toString());
             cotcaoinidivual.add(impressoras.toString());
@@ -495,12 +472,8 @@ public class Cotacao extends AppCompatActivity{
             cotcaoinidivual.add(materiais.toString());
             cotcaoinidivual.add(peso.toString());
             cotcaoinidivual.add(tempo.toString());
-            //  cotcaoinidivual.add(valor.toString());
 
             linhas+=1;
-            //  System.out.println(linhas+ "LINHASSSSSSSSSSSS");
-
-            //    System.out.println(cotcaoinidivual.get(0)+ "zerooooooo");
 
             System.out.println(cotcaoinidivual+ ",UUUUUUUUUUUUU AMOOOOOOOOOOOO GABI");
             colocarnoexcel(cotcaoinidivual);
@@ -511,12 +484,6 @@ public class Cotacao extends AppCompatActivity{
     private void colocarnoexcel(LinkedList<String> cotcaoinidivual) {
 
         Row row1 =sheet.createRow(linhas);
-
-        //for(int i =0; i<=cotcaoinidivual.size();i++ ){
-        //        cell=row1.createCell(i);
-        //        cell.setCellValue(cotcaoinidivual.get(i));
-        //        cell.setCellStyle(cellStyle);
-        //    }
 
         cell=row1.createCell(0);
         cell.setCellValue(cotcaoinidivual.get(0));
@@ -577,25 +544,10 @@ public class Cotacao extends AppCompatActivity{
             }
             Log.i("nome", filename);
 
-            //System.out.println(uri);
             InputStream inputStream = null;
             try {
                 inputStream = getBaseContext().getContentResolver().openInputStream(uri);
-                //creating an InputStreamReader object
-                /*
-                InputStreamReader isReader = new InputStreamReader(inputStream, "ASCII");
-                //Creating a BufferedReader object
-                BufferedReader reader = new BufferedReader(isReader);
-                StringBuffer sb = new StringBuffer();
-                String str;
-                while ((str = reader.readLine()) != null) {
-                    sb.append(str + "\n");
-                }
-                //System.out.println(sb.toString());
-                //Log.i("meuapp", sb.toString());
-                arquivo = sb.toString();
 
-                 */
                 byte[] bytes = IOUtils.toByteArray(inputStream);
                 arquivo = new String(bytes, "ISO-8859-1");
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
