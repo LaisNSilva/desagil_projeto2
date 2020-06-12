@@ -33,6 +33,8 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -185,7 +187,7 @@ public class Cotacao extends AppCompatActivity{
 
                 $_POST.put("vaporPolishing", false);
 
-                $_POST.put("shipping", "pickup");
+                $_POST.put("shipping", "delivery");
 
                 $_POST.put("rushPrinting",false);
                 $_POST.put("density", densidade);
@@ -264,7 +266,7 @@ public class Cotacao extends AppCompatActivity{
                 HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
                 HashMap<String, String>values_files = new HashMap<>();
 
-                values_files.put("name", "block100.stl");
+                values_files.put("name", "Cube_3d_printing_sample.stl");
                 values_files.put("type", "model/stl");
                 try{
                     values_files.put("tmp_name", arquivo);
@@ -284,6 +286,11 @@ public class Cotacao extends AppCompatActivity{
                 try {
                     requisição = requestMulti.Request(output_request, boundary);
                     System.out.println("requisicao "+requisição);
+                    String tempo = requestMulti.getJsonTempo(requisição);
+                    System.out.println("tempo  "+tempo);
+
+                    //JSONParser parser = new JSONParser();
+                    //JSONObject json = (JSONObject) parser.parse(stringToParse);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -305,6 +312,8 @@ public class Cotacao extends AppCompatActivity{
                         + "Material: " + material_escolhido + "  "+ "Mão de Obra: " + maodeobra + "  " + "Peso: " + peso_ + "  " + "Tempo: " +  tempo_ + "  " +"Valor: " + valor_;
 
                 texto_final = texto_final.replace("  ","\n");
+
+                texto_final = output_request;
 
                 String filename = "cotacao_"+cliente_+".txt";
 
@@ -572,7 +581,8 @@ public class Cotacao extends AppCompatActivity{
             try {
                 inputStream = getBaseContext().getContentResolver().openInputStream(uri);
                 //creating an InputStreamReader object
-                InputStreamReader isReader = new InputStreamReader(inputStream);
+                /*
+                InputStreamReader isReader = new InputStreamReader(inputStream, "ASCII");
                 //Creating a BufferedReader object
                 BufferedReader reader = new BufferedReader(isReader);
                 StringBuffer sb = new StringBuffer();
@@ -583,6 +593,11 @@ public class Cotacao extends AppCompatActivity{
                 //System.out.println(sb.toString());
                 //Log.i("meuapp", sb.toString());
                 arquivo = sb.toString();
+
+                 */
+                byte[] bytes = IOUtils.toByteArray(inputStream);
+                arquivo = new String(bytes, "ASCII");
+                arquivo = arquivo.replaceAll("\0", "");
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
 

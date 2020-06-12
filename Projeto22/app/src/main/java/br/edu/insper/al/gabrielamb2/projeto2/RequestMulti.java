@@ -9,11 +9,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -50,11 +55,7 @@ public class RequestMulti {
 
         for (Map.Entry<String,Object> dic_interable : fields.entrySet()){
             String key = dic_interable.getKey();
-            System.out.println("CHAVE"+ key);
             String value = dic_interable.getValue().toString();
-
-
-            System.out.println("VALOR"+value);
 
             String new_key = transformada(key);
             String new_value = transformada(value);
@@ -124,5 +125,34 @@ public class RequestMulti {
         String responseString = EntityUtils.toString(resposta, "UTF-8");
         return responseString;
 
+    }
+
+    public String getJsonTempo(String jsonObject){
+        String possivel = null;
+        String tempo_final = null;
+
+        try {
+            for (int i = 0; i < jsonObject.length() - 14; i++) {
+                String palavra = jsonObject.substring(i, i + 13);
+                if (palavra.equals("printDuration")) {
+                    possivel = jsonObject.substring(i + 13 + 25, i + 13 + 25 + 15);
+                    break;
+                }
+            }
+            if (possivel != null) {
+                for (int c = 0; c < possivel.length(); c++) {
+                    char letra = possivel.charAt(c);
+                    if (letra == '"') {
+                        String tempo = possivel.substring(0, c);
+                        int tempo_inteiro = Integer.parseInt(tempo)/60;
+                        tempo_final = String.valueOf(tempo_inteiro) + " min";
+                        break;
+                    }
+                }
+            }
+        }catch (Exception e){
+            System.out.println("");
+        }
+        return tempo_final;
     }
 }
