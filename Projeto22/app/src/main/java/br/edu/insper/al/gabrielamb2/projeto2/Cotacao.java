@@ -321,8 +321,9 @@ public class Cotacao extends AppCompatActivity{
                         e.printStackTrace();
                     }
                 }
-                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString());
-                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
+
+                Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
+                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
                 getOrcamentos();
             }
         });
@@ -390,6 +391,15 @@ public class Cotacao extends AppCompatActivity{
                 cell.setCellValue("Materiais");
                 cell.setCellStyle(cellStyle);
 
+                cell=row.createCell(6);
+                cell.setCellValue("Peso");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(7);
+                cell.setCellValue("Tempo");
+                cell.setCellStyle(cellStyle);
+
+
                 //      cell=row.createCell(6);
                 //     cell.setCellValue("Support Removal");
                 //      cell.setCellStyle(cellStyle);
@@ -401,14 +411,6 @@ public class Cotacao extends AppCompatActivity{
                 //  cell=row.createCell(1);
                 //   cell.setCellValue("Peça");
                 //  cell.setCellStyle(cellStyle);
-
-                // cell=row.createCell(9);
-                // cell.setCellValue("Peso");
-                // cell.setCellStyle(cellStyle);
-
-                // cell=row.createCell(10);
-                // cell.setCellValue("Tempo");
-                //cell.setCellStyle(cellStyle);
 
                 //  cell=row.createCell(11);
                 // cell.setCellValue("Valor");
@@ -481,8 +483,8 @@ public class Cotacao extends AppCompatActivity{
             Object layer = singlecotacao.get("layer");
             Object maodeobra = singlecotacao.get("mao_de_obra");
             Object materiais = singlecotacao.get("materiais");
-            //  Object peso = singlecotacao.get("peso");
-            //  Object tempo = singlecotacao.get("tempo");
+            Object peso = singlecotacao.get("peso");
+            Object tempo = singlecotacao.get("tempo");
             //  Object valor = singlecotacao.get("valor");
 
             cotcaoinidivual.add(nome.toString());
@@ -491,8 +493,8 @@ public class Cotacao extends AppCompatActivity{
             cotcaoinidivual.add(layer.toString());
             cotcaoinidivual.add(maodeobra.toString());
             cotcaoinidivual.add(materiais.toString());
-            //  cotcaoinidivual.add(peso.toString());
-            //  cotcaoinidivual.add(tempo.toString());
+            cotcaoinidivual.add(peso.toString());
+            cotcaoinidivual.add(tempo.toString());
             //  cotcaoinidivual.add(valor.toString());
 
             linhas+=1;
@@ -539,7 +541,15 @@ public class Cotacao extends AppCompatActivity{
         cell=row1.createCell(5);
         cell.setCellValue(cotcaoinidivual.get(5));
         cell.setCellStyle(cellStyle);
-        ;
+
+        cell=row1.createCell(6);
+        cell.setCellValue(cotcaoinidivual.get(6));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(7);
+        cell.setCellValue(cotcaoinidivual.get(7));
+        cell.setCellStyle(cellStyle);
+
 
 
     }
