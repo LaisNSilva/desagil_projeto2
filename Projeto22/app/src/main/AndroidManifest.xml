@@ -18,17 +18,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".Pedidos">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Configuracao"></activity>
 
         <uses-library android:name="org.apache.http.legacy" />
 
-        <activity android:name=".Cotacao"></activity>
+        <activity android:name=".Cotacao" />
+
+        <activity android:name=".Pedidos"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
