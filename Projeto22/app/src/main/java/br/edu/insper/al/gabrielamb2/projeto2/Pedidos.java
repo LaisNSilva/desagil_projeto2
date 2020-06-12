@@ -7,6 +7,11 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,61 +30,42 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Pedidos extends AppCompatActivity {
+public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClickListener{
     String TAG = "main";
-    private TextView textView;
+    ListView lvcotacao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
-        textView = findViewById(R.id.textview);
+
+        lvcotacao = findViewById(R.id.Lvcotacao);
+        ArrayList<String>arrayList;
+
+        LerExcel lerExcel = new LerExcel("orcamentoantigo.xls");
+
         try {
-            readExcelFile(this,"orcamentoantigo.xls");
+            lerExcel.readExcelFile(this);
+            arrayList = lerExcel.getlistanomes();
+            ArrayAdapter cotacaoAdapter = new ArrayAdapter<>(this, R.layout.list_item,arrayList);
+            lvcotacao.setAdapter(cotacaoAdapter);
+
+            lvcotacao.setOnItemClickListener(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    private void readExcelFile(Context context, String filename) throws IOException {
-
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            // Creating Input Stream
-            File file = new File(context.getExternalFilesDir(null), filename);
-            FileInputStream myInput = new FileInputStream(file);
-
-            // Create a POIFSFileSystem object
-            POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
-
-            // Create a workbook using the File System
-            HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
-
-            // Get the first sheet from workbook
-            HSSFSheet mySheet = myWorkBook.getSheetAt(0);
-
-            /** We now need something to iterate through the cells.**/
-            Iterator<Row> rowIter = mySheet.rowIterator();
-
-            while(rowIter.hasNext()){
-                HSSFRow myRow = (HSSFRow) rowIter.next();
-                Iterator<Cell> cellIter = myRow.cellIterator();
-                while(cellIter.hasNext()){
-                    HSSFCell myCell = (HSSFCell) cellIter.next();
-                    Log.w("FileUtils", "Cell Value: " +  myCell.toString());
-                    textView.setText(myCell.toString());
-
-                }
-            }
-
-        } else {
-            // External storage is not usable
-            // Try again later
-        }
-
-        
+    @Override
+    public void onItemClick(AdapterView<?>parent, View view, int position, long id){
+       //oq fazer quando clicar
     }
+
+
 
 
 }
