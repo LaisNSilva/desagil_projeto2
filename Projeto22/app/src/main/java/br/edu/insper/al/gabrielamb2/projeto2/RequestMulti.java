@@ -1,5 +1,7 @@
 package br.edu.insper.al.gabrielamb2.projeto2;
 
+import android.util.Log;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -9,31 +11,24 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 
 public class RequestMulti {
-    private HashMap<String, String>fields;
-    private HashMap<String, HashMap>files;
+    private HashMap<String, String> fields;
+    private HashMap<String, HashMap> files;
     private String boundary;
 
-    public RequestMulti(HashMap fields, HashMap files, String boundary){
+    public RequestMulti(HashMap fields, HashMap files, String boundary) {
         this.fields = new HashMap<>();
         this.files = new HashMap<>();
         this.boundary = null;
     }
 
-    public String transformada(String texto){
+    public String transformada(String texto) {
         texto.replace("\0", "_");
         texto.replace("\r", "_");
         texto.replace("\n", "_");
@@ -43,7 +38,7 @@ public class RequestMulti {
     }
 
 
-    public String buildMultipartPost(HashMap<String, Object> fields, HashMap<String, HashMap<String, String>> files, String boundary){
+    public String buildMultipartPost(HashMap<String, Object> fields, HashMap<String, HashMap<String, String>> files, String boundary) {
         String output = "\n" + "\n";
         String material = "";
         String color = "";
@@ -53,45 +48,44 @@ public class RequestMulti {
         String configFile = "";
         String density = "";
 
-        for (Map.Entry<String,Object> dic_interable : fields.entrySet()){
+        for (Map.Entry<String, Object> dic_interable : fields.entrySet()) {
             String key = dic_interable.getKey();
             String value = dic_interable.getValue().toString();
-
             String new_key = transformada(key);
             String new_value = transformada(value);
 
-            if(new_key.equals("material")){
+            if (new_key.equals("material")) {
                 material += boundary + "\n" + "Content-Disposition: form-data; " +
                         "name=\"" + new_key + "\"\n\n" + new_value + "\n";
 
-            }else if (new_key.equals("color")){
+            } else if (new_key.equals("color")) {
                 color += boundary + "\n" + "Content-Disposition: form-data; " +
                         "name=\"" + new_key + "\"\n\n" + new_value + "\n";
 
-            }else if (new_key.equals("layerHeight")){
+            } else if (new_key.equals("layerHeight")) {
                 layerHeight += boundary + "\n" + "Content-Disposition: form-data; " +
                         "name=\"" + new_key + "\"\n\n" + new_value + "\n";
 
-            }else if (new_key.equals("infillPercentage")){
+            } else if (new_key.equals("infillPercentage")) {
                 infillPercentage += boundary + "\n" + "Content-Disposition: form-data; " +
                         "name=\"" + new_key + "\"\n\n" + new_value + "\n";
 
-            }else if (new_key.equals("shipping")){
+            } else if (new_key.equals("shipping")) {
                 shipping += boundary + "\n" + "Content-Disposition: form-data; " +
                         "name=\"" + new_key + "\"\n\n" + new_value + "\n";
 
-            }else if (new_key.equals("configFile")){
+            } else if (new_key.equals("configFile")) {
                 configFile += boundary + "\n" + "Content-Disposition: form-data; " +
                         "name=\"" + new_key + "\"\n\n" + new_value + "\n";
 
-            }else if (new_key.equals("density")){
+            } else if (new_key.equals("density")) {
                 density += boundary + "\n" + "Content-Disposition: form-data; " +
-                            "name=\"" + new_key + "\"\n\n"  + new_value + "\n";
-                }
+                        "name=\"" + new_key + "\"\n\n" + new_value + "\n";
             }
-        output += material+color+layerHeight+infillPercentage+shipping+configFile+density;
+        }
+        output += material + color + layerHeight + infillPercentage + shipping + configFile + density;
 
-        for (Map.Entry<String, HashMap<String, String>> dic_interable_files : files.entrySet()){
+        for (Map.Entry<String, HashMap<String, String>> dic_interable_files : files.entrySet()) {
             String key_files = dic_interable_files.getKey();
             HashMap value_files = dic_interable_files.getValue();
 
@@ -100,28 +94,30 @@ public class RequestMulti {
             String name = transformada(value_files.get("name").toString());
             String type = transformada(value_files.get("type").toString());
 
-            try{
+            try {
                 String tmp_name = (String) value_files.get("tmp_name");
                 //byte[] tmp_name_byte = Files.readAllBytes((Path) value_files.get("tmp_name"));
                 //String tmp_name = tmp_name_byte.toString();
                 output += boundary + "\n" + "Content-Disposition: form-data; name=\"" + new_key_files + "\"; filename=\"" + name + "\"\n" + "Content-Type: " + type + "\n\n" + tmp_name + "\n";
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("File error");
 
             }
 
         }
-        return output+boundary+"--";
+        return output + boundary + "--";
     }
+
     public String Request(Object request, String boundary) throws IOException {
         HttpParams params = new BasicHttpParams();
         HttpClient httpclient = new DefaultHttpClient(params);
         HttpPost post = new HttpPost("http://api.3dpartprice.com");
         HttpEntity entity = new StringEntity(request.toString());
         post.setEntity(entity);
-        post.setHeader("Content-Type", "multipart/form-data; boundary="+boundary.substring(2));
+        post.setHeader("Content-Type", "multipart/form-data; boundary=" + boundary.substring(2));
         HttpResponse response = httpclient.execute(post);
         HttpEntity resposta = response.getEntity();
+        Log.d("request", response.getAllHeaders().toString());
         String responseString = EntityUtils.toString(resposta, "UTF-8");
         return responseString;
 
@@ -147,6 +143,7 @@ public class RequestMulti {
                         int tempo_inteiro = Integer.parseInt(tempo)/60;
                         tempo_final = String.valueOf(tempo_inteiro) + " min";
                         break;
+
                     }
                 }
             }
@@ -155,4 +152,41 @@ public class RequestMulti {
         }
         return tempo_final;
     }
+
+    public String getJsonPeso(String jsonObject){
+        String peso = null;
+        String pesopeca = null;
+        try {
+            for (int e = 0; e < jsonObject.length() - 60; e++) {
+                String pesopalavra = jsonObject.substring(e, e + 12);
+                if (pesopalavra.equals("filamentUsed")) {
+                    pesopeca = jsonObject.substring(e + 11 + 22, e + 11 + 22 + 15);
+                    break;
+                }
+            }
+            if (pesopeca != null) {
+                for (int d = 0; d < pesopeca.length(); d++) {
+                    char pesoletra = pesopeca.charAt(d);
+                    if (pesoletra == '.') {
+                        peso = pesopeca.substring(1, d+3);
+                        peso = peso.replace(".", ",") + " g";
+                        break;
+                    }
+                }
+            }
+        }catch (Exception e){
+            System.out.println("COLOCAR AVISO");
+        }
+        return peso;
+    }
+
+    public String calculaPreço(String tempo, String peso, String vel){
+        int tempo_inteiro = Integer.parseInt(tempo);
+        int peso_inteiro = Integer.parseInt(peso);
+        int vel_inteiro = Integer.parseInt(vel);
+
+        return tempo;
+
+    }
 }
+

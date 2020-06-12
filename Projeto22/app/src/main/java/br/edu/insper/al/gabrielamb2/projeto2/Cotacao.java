@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,7 +21,6 @@ import androidx.core.content.FileProvider;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -34,16 +32,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.IOUtils;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -286,11 +279,11 @@ public class Cotacao extends AppCompatActivity{
                 try {
                     requisição = requestMulti.Request(output_request, boundary);
                     System.out.println("requisicao "+requisição);
-                    String tempo = requestMulti.getJsonTempo(requisição);
-                    System.out.println("tempo  "+tempo);
+                    requestMulti.getJsonTempo(requisição);
+                    requestMulti.getJsonPeso(requisição);
+                    tempo.setText(requestMulti.getJsonTempo(requisição));
+                    peso.setText(requestMulti.getJsonPeso(requisição));
 
-                    //JSONParser parser = new JSONParser();
-                    //JSONObject json = (JSONObject) parser.parse(stringToParse);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -313,8 +306,6 @@ public class Cotacao extends AppCompatActivity{
 
                 texto_final = texto_final.replace("  ","\n");
 
-                texto_final = output_request;
-
                 String filename = "cotacao_"+cliente_+".txt";
 
                 File file = new File(diretorio + "/" + filename);
@@ -330,8 +321,9 @@ public class Cotacao extends AppCompatActivity{
                         e.printStackTrace();
                     }
                 }
-                Cliente usuario = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString());
-                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(usuario);
+
+                Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
+                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
                 getOrcamentos();
             }
         });
@@ -360,7 +352,6 @@ public class Cotacao extends AppCompatActivity{
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                     share.putExtra(Intent.EXTRA_STREAM, uri);
-//                    share.setPackage("com.whatsapp");
 
                     startActivity(share);
 
@@ -369,9 +360,6 @@ public class Cotacao extends AppCompatActivity{
                 }
 
                 //PARTE DE CRIAR UM EXCEL
-
-
-
 
                 //Now column and row
                 Row row =sheet.createRow(0);
@@ -399,30 +387,13 @@ public class Cotacao extends AppCompatActivity{
                 cell.setCellValue("Materiais");
                 cell.setCellStyle(cellStyle);
 
-                //      cell=row.createCell(6);
-                //     cell.setCellValue("Support Removal");
-                //      cell.setCellStyle(cellStyle);
+                cell=row.createCell(6);
+                cell.setCellValue("Peso");
+                cell.setCellStyle(cellStyle);
 
-                //       cell=row.createCell(7);
-                //       cell.setCellValue("Vapor Polishing");
-                //       cell.setCellStyle(cellStyle);
-
-                //  cell=row.createCell(1);
-                //   cell.setCellValue("Peça");
-                //  cell.setCellStyle(cellStyle);
-
-                // cell=row.createCell(9);
-                // cell.setCellValue("Peso");
-                // cell.setCellStyle(cellStyle);
-
-                // cell=row.createCell(10);
-                // cell.setCellValue("Tempo");
-                //cell.setCellStyle(cellStyle);
-
-                //  cell=row.createCell(11);
-                // cell.setCellValue("Valor");
-                //  cell.setCellStyle(cellStyle);
-
+                cell=row.createCell(7);
+                cell.setCellValue("Tempo");
+                cell.setCellStyle(cellStyle);
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     // External storage is usable
@@ -490,9 +461,8 @@ public class Cotacao extends AppCompatActivity{
             Object layer = singlecotacao.get("layer");
             Object maodeobra = singlecotacao.get("mao_de_obra");
             Object materiais = singlecotacao.get("materiais");
-            //  Object peso = singlecotacao.get("peso");
-            //  Object tempo = singlecotacao.get("tempo");
-            //  Object valor = singlecotacao.get("valor");
+            Object peso = singlecotacao.get("peso");
+            Object tempo = singlecotacao.get("tempo");
 
             cotcaoinidivual.add(nome.toString());
             cotcaoinidivual.add(impressoras.toString());
@@ -500,14 +470,10 @@ public class Cotacao extends AppCompatActivity{
             cotcaoinidivual.add(layer.toString());
             cotcaoinidivual.add(maodeobra.toString());
             cotcaoinidivual.add(materiais.toString());
-            //  cotcaoinidivual.add(peso.toString());
-            //  cotcaoinidivual.add(tempo.toString());
-            //  cotcaoinidivual.add(valor.toString());
+            cotcaoinidivual.add(peso.toString());
+            cotcaoinidivual.add(tempo.toString());
 
             linhas+=1;
-            //  System.out.println(linhas+ "LINHASSSSSSSSSSSS");
-
-            //    System.out.println(cotcaoinidivual.get(0)+ "zerooooooo");
 
             System.out.println(cotcaoinidivual+ ",UUUUUUUUUUUUU AMOOOOOOOOOOOO GABI");
             colocarnoexcel(cotcaoinidivual);
@@ -518,12 +484,6 @@ public class Cotacao extends AppCompatActivity{
     private void colocarnoexcel(LinkedList<String> cotcaoinidivual) {
 
         Row row1 =sheet.createRow(linhas);
-
-        //for(int i =0; i<=cotcaoinidivual.size();i++ ){
-        //        cell=row1.createCell(i);
-        //        cell.setCellValue(cotcaoinidivual.get(i));
-        //        cell.setCellStyle(cellStyle);
-        //    }
 
         cell=row1.createCell(0);
         cell.setCellValue(cotcaoinidivual.get(0));
@@ -548,7 +508,15 @@ public class Cotacao extends AppCompatActivity{
         cell=row1.createCell(5);
         cell.setCellValue(cotcaoinidivual.get(5));
         cell.setCellStyle(cellStyle);
-        ;
+
+        cell=row1.createCell(6);
+        cell.setCellValue(cotcaoinidivual.get(6));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(7);
+        cell.setCellValue(cotcaoinidivual.get(7));
+        cell.setCellStyle(cellStyle);
+
 
 
     }
@@ -576,28 +544,12 @@ public class Cotacao extends AppCompatActivity{
             }
             Log.i("nome", filename);
 
-            //System.out.println(uri);
             InputStream inputStream = null;
             try {
                 inputStream = getBaseContext().getContentResolver().openInputStream(uri);
-                //creating an InputStreamReader object
-                /*
-                InputStreamReader isReader = new InputStreamReader(inputStream, "ASCII");
-                //Creating a BufferedReader object
-                BufferedReader reader = new BufferedReader(isReader);
-                StringBuffer sb = new StringBuffer();
-                String str;
-                while ((str = reader.readLine()) != null) {
-                    sb.append(str + "\n");
-                }
-                //System.out.println(sb.toString());
-                //Log.i("meuapp", sb.toString());
-                arquivo = sb.toString();
 
-                 */
                 byte[] bytes = IOUtils.toByteArray(inputStream);
-                arquivo = new String(bytes, "ASCII");
-                arquivo = arquivo.replaceAll("\0", "");
+                arquivo = new String(bytes, "ISO-8859-1");
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
 
