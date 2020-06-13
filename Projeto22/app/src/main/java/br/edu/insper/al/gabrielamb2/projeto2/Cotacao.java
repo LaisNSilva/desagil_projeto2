@@ -53,7 +53,7 @@ public class Cotacao extends AppCompatActivity{
 
     String arquivo;
     private String requisição;
-    int velocidade;
+    double velocidade;
 
 //  ------- Variaveis Excel ------------------
     Workbook wb = new HSSFWorkbook();
@@ -122,17 +122,17 @@ public class Cotacao extends AppCompatActivity{
         }
 
 //      -------------------------------Hashmap das Impressoras---------------------------------------------
-        HashMap<String,Integer> mapa_impressoras = new HashMap<>();
+        HashMap<String,Double> mapa_impressoras = new HashMap<>();
         String[] array = buff.split("  ");
 
         for(String linha : array){
             String[] key_value = linha.split(":");
-            mapa_impressoras.put(key_value[0],Integer.parseInt(key_value[1]));
+            mapa_impressoras.put(key_value[0],Double.parseDouble(key_value[1]));
         }
 
         String nomes_impressoras = "";
 
-        for(Map.Entry<String,Integer> set : mapa_impressoras.entrySet()){
+        for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
             nomes_impressoras += set.getKey() + "  ";
         }
 
@@ -146,7 +146,7 @@ public class Cotacao extends AppCompatActivity{
 
         String impressora_escolhida = impressoras.getSelectedItem().toString();
 
-        for(Map.Entry<String,Integer> set : mapa_impressoras.entrySet()){
+        for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
             if (impressora_escolhida.equals(set.getKey())){
                 velocidade = set.getValue();
             }
@@ -372,7 +372,6 @@ public class Cotacao extends AppCompatActivity{
                 Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
                 mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
                 getOrcamentos();
-
 
             }
         });
