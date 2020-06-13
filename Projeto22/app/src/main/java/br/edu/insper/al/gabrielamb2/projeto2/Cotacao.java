@@ -128,10 +128,10 @@ public class Cotacao extends AppCompatActivity{
             }
         }
 
-        String r1 = nomes_impressoras.replace("Impressora: ","");
-        String r2 = r1.replace("; Velocidade: ","");
+        String nomes_impressoras1 = nomes_impressoras.replace("Impressora: ","");
+        String nomes_impressoras2 = nomes_impressoras1.replace("; Velocidade: ","");
 
-        String[] impressoras_array = r2.split("  ");
+        String[] impressoras_array = nomes_impressoras2.split("  ");
         ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Cotacao.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
 
         final Spinner impressoras = findViewById(R.id.impressora);
@@ -142,8 +142,6 @@ public class Cotacao extends AppCompatActivity{
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         materiais.setAdapter(adapter1);
-
-
 
         //Botao para Importar um arquivo
         buttonArq.setOnClickListener(new View.OnClickListener() {
