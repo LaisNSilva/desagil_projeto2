@@ -123,9 +123,9 @@ public class Cotacao extends AppCompatActivity{
 
 //      -------------------------------Hashmap das Impressoras---------------------------------------------
         HashMap<String,Integer> mapa_impressoras = new HashMap<>();
-        String[] teste = buff.split("  ");
+        String[] array = buff.split("  ");
 
-        for(String linha : teste){
+        for(String linha : array){
             String[] key_value = linha.split(":");
             mapa_impressoras.put(key_value[0],Integer.parseInt(key_value[1]));
         }
