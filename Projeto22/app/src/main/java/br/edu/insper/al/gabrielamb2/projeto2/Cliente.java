@@ -3,7 +3,6 @@ package br.edu.insper.al.gabrielamb2.projeto2;
 public class Cliente {
     private String cliente;
     private String infill;
-
     private String layer;
     private String impressoras;
     private String materiais;

@@ -40,6 +40,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
@@ -401,38 +403,80 @@ public class Cotacao extends AppCompatActivity{
                     System.out.println(e.getMessage());
                 }
 
-                Row row = sheet.createRow(0);
+                //PARTE DE CRIAR UM EXCEL
+
+
+
+
+                //Now column and row
+                Row row =sheet.createRow(0);
+
                 cell=row.createCell(0);
-                cell.setCellValue("Cliente");
+                cell.setCellValue("Dia e Hora");
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(1);
-                cell.setCellValue("Impressora");
+                cell.setCellValue("Cliente");
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(2);
-                cell.setCellValue("Infill");
+                cell.setCellValue("Impressora");
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(3);
-                cell.setCellValue("Layer");
+                cell.setCellValue("Infill");
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(4);
-                cell.setCellValue("Mão de obra");
+                cell.setCellValue("Layer");
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(5);
-                cell.setCellValue("Materiais");
+                cell.setCellValue("Mão de obra");
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(6);
-                cell.setCellValue("Peso");
+                cell.setCellValue("Materiais");
                 cell.setCellStyle(cellStyle);
 
                 cell=row.createCell(7);
+                cell.setCellValue("Peso");
+                cell.setCellStyle(cellStyle);
+
+                cell=row.createCell(8);
                 cell.setCellValue("Tempo");
                 cell.setCellStyle(cellStyle);
+
+
+                sheet.setColumnWidth(0,(10*500));
+                sheet.setColumnWidth(1,(10*200));
+                sheet.setColumnWidth(2,(10*300));
+                sheet.setColumnWidth(3,(10*200));
+                sheet.setColumnWidth(4,(10*200));
+                sheet.setColumnWidth(5,(10*400));
+                sheet.setColumnWidth(6,(10*200));
+                sheet.setColumnWidth(7,(10*200));
+                sheet.setColumnWidth(8,(10*200));
+
+
+
+                //      cell=row.createCell(6);
+                //     cell.setCellValue("Support Removal");
+                //      cell.setCellStyle(cellStyle);
+
+                //       cell=row.createCell(7);
+                //       cell.setCellValue("Vapor Polishing");
+                //       cell.setCellStyle(cellStyle);
+
+                //  cell=row.createCell(1);
+                //   cell.setCellValue("Peça");
+                //  cell.setCellStyle(cellStyle);
+
+                //  cell=row.createCell(11);
+                // cell.setCellValue("Valor");
+                //  cell.setCellStyle(cellStyle);
+
+
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     File file = new File(getExternalFilesDir(null),"orcamentoantigo.xls");
@@ -470,7 +514,10 @@ public class Cotacao extends AppCompatActivity{
                     // classe Java que representa o tipo de dado
                     // que você acredita estar lá. Se você errar,
                     // esse método vai lançar uma DatabaseException.
-                    getClientes((Map<String, Object>)dataSnapshot.getValue());
+
+                        getClientes((Map<String, Object>)dataSnapshot.getValue());
+
+
 
                 } else {
                     System.out.println("DEU RUIM");
@@ -483,11 +530,20 @@ public class Cotacao extends AppCompatActivity{
             }
         });    }
 
-    private void getClientes(Map<String, Object> cotacoes){
+    private static String parseIso(Date value) {
+            SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            return dt.format(value);
+    }
+
+
+    private void getClientes(Map<String, Object> cotacoes) {
 
         LinkedList<String> cotcaoinidivual = new LinkedList<>();
         for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
             Map singlecotacao = (Map) entry.getValue();
+            Date newdate = new Date(Long.valueOf(entry.getKey()));
+            String hora = parseIso(newdate);
+
             Object nome = singlecotacao.get("cliente");
             Object impressoras = singlecotacao.get("impressoras");
             Object infill = singlecotacao.get("infill");
@@ -497,6 +553,8 @@ public class Cotacao extends AppCompatActivity{
             Object peso = singlecotacao.get("peso");
             Object tempo = singlecotacao.get("tempo");
 
+
+            cotcaoinidivual.add(hora);
             cotcaoinidivual.add(nome.toString());
             cotcaoinidivual.add(impressoras.toString());
             cotcaoinidivual.add(infill.toString());
@@ -506,7 +564,9 @@ public class Cotacao extends AppCompatActivity{
             cotcaoinidivual.add(peso.toString());
             cotcaoinidivual.add(tempo.toString());
 
-            linhas += 1;
+            //  cotcaoinidivual.add(valor.toString());
+
+            linhas+=1;
 
             colocarnoexcel(cotcaoinidivual);
             cotcaoinidivual = new LinkedList<>();
@@ -547,6 +607,11 @@ public class Cotacao extends AppCompatActivity{
 
         cell=row1.createCell(7);
         cell.setCellValue(cotcaoinidivual.get(7));
+        cell.setCellStyle(cellStyle);
+
+
+        cell=row1.createCell(8);
+        cell.setCellValue(cotcaoinidivual.get(8));
         cell.setCellStyle(cellStyle);
 
     }
