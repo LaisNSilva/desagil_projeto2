@@ -359,7 +359,6 @@ public class Cotacao extends AppCompatActivity{
                 File file = new File(diretorio + "/" + filename);
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    // External storage is usable
                     FileOutputStream outputStream = null;
                     try {
                         outputStream= new FileOutputStream(file);
@@ -373,6 +372,8 @@ public class Cotacao extends AppCompatActivity{
                 Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
                 mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
                 getOrcamentos();
+
+
             }
         });
 
