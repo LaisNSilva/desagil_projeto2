@@ -24,13 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setLogo(R.drawable.logo_titulo);
-        getSupportActionBar().setTitle("Impressão 3D");
 
         final Intent cotacao = new Intent(this, Cotacao.class);
 
         final Intent pedidos = new Intent(this, Pedidos.class);
 
-       // Intent configuracao = new Intent(this, Configuracao.class);
+        final Intent configuracao = new Intent(this, Configuracao.class);
 
 
         buttonCotacao.setOnClickListener(new View.OnClickListener() {
@@ -47,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
         });
         buttonConfiguracao.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-               // startActivity(configuracao);
+            public void onClick(View v) { startActivity(configuracao);
             }
         });
 

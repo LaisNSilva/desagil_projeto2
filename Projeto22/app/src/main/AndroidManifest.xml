@@ -25,7 +25,7 @@
 
         <activity android:name=".Cotacao" />
 
-        <activity android:name=".Pedidos"/>
+        <activity android:name=".Pedidos" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

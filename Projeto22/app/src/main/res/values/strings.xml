@@ -13,11 +13,6 @@
         <item>TPE</item>
         <item>SoftPLA</item>
         <item>HIPS</item>
-
     </string-array>
 
-    <string-array name="impressoras">
-        <item>Replicator +</item>
-        <item>Replicator Z18</item>
-    </string-array>
 </resources>

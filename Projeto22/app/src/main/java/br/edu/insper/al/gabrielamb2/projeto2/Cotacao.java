@@ -33,12 +33,16 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.IOUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -49,22 +53,22 @@ public class Cotacao extends AppCompatActivity{
     private static final String TAG = "Uri";
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
+    String arquivo;
     private String requisição;
-    Workbook wb=new HSSFWorkbook();
-    Cell cell=null;
-    CellStyle cellStyle=wb.createCellStyle();
-    //Now we are creating sheet
-    Sheet sheet= wb.createSheet("Orçamentos Antigos");
-    int linhas=0;
+    double velocidade;
+
+//  ------- Variaveis Excel ------------------
+    Workbook wb = new HSSFWorkbook();
+    Cell cell = null;
+    CellStyle cellStyle = wb.createCellStyle();
+    Sheet sheet = wb.createSheet("Orçamentos Antigos");
+    int linhas = 0;
 
 
     private void showToast(String text) {
-
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
         toast.show();
     }
-
-    String arquivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,18 +98,68 @@ public class Cotacao extends AppCompatActivity{
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
 
-        //Spinners (Impressoras e Filamentos)
+//      =======================Ler o nome e velocidade das impressoras===================================
+
+        String buff = "";
+        String data = "";
+
+        final String filename_impressoras = "impressoras.txt";
+
+        File file_impressoras = new File(diretorio + "/" + filename_impressoras);
+
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file_impressoras);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        while (true){
+            try {
+                if (!((data = bufferedReader.readLine()) != null)) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            buff += data;
+        }
+
+//      -------------------------------Hashmap das Impressoras---------------------------------------------
+        HashMap<String,Double> mapa_impressoras = new HashMap<>();
+        String[] array = buff.split("  ");
+
+        for(String linha : array){
+            String[] key_value = linha.split(":");
+            mapa_impressoras.put(key_value[0],Double.parseDouble(key_value[1]));
+        }
+
+        String nomes_impressoras = "";
+
+        for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
+            nomes_impressoras += set.getKey() + "  ";
+        }
+
+        String[] impressoras_array = nomes_impressoras.split("  ");
+        ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Cotacao.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
+
+        final Spinner impressoras = findViewById(R.id.impressora);
+        impressoras.setAdapter(colocar_na_lista);
+
+//      ------------------------------Velocidade de acordo com a Impressora------------------------------
+
+        String impressora_escolhida = impressoras.getSelectedItem().toString();
+
+        for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
+            if (impressora_escolhida.equals(set.getKey())){
+                velocidade = set.getValue();
+            }
+        }
+
         final Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         materiais.setAdapter(adapter1);
 
-        final Spinner impressoras = findViewById(R.id.impressora);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.impressoras, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        impressoras.setAdapter(adapter2);
-
-        //Botao para Importar um arquivo
+//      ===============================Importar um aqruivo================================================
         buttonArq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,12 +174,10 @@ public class Cotacao extends AppCompatActivity{
             }
         });
 
-        //Botao para Escrever um arquivo txt
+//      ====================== API + TXT + Excel =============================================================
         processar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                System.out.println("SERA QUE TA NULO?: "+ arquivo);
 
                 PartPriceConfig partPriceConfig = new PartPriceConfig();
                 String material_escolhido = materiais.getSelectedItem().toString();
@@ -182,7 +234,7 @@ public class Cotacao extends AppCompatActivity{
 
                 $_POST.put("vaporPolishing", false);
 
-                $_POST.put("shipping", "pickup");
+                $_POST.put("shipping", "delivery");
 
                 $_POST.put("rushPrinting",false);
                 $_POST.put("density", densidade);
@@ -261,7 +313,7 @@ public class Cotacao extends AppCompatActivity{
                 HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
                 HashMap<String, String>values_files = new HashMap<>();
 
-                values_files.put("name", "block100.stl");
+                values_files.put("name", "Cube_3d_printing_sample.stl");
                 values_files.put("type", "model/stl");
                 try{
                     values_files.put("tmp_name", arquivo);
@@ -271,8 +323,6 @@ public class Cotacao extends AppCompatActivity{
 
                 }
                 $_FILES.put("stlFiles[]", values_files);
-
-
 
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
@@ -290,15 +340,13 @@ public class Cotacao extends AppCompatActivity{
                     e.printStackTrace();
                 }
 
+//              -------------------------------- TXT -----------------------------------------------------
 
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
                 String layer_ = layer.getText().toString();
                 String impressora = impressoras.getSelectedItem().toString();
                 String maodeobra = mao_de_obra.getText().toString();
-                //---------------------------------------------
-                //Calculos
-                //---------------------------------------------
                 String peso_ = peso.getText().toString();
                 String tempo_ = tempo.getText().toString();
                 String valor_ = valor.getText().toString();
@@ -313,7 +361,6 @@ public class Cotacao extends AppCompatActivity{
                 File file = new File(diretorio + "/" + filename);
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    // External storage is usable
                     FileOutputStream outputStream = null;
                     try {
                         outputStream= new FileOutputStream(file);
@@ -327,8 +374,11 @@ public class Cotacao extends AppCompatActivity{
                 Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
                 mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
                 getOrcamentos();
+
             }
         });
+
+//      ===========================Compartilhar + Criar EXCEL======================================
 
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,26 +386,17 @@ public class Cotacao extends AppCompatActivity{
 
                 String cliente_ = cliente.getText().toString();
                 String filename = "cotacao_"+cliente_+".txt";
-//
                 String path = diretorio+filename;
-//
                 File minhaFile = new File(path);
-//
+
                 try{
-//
                     Uri uri = FileProvider.getUriForFile(Cotacao.this, "br.edu.insper.al.gabrielamb2.projeto2.fileprovider", minhaFile);
-//
                     Intent share = new Intent();
 
                     share.setAction(Intent.ACTION_SEND);
-
                     share.setType("text/plain");
-
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
                     share.putExtra(Intent.EXTRA_STREAM, uri);
-//                    share.setPackage("com.whatsapp");
-
                     startActivity(share);
 
                 }catch (Exception e){
@@ -369,7 +410,6 @@ public class Cotacao extends AppCompatActivity{
 
                 //Now column and row
                 Row row =sheet.createRow(0);
-
 
                 cell=row.createCell(0);
                 cell.setCellValue("Dia e Hora");
@@ -407,6 +447,7 @@ public class Cotacao extends AppCompatActivity{
                 cell.setCellValue("Tempo");
                 cell.setCellStyle(cellStyle);
 
+
                 sheet.setColumnWidth(0,(10*500));
                 sheet.setColumnWidth(1,(10*200));
                 sheet.setColumnWidth(2,(10*300));
@@ -436,8 +477,8 @@ public class Cotacao extends AppCompatActivity{
                 //  cell.setCellStyle(cellStyle);
 
 
+
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    // External storage is usable
                     File file = new File(getExternalFilesDir(null),"orcamentoantigo.xls");
                     FileOutputStream outputStream = null;
                     try {
@@ -457,15 +498,10 @@ public class Cotacao extends AppCompatActivity{
                     }
 
                 } else {
-                    // External storage is not usable
-                    // Try again later
+                    showToast("Nao foi possivel acessar o arquivo");
                 }
-
-
-
             }
         });
-
     }
 
     private void getOrcamentos() {
@@ -516,7 +552,6 @@ public class Cotacao extends AppCompatActivity{
             Object materiais = singlecotacao.get("materiais");
             Object peso = singlecotacao.get("peso");
             Object tempo = singlecotacao.get("tempo");
-            //  Object valor = singlecotacao.get("valor");
 
 
             cotcaoinidivual.add(hora);
@@ -528,10 +563,10 @@ public class Cotacao extends AppCompatActivity{
             cotcaoinidivual.add(materiais.toString());
             cotcaoinidivual.add(peso.toString());
             cotcaoinidivual.add(tempo.toString());
+
             //  cotcaoinidivual.add(valor.toString());
 
             linhas+=1;
-
 
             colocarnoexcel(cotcaoinidivual);
             cotcaoinidivual = new LinkedList<>();
@@ -540,13 +575,7 @@ public class Cotacao extends AppCompatActivity{
 
     private void colocarnoexcel(LinkedList<String> cotcaoinidivual) {
 
-        Row row1 =sheet.createRow(linhas);
-
-        //for(int i =0; i<=cotcaoinidivual.size();i++ ){
-        //        cell=row1.createCell(i);
-        //        cell.setCellValue(cotcaoinidivual.get(i));
-        //        cell.setCellStyle(cellStyle);
-        //    }
+        Row row1 = sheet.createRow(linhas);
 
         cell=row1.createCell(0);
         cell.setCellValue(cotcaoinidivual.get(0));
@@ -580,15 +609,12 @@ public class Cotacao extends AppCompatActivity{
         cell.setCellValue(cotcaoinidivual.get(7));
         cell.setCellStyle(cellStyle);
 
+
         cell=row1.createCell(8);
         cell.setCellValue(cotcaoinidivual.get(8));
         cell.setCellStyle(cellStyle);
 
-
-
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -611,37 +637,17 @@ public class Cotacao extends AppCompatActivity{
             }
             Log.i("nome", filename);
 
-            //System.out.println(uri);
             InputStream inputStream = null;
             try {
                 inputStream = getBaseContext().getContentResolver().openInputStream(uri);
-                //creating an InputStreamReader object
-                /*
-                InputStreamReader isReader = new InputStreamReader(inputStream, "ASCII");
-                //Creating a BufferedReader object
-                BufferedReader reader = new BufferedReader(isReader);
-                StringBuffer sb = new StringBuffer();
-                String str;
-                while ((str = reader.readLine()) != null) {
-                    sb.append(str + "\n");
-                }
-                //System.out.println(sb.toString());
-                //Log.i("meuapp", sb.toString());
-                arquivo = sb.toString();
 
-                 */
                 byte[] bytes = IOUtils.toByteArray(inputStream);
                 arquivo = new String(bytes, "ISO-8859-1");
-                System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
-
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
-
-
 
 }
