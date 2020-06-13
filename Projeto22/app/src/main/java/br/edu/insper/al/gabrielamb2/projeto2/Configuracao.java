@@ -75,7 +75,7 @@ public class Configuracao extends AppCompatActivity {
 
                 File file = new File(diretorio + "/" + filename);
 
-                String linha = "Impressora: " + nome_impressora + "; Velocidade: " + num_velocidade + "  " + "\n";
+                String linha = nome_impressora + ":" + num_velocidade + "  " + "\n";
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
