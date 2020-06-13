@@ -63,6 +63,7 @@
             android:layout_width="380dp"
             android:layout_height="50dp"
             android:text="Adicionar"
+            android:layout_marginTop="15dp"
             android:textColor="#FFFFFF"
             android:background="@drawable/custom"
             app:layout_constraintStart_toStartOf="@id/num_velocidade"
