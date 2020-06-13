@@ -51,16 +51,14 @@ public class Cotacao extends AppCompatActivity{
     private static final String TAG = "Uri";
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
     String arquivo;
     private String requisição;
     int velocidade;
 
-
+//  ------- Variaveis Excel ------------------
     Workbook wb = new HSSFWorkbook();
     Cell cell = null;
     CellStyle cellStyle = wb.createCellStyle();
-    //Now we are creating sheet
     Sheet sheet = wb.createSheet("Orçamentos Antigos");
     int linhas = 0;
 
@@ -339,6 +337,8 @@ public class Cotacao extends AppCompatActivity{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+//              -------------------------------- TXT -----------------------------------------------------
 
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
