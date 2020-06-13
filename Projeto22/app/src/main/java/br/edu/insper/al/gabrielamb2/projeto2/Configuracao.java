@@ -122,7 +122,6 @@ public class Configuracao extends AppCompatActivity {
                             buff += data;
                         }
 
-
                         String[] impressoras = buff.split("  ");
                         ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Configuracao.this, android.R.layout.simple_list_item_1, impressoras);
                         lista.setAdapter(colocar_na_lista);

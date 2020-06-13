@@ -33,10 +33,14 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.IOUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -93,16 +97,53 @@ public class Cotacao extends AppCompatActivity{
         Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
 
+        String buff = "";
+        String data = "";
+
+        final String filename_impressoras = "impressoras.txt";
+
+        File file_impressoras = new File(diretorio + "/" + filename_impressoras);
+
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file_impressoras);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        while (true){
+            try {
+                if (!((data = bufferedReader.readLine()) != null)) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            buff += data;
+        }
+
+        String nomes_impressoras = "";
+
+        for(char letra :buff.toCharArray()){
+            if (!Character.isDigit(letra)){
+                nomes_impressoras += letra;
+            }
+        }
+
+        String r1 = nomes_impressoras.replace("Impressora: ","");
+        String r2 = r1.replace("; Velocidade: ","");
+
+        String[] impressoras_array = r2.split("  ");
+        ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Cotacao.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
+
+        final Spinner impressoras = findViewById(R.id.impressora);
+        impressoras.setAdapter(colocar_na_lista);
+
         //Spinners (Impressoras e Filamentos)
         final Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         materiais.setAdapter(adapter1);
 
-        final Spinner impressoras = findViewById(R.id.impressora);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.impressoras, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        impressoras.setAdapter(adapter2);
+
 
         //Botao para Importar um arquivo
         buttonArq.setOnClickListener(new View.OnClickListener() {
