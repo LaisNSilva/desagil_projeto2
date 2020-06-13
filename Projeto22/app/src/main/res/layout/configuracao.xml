@@ -15,17 +15,31 @@
             layout="@layout/toolbar"/>
 
         <TextView
+            android:id="@+id/texto_titulo"
+            android:textColor="#042e48"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="CONFIGURACÕES"
+            android:textSize="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
             android:id="@+id/impressora"
             android:layout_width="380dp"
             android:layout_height="50dp"
             android:text="Nome da Impressora:"
             android:textColor="@android:color/black"
             android:textSize="20dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:layout_marginStart="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/texto_titulo"/>
 
         <EditText
             android:id="@+id/nome_impressora"
@@ -68,7 +82,6 @@
             android:background="@drawable/custom"
             app:layout_constraintStart_toStartOf="@id/num_velocidade"
             app:layout_constraintTop_toBottomOf="@id/num_velocidade"/>
-
 
         <Button
             android:id="@+id/botao_ler"
