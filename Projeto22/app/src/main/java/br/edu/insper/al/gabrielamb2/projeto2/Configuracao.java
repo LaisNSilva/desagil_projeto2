@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -122,7 +123,22 @@ public class Configuracao extends AppCompatActivity {
                             buff += data;
                         }
 
-                        String[] impressoras = buff.split("  ");
+                        HashMap<String,Integer> mapa_impressoras = new HashMap<>();
+                        String[] array = buff.split("  ");
+
+                        for(String linha : array){
+                            String[] key_value = linha.split(":");
+                            mapa_impressoras.put(key_value[0],Integer.parseInt(key_value[1]));
+                        }
+
+                        String string_grande = "";
+
+                        for(Map.Entry<String,Integer> set : mapa_impressoras.entrySet()){
+                            string_grande += "Impressora: " + set.getKey() + "; Velocidade: " + set.getValue() + "  ";
+                        }
+
+                        String[] impressoras = string_grande.split("  ");
+
                         ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Configuracao.this, android.R.layout.simple_list_item_1, impressoras);
                         lista.setAdapter(colocar_na_lista);
 
