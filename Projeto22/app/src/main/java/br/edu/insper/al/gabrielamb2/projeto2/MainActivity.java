@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Intent pedidos = new Intent(this, Pedidos.class);
 
-       // Intent configuracao = new Intent(this, Configuracao.class);
+        final Intent configuracao = new Intent(this, Configuracao.class);
 
 
         buttonCotacao.setOnClickListener(new View.OnClickListener() {
@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
         buttonConfiguracao.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-               // startActivity(configuracao);
+            public void onClick(View v) { startActivity(configuracao);
             }
         });
 

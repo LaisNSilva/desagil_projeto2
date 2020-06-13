@@ -47,22 +47,23 @@ public class Cotacao extends AppCompatActivity{
     private static final String TAG = "Uri";
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
+    String arquivo;
     private String requisição;
-    Workbook wb=new HSSFWorkbook();
-    Cell cell=null;
-    CellStyle cellStyle=wb.createCellStyle();
+
+
+    Workbook wb = new HSSFWorkbook();
+    Cell cell = null;
+    CellStyle cellStyle = wb.createCellStyle();
     //Now we are creating sheet
-    Sheet sheet= wb.createSheet("Orçamentos Antigos");
-    int linhas=0;
+    Sheet sheet = wb.createSheet("Orçamentos Antigos");
+    int linhas = 0;
 
 
     private void showToast(String text) {
-
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
         toast.show();
     }
-
-    String arquivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,8 +271,6 @@ public class Cotacao extends AppCompatActivity{
                 }
                 $_FILES.put("stlFiles[]", values_files);
 
-
-
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
                 System.out.println(output_request);
@@ -287,7 +286,6 @@ public class Cotacao extends AppCompatActivity{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
                 String cliente_ = cliente.getText().toString();
                 String infill_ = infill.getText().toString();
@@ -362,7 +360,7 @@ public class Cotacao extends AppCompatActivity{
                 //PARTE DE CRIAR UM EXCEL
 
                 //Now column and row
-                Row row =sheet.createRow(0);
+                Row row = sheet.createRow(0);
                 cell=row.createCell(0);
                 cell.setCellValue("Cliente");
                 cell.setCellStyle(cellStyle);
@@ -475,7 +473,6 @@ public class Cotacao extends AppCompatActivity{
 
             linhas+=1;
 
-            System.out.println(cotcaoinidivual+ ",UUUUUUUUUUUUU AMOOOOOOOOOOOO GABI");
             colocarnoexcel(cotcaoinidivual);
             cotcaoinidivual = new LinkedList<>();
         }
@@ -483,7 +480,7 @@ public class Cotacao extends AppCompatActivity{
 
     private void colocarnoexcel(LinkedList<String> cotcaoinidivual) {
 
-        Row row1 =sheet.createRow(linhas);
+        Row row1 = sheet.createRow(linhas);
 
         cell=row1.createCell(0);
         cell.setCellValue(cotcaoinidivual.get(0));
@@ -517,11 +514,7 @@ public class Cotacao extends AppCompatActivity{
         cell.setCellValue(cotcaoinidivual.get(7));
         cell.setCellStyle(cellStyle);
 
-
-
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -552,14 +545,10 @@ public class Cotacao extends AppCompatActivity{
                 arquivo = new String(bytes, "ISO-8859-1");
                 System.out.println("AQUI ESTÁ O ARQUIVO:" + arquivo);
 
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
-
-
 
 }

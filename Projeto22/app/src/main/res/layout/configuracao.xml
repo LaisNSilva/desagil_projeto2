@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Configuracao">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/toolbar"/>
+
+        <TextView
+            android:id="@+id/impressora"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:text="Nome da Impressora:"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/nome_impressora"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:hint=""
+            android:gravity="center"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@id/impressora"
+            app:layout_constraintTop_toBottomOf="@id/impressora" />
+
+        <TextView
+            android:id="@+id/velocidade"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:text="Velocidade:"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/nome_impressora"
+            app:layout_constraintTop_toBottomOf="@id/nome_impressora"/>
+
+        <EditText
+            android:id="@+id/num_velocidade"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:hint=""
+            android:textSize="20dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/velocidade"
+            app:layout_constraintTop_toBottomOf="@id/velocidade" />
+
+        <Button
+            android:id="@+id/botao_adicionar"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:text="Adicionar"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/custom"
+            app:layout_constraintStart_toStartOf="@id/num_velocidade"
+            app:layout_constraintTop_toBottomOf="@id/num_velocidade"/>
+
+
+        <Button
+            android:id="@+id/botao_ler"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:text="Ver Impressoras adicionadas"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/custom"
+            app:layout_constraintStart_toStartOf="@id/botao_adicionar"
+            app:layout_constraintTop_toBottomOf="@id/botao_adicionar"/>
+
+        <ListView
+            android:id="@+id/lista_todas_impressoras"
+            android:layout_width="380dp"
+            android:layout_height="250dp"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/botao_ler"
+            app:layout_constraintTop_toBottomOf="@id/botao_ler"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
