@@ -67,7 +67,7 @@ public class Cotacao extends AppCompatActivity{
 
 
     private void showToast(String text) {
-        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -159,7 +159,7 @@ public class Cotacao extends AppCompatActivity{
             }
 
         }else {
-            showToast("Adicione uma Impressora");
+            showToast("Adicione uma impressora primeiro!");
         }
 
 
