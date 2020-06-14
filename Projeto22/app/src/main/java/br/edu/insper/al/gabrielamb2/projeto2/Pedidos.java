@@ -66,8 +66,4 @@ public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?>parent, View view, int position, long id){
        //oq fazer quando clicar
     }
-
-
-
-
 }

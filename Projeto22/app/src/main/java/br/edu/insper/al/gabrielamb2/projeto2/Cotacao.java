@@ -56,6 +56,7 @@ public class Cotacao extends AppCompatActivity{
     String arquivo;
     private String requisição;
     double velocidade;
+    Spinner impressoras;
 
 //  ------- Variaveis Excel ------------------
     Workbook wb = new HSSFWorkbook();
@@ -107,52 +108,60 @@ public class Cotacao extends AppCompatActivity{
 
         File file_impressoras = new File(diretorio + "/" + filename_impressoras);
 
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file_impressoras);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        while (true){
+        if(file_impressoras.exists()){
+
+            FileInputStream inputStream = null;
             try {
-                if (!((data = bufferedReader.readLine()) != null)) break;
-            } catch (IOException e) {
+                inputStream = new FileInputStream(file_impressoras);
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            buff += data;
-        }
-
-//      -------------------------------Hashmap das Impressoras---------------------------------------------
-        HashMap<String,Double> mapa_impressoras = new HashMap<>();
-        String[] array = buff.split("  ");
-
-        for(String linha : array){
-            String[] key_value = linha.split(":");
-            mapa_impressoras.put(key_value[0],Double.parseDouble(key_value[1]));
-        }
-
-        String nomes_impressoras = "";
-
-        for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
-            nomes_impressoras += set.getKey() + "  ";
-        }
-
-        String[] impressoras_array = nomes_impressoras.split("  ");
-        ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Cotacao.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
-
-        final Spinner impressoras = findViewById(R.id.impressora);
-        impressoras.setAdapter(colocar_na_lista);
-
-//      ------------------------------Velocidade de acordo com a Impressora------------------------------
-
-        String impressora_escolhida = impressoras.getSelectedItem().toString();
-
-        for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
-            if (impressora_escolhida.equals(set.getKey())){
-                velocidade = set.getValue();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            while (true){
+                try {
+                    if (!((data = bufferedReader.readLine()) != null)) break;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                buff += data;
             }
+
+            //      -------------------------------Hashmap das Impressoras---------------------------------------------
+
+            HashMap<String,Double> mapa_impressoras = new HashMap<>();
+            String[] array = buff.split("  ");
+
+            for(String linha : array){
+                String[] key_value = linha.split(":");
+                mapa_impressoras.put(key_value[0],Double.parseDouble(key_value[1]));
+            }
+
+            String nomes_impressoras = "";
+
+            for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
+                nomes_impressoras += set.getKey() + "  ";
+            }
+
+            String[] impressoras_array = nomes_impressoras.split("  ");
+            ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Cotacao.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
+
+            impressoras = findViewById(R.id.impressora);
+            impressoras.setAdapter(colocar_na_lista);
+
+            //      ------------------------------Velocidade de acordo com a Impressora------------------------------
+
+            String impressora_escolhida = impressoras.getSelectedItem().toString();
+
+            for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
+                if (impressora_escolhida.equals(set.getKey())){
+                    velocidade = set.getValue();
+                }
+            }
+
+        }else {
+            showToast("Adicione uma Impressora");
         }
+
 
         final Spinner materiais = findViewById(R.id.material);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.materiais, android.R.layout.simple_spinner_item);
