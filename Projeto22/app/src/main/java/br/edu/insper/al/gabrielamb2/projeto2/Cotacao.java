@@ -130,7 +130,7 @@ public class Cotacao extends AppCompatActivity{
 
             //      -------------------------------Hashmap das Impressoras---------------------------------------------
 
-            String[] array = buff.split("  ");
+            String[] array = buff.split("     ");
 
             for(String linha : array){
                 String[] key_value = linha.split(":");

@@ -29,69 +29,81 @@
             />
 
         <TextView
-            android:id="@+id/impressora"
+            android:id="@+id/adc"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:text="Nome da Impressora:"
+            android:text="Adcionar uma nova impressora:"
             android:textColor="@android:color/black"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:layout_marginStart="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/texto_titulo"/>
 
+
+        <TextView
+            android:id="@+id/impressora"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:text="Nome:"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@id/adc"
+            app:layout_constraintTop_toBottomOf="@id/adc"/>
+
         <EditText
             android:id="@+id/nome_impressora"
-            android:layout_width="380dp"
+            android:layout_width="240dp"
             android:layout_height="50dp"
             android:hint=""
             android:gravity="center"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@id/impressora"
-            app:layout_constraintTop_toBottomOf="@id/impressora" />
+            app:layout_constraintStart_toEndOf="@id/impressora"
+            app:layout_constraintTop_toBottomOf="@id/adc" />
 
         <TextView
             android:id="@+id/velocidade"
-            android:layout_width="380dp"
+            android:layout_width="140dp"
             android:layout_height="50dp"
             android:text="Velocidade:"
             android:textColor="@android:color/black"
             android:textSize="20dp"
-            android:gravity="center"
-            app:layout_constraintStart_toStartOf="@id/nome_impressora"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@id/impressora"
             app:layout_constraintTop_toBottomOf="@id/nome_impressora"/>
 
         <EditText
             android:id="@+id/num_velocidade"
-            android:layout_width="380dp"
+            android:layout_width="240dp"
             android:layout_height="50dp"
             android:hint=""
             android:textSize="20dp"
             android:gravity="center"
-            app:layout_constraintStart_toStartOf="@id/velocidade"
-            app:layout_constraintTop_toBottomOf="@id/velocidade" />
+            app:layout_constraintStart_toEndOf="@id/velocidade"
+            app:layout_constraintTop_toBottomOf="@id/nome_impressora" />
 
         <TextView
             android:id="@+id/hora_maquina"
-            android:layout_width="380dp"
+            android:layout_width="140dp"
             android:layout_height="50dp"
             android:text="Hora Maquina:"
             android:textColor="@android:color/black"
             android:textSize="20dp"
-            android:gravity="center"
-            app:layout_constraintStart_toStartOf="@id/num_velocidade"
-            app:layout_constraintTop_toBottomOf="@id/num_velocidade"/>
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@id/impressora"
+            app:layout_constraintTop_toBottomOf="@id/velocidade"/>
 
         <EditText
             android:id="@+id/num_horamaquina"
-            android:layout_width="380dp"
+            android:layout_width="240dp"
             android:layout_height="50dp"
             android:hint=""
             android:textSize="20dp"
             android:gravity="center"
-            app:layout_constraintStart_toStartOf="@id/hora_maquina"
-            app:layout_constraintTop_toBottomOf="@id/hora_maquina" />
+            app:layout_constraintStart_toEndOf="@id/hora_maquina"
+            app:layout_constraintTop_toBottomOf="@id/velocidade" />
 
         <Button
             android:id="@+id/botao_adicionar"
@@ -101,30 +113,19 @@
             android:layout_marginTop="15dp"
             android:textColor="#FFFFFF"
             android:background="@drawable/custom"
-            app:layout_constraintStart_toStartOf="@id/num_horamaquina"
+            app:layout_constraintStart_toStartOf="@id/impressora"
             app:layout_constraintTop_toBottomOf="@id/num_horamaquina"/>
 
         <Button
-            android:id="@+id/botao_ler"
+            android:id="@+id/botao_ver"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:text="Ver Impressoras adicionadas"
+            android:text="Ver impressoras"
+            android:layout_marginTop="15dp"
             android:textColor="#FFFFFF"
             android:background="@drawable/custom"
             app:layout_constraintStart_toStartOf="@id/botao_adicionar"
             app:layout_constraintTop_toBottomOf="@id/botao_adicionar"/>
-
-        <ListView
-            android:id="@+id/lista_todas_impressoras"
-            android:layout_width="380dp"
-            android:layout_height="150dp"
-            android:textColor="@android:color/black"
-            android:textSize="20dp"
-            android:gravity="center"
-            app:layout_constraintStart_toStartOf="@id/botao_ler"
-            app:layout_constraintTop_toBottomOf="@id/botao_ler"/>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
