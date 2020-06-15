@@ -56,7 +56,9 @@ public class Cotacao extends AppCompatActivity{
     String arquivo;
     private String requisição;
     double velocidade;
+    double horamaquina;
     Spinner impressoras;
+    HashMap<String,String> mapa_impressoras = new HashMap<>();
 
 //  ------- Variaveis Excel ------------------
     Workbook wb = new HSSFWorkbook();
@@ -128,17 +130,16 @@ public class Cotacao extends AppCompatActivity{
 
             //      -------------------------------Hashmap das Impressoras---------------------------------------------
 
-            HashMap<String,Double> mapa_impressoras = new HashMap<>();
             String[] array = buff.split("  ");
 
             for(String linha : array){
                 String[] key_value = linha.split(":");
-                mapa_impressoras.put(key_value[0],Double.parseDouble(key_value[1]));
+                mapa_impressoras.put(key_value[0],key_value[1]);
             }
 
             String nomes_impressoras = "";
 
-            for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
+            for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
                 nomes_impressoras += set.getKey() + "  ";
             }
 
@@ -149,14 +150,6 @@ public class Cotacao extends AppCompatActivity{
             impressoras.setAdapter(colocar_na_lista);
 
             //      ------------------------------Velocidade de acordo com a Impressora------------------------------
-
-            String impressora_escolhida = impressoras.getSelectedItem().toString();
-
-            for(Map.Entry<String,Double> set : mapa_impressoras.entrySet()){
-                if (impressora_escolhida.equals(set.getKey())){
-                    velocidade = set.getValue();
-                }
-            }
 
         }else {
             showToast("Adicione uma impressora primeiro!");
@@ -188,218 +181,235 @@ public class Cotacao extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
-                PartPriceConfig partPriceConfig = new PartPriceConfig();
-                String material_escolhido = materiais.getSelectedItem().toString();
+                if(!cliente.getText().toString().equals("") && !infill.getText().toString().equals("") &&
+                        !layer.getText().toString().equals("") && !mao_de_obra.getText().toString().equals("")){
 
-                String color = null;
-                String densidade = null;
-                String preço_por_quilo = null;
+                    PartPriceConfig partPriceConfig = new PartPriceConfig();
+                    String material_escolhido = materiais.getSelectedItem().toString();
 
-                if (material_escolhido.equals("ABS")){
-                    color = partPriceConfig.getABS_color();
-                    densidade = partPriceConfig.getABS_density();
-                    preço_por_quilo = partPriceConfig.getABS_PK();
-                }
-                else if (material_escolhido.equals("PLA")){
-                    color = partPriceConfig.getPLA_color();
-                    densidade = partPriceConfig.getPLA_density();
-                    preço_por_quilo = partPriceConfig.getPLA_PK();
-                }
-                else if (material_escolhido.equals("PC")){
-                    color = partPriceConfig.getPC_color();
-                    densidade = partPriceConfig.getPC_density();
-                    preço_por_quilo = partPriceConfig.getPC_PK();
-                }
-                else if (material_escolhido.equals("LayWood")){
-                    color = partPriceConfig.getLayWood_color();
-                    densidade = partPriceConfig.getLayWood_density();
-                    preço_por_quilo = partPriceConfig.getLayWood_PK();
-                }
-                else if (material_escolhido.equals("BendLAY")){
-                    color = partPriceConfig.getBendLAY_color();
-                    densidade = partPriceConfig.getBendLAY_density();
-                    preço_por_quilo = partPriceConfig.getBendLAY_PK();
-                }
-                else if (material_escolhido.equals("TPE")){
-                    color = partPriceConfig.getTPE_color();
-                    densidade = partPriceConfig.getTPE_density();
-                    preço_por_quilo = partPriceConfig.getTPE_PK();
-                }
-                else if (material_escolhido.equals("SoftPLA")){
-                    color = partPriceConfig.getSoftPLA_color();
-                    densidade = partPriceConfig.getSoftPLA_density();
-                    preço_por_quilo = partPriceConfig.getSoftPLA_PK();
-                }
-                else if (material_escolhido.equals("HIPS")){
-                    color = partPriceConfig.getHIPS_color();
-                    densidade = partPriceConfig.getHIPS_density();
-                    preço_por_quilo = partPriceConfig.getHIPS_PK();
-                }
+                    String color = null;
+                    String densidade = null;
+                    String preço_por_quilo = null;
 
-                HashMap<String, Object>$_POST = new HashMap<>();
+                    if (material_escolhido.equals("ABS")){
+                        color = partPriceConfig.getABS_color();
+                        densidade = partPriceConfig.getABS_density();
+                        preço_por_quilo = partPriceConfig.getABS_PK();
+                    }
+                    else if (material_escolhido.equals("PLA")){
+                        color = partPriceConfig.getPLA_color();
+                        densidade = partPriceConfig.getPLA_density();
+                        preço_por_quilo = partPriceConfig.getPLA_PK();
+                    }
+                    else if (material_escolhido.equals("PC")){
+                        color = partPriceConfig.getPC_color();
+                        densidade = partPriceConfig.getPC_density();
+                        preço_por_quilo = partPriceConfig.getPC_PK();
+                    }
+                    else if (material_escolhido.equals("LayWood")){
+                        color = partPriceConfig.getLayWood_color();
+                        densidade = partPriceConfig.getLayWood_density();
+                        preço_por_quilo = partPriceConfig.getLayWood_PK();
+                    }
+                    else if (material_escolhido.equals("BendLAY")){
+                        color = partPriceConfig.getBendLAY_color();
+                        densidade = partPriceConfig.getBendLAY_density();
+                        preço_por_quilo = partPriceConfig.getBendLAY_PK();
+                    }
+                    else if (material_escolhido.equals("TPE")){
+                        color = partPriceConfig.getTPE_color();
+                        densidade = partPriceConfig.getTPE_density();
+                        preço_por_quilo = partPriceConfig.getTPE_PK();
+                    }
+                    else if (material_escolhido.equals("SoftPLA")){
+                        color = partPriceConfig.getSoftPLA_color();
+                        densidade = partPriceConfig.getSoftPLA_density();
+                        preço_por_quilo = partPriceConfig.getSoftPLA_PK();
+                    }
+                    else if (material_escolhido.equals("HIPS")){
+                        color = partPriceConfig.getHIPS_color();
+                        densidade = partPriceConfig.getHIPS_density();
+                        preço_por_quilo = partPriceConfig.getHIPS_PK();
+                    }
 
-                System.out.println("MATERIAL: " + material_escolhido);
+                    HashMap<String, Object>$_POST = new HashMap<>();
 
-                $_POST.put("material", materiais.getSelectedItem().toString());
-                $_POST.put("color", color);
-                $_POST.put("layerHeight", layer.getText().toString());
-                $_POST.put("infillPercentage", infill.getText().toString());
+                    System.out.println("MATERIAL: " + material_escolhido);
 
-                $_POST.put("supportRemoval", false);
+                    $_POST.put("material", materiais.getSelectedItem().toString());
+                    $_POST.put("color", color);
+                    $_POST.put("layerHeight", layer.getText().toString());
+                    $_POST.put("infillPercentage", infill.getText().toString());
 
-                $_POST.put("vaporPolishing", false);
+                    $_POST.put("supportRemoval", false);
 
-                $_POST.put("shipping", "delivery");
+                    $_POST.put("vaporPolishing", false);
 
-                $_POST.put("rushPrinting",false);
-                $_POST.put("density", densidade);
+                    $_POST.put("shipping", "delivery");
 
-                String config = "YTo3OntzOjk6Im1hdGVyaWFscyI7YTo5OntzOjM6IkFCUyI7YTo1OntzOjg6ImZ1bGx" +
-                        "OYW1lIjtzOjMxOiJBY3J5bG9uaXRyaWxlIEJ1dGFkaWVuZSBTdHlyZW5lIjtzOjU6InByaWNlIj" +
-                        "thOjI6e3M6NjoiYW1vdW50IjtkOjAuMjtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjY" +
-                        "W5CZVZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6" +
-                        "MS4wNDtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc" +
-                        "6IiMwMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6Ii" +
-                        "NGRjBGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN" +
-                        "0ZGMDAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIx" +
-                        "RkYiO2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjM6IlBMQSI7YTo" +
-                        "1OntzOjg6ImZ1bGxOYW1lIjtzOjE1OiJQb2x5bGFjdGljIGFjaWQiO3M6NToicHJpY2UiO2E6Mj" +
-                        "p7czo2OiJhbW91bnQiO2Q6MC4yNTtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZ" +
-                        "VZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4y" +
-                        "NTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc6IiM" +
-                        "wMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6IiNGRj" +
-                        "BGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN0ZGM" +
-                        "DAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIxRkYi" +
-                        "O2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjI6IlBDIjthOjU6e3M" +
-                        "6ODoiZnVsbE5hbWUiO3M6MTM6IlBvbHljYXJib25hdGUiO3M6NToicHJpY2UiO2E6Mjp7czo2Oi" +
-                        "JhbW91bnQiO2Q6MC42O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb" +
-                        "2xpc2hlZCI7YjoxO3M6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjI7czo0OiJ1" +
-                        "bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjEyOntpOjA7czo3OiIjMDAwMDAwIjt" +
-                        "pOjE7czo3OiIjRkZGRkZGIjtpOjI7czo3OiIjRkZGQUUwIjtpOjM7czo3OiIjRkYwRjBGIjtpOj" +
-                        "Q7czo3OiIjRkY4MzI0IjtpOjU7czo3OiIjRkZBOEM4IjtpOjY7czo3OiIjRjdGRjAwIjtpOjc7c" +
-                        "zo3OiIjNzBGRjMzIjtpOjg7czo3OiIjMTQwQUEzIjtpOjk7czo3OiIjODkyMUZGIjtpOjEwO3M6" +
-                        "NzoiIzkyOTFCNSI7aToxMTtzOjc6IiM4NzU5M0UiO319czo1OiJOeWxvbiI7YTo1OntzOjg6ImZ" +
-                        "1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4zNTtzOjQ6InVuaX" +
-                        "QiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZVZhcG9yUG9saXNoZWQiO2I6MDtzOjc6ImRlbnNpd" +
-                        "HkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4yNTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2" +
-                        "OiJjb2xvcnMiO2E6Njp7aTowO3M6NzoiIzAwMDAwMCI7aToxO3M6NzoiI0ZGRkZGRiI7aToyO3M" +
-                        "6NzoiI0ZGMEYwRiI7aTozO3M6NzoiIzcwRkYzMyI7aTo0O3M6NzoiIzE0MEFBMyI7aTo1O3M6NT" +
-                        "oiY2xlYXIiO319czo3OiJMYXlXb29kIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwcmljZ" +
-                        "SI7YToyOntzOjY6ImFtb3VudCI7ZDowLjg7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxODoi" +
-                        "Y2FuQmVWYXBvclBvbGlzaGVkIjtiOjA7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50Ijt" +
-                        "kOjEuMDU7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOj" +
-                        "c6IiNGRkZGRkYiO319czo3OiJCZW5kTEFZIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwc" +
-                        "mljZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjU7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czox" +
-                        "ODoiY2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW5" +
-                        "0IjtkOjEuMDI7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MD" +
-                        "tzOjc6IiM4NzU5M0UiO319czozOiJUUEUiO2E6NTp7czo4OiJmdWxsTmFtZSI7czoyMzoiVGhlc" +
-                        "m1vcGxhc3RpYyBlbGFzdG9tZXIiO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC42" +
-                        "O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M" +
-                        "6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE7czo0OiJ1bml0IjtzOjY6ImcvY2" +
-                        "1eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOjU6ImNsZWFyIjt9fXM6NzoiU29mdFBMQSI7Y" +
-                        "To1OntzOjg6ImZ1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC41" +
-                        "O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M" +
-                        "6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE1O3M6NDoidW5pdCI7czo2OiJnL2" +
-                        "NtXjMiO31zOjY6ImNvbG9ycyI7YTo0OntpOjA7czo3OiIjMDAwMDAwIjtpOjE7czo3OiIjRkYwR" +
-                        "jBGIjtpOjI7czo3OiIjMTQwQUEzIjtpOjM7czo3OiIjRkZGRkZGIjt9fXM6NDoiSElQUyI7YTo1" +
-                        "OntzOjg6ImZ1bGxOYW1lIjtzOjIzOiJIaWdoLWltcGFjdCBQb2x5c3R5cmVuZSI7czo1OiJwcml" +
-                        "jZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjI7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxOD" +
-                        "oiY2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50I" +
-                        "jtkOjEuMDY7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtz" +
-                        "Ojc6IiNGRkZBRTAiO319fXM6MTI6InByaW50aW5nQ29zdCI7YToyOntzOjY6ImFtb3VudCI7czo" +
-                        "0OiI0LjAwIjtzOjQ6InVuaXQiO3M6ODoiVVNEL2hvdXIiO31zOjY6ImFkZE9ucyI7YTozOntzOj" +
-                        "I0OiJzdXBwb3J0UmVtb3ZhbE11bHRpcGxpZXIiO2Q6MS4zMztzOjI0OiJ2YXBvclBvbGlzaGluZ" +
-                        "011bHRpcGxpZXIiO2Q6MS4yNTtzOjIyOiJydXNoUHJpbnRpbmdNdWx0aXBsaWVyIjtkOjEuNTt9" +
-                        "czoxMzoiZGVsaXZlcnlDb3N0cyI7YToyOntzOjQ6ImJhc2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q" +
-                        "6NS44O3M6NDoidW5pdCI7czozOiJVU0QiO31zOjExOiJ3ZWlnaHRQcmljZSI7YToyOntzOjY6Im" +
-                        "Ftb3VudCI7ZDowLjAxO3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fX1zOjEyOiJzbGljZXJQYXJhb" +
-                        "XMiO2E6MTp7czo3OiJzbGljZXJzIjthOjE6e2k6MDtzOjQ6ImN1cmEiO319czoxMjoibGF5ZXJI" +
-                        "ZWlnaHRzIjthOjM6e3M6NzoiZGVmYXVsdCI7YToyOntzOjY6ImFtb3VudCI7czo1OiIwLjI1NCI" +
-                        "7czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtaW4iO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4wNz" +
-                        "U7czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtYXgiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC40O" +
-                        "3M6NDoidW5pdCI7czoyOiJtbSI7fX1zOjExOiJwcmludFNwZWVkcyI7YToxOntzOjc6ImRlZmF1" +
-                        "bHQiO2E6Mjp7czo2OiJhbW91bnQiO2k6NTA7czo0OiJ1bml0IjtzOjQ6Im1tL3MiO319fQ%3D%3D";
+                    $_POST.put("rushPrinting",false);
+                    $_POST.put("density", densidade);
 
-
-                $_POST.put("configFile",config);
-
-                String boundary = "------WebKitFormBoundary" + "b511c710cb33734f";
-
-                HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
-                HashMap<String, String>values_files = new HashMap<>();
-
-                values_files.put("name", "Cube_3d_printing_sample.stl");
-                values_files.put("type", "model/stl");
-                try{
-                    values_files.put("tmp_name", arquivo);
-
-                }catch (Exception e){
-                    showToast("Arquivo vazio!");
-
-                }
-                $_FILES.put("stlFiles[]", values_files);
-
-                RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
-                String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
-                String impressora_escolhida = impressoras.getSelectedItem().toString();
-
-                String velocidade_de_impressao = "40";
-                String hora_maquina = "15";
-
-                System.out.println("velocidade_de_impressao: "+velocidade_de_impressao);
+                    String config = "YTo3OntzOjk6Im1hdGVyaWFscyI7YTo5OntzOjM6IkFCUyI7YTo1OntzOjg6ImZ1bGx" +
+                            "OYW1lIjtzOjMxOiJBY3J5bG9uaXRyaWxlIEJ1dGFkaWVuZSBTdHlyZW5lIjtzOjU6InByaWNlIj" +
+                            "thOjI6e3M6NjoiYW1vdW50IjtkOjAuMjtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjY" +
+                            "W5CZVZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6" +
+                            "MS4wNDtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc" +
+                            "6IiMwMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6Ii" +
+                            "NGRjBGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN" +
+                            "0ZGMDAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIx" +
+                            "RkYiO2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjM6IlBMQSI7YTo" +
+                            "1OntzOjg6ImZ1bGxOYW1lIjtzOjE1OiJQb2x5bGFjdGljIGFjaWQiO3M6NToicHJpY2UiO2E6Mj" +
+                            "p7czo2OiJhbW91bnQiO2Q6MC4yNTtzOjQ6InVuaXQiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZ" +
+                            "VZhcG9yUG9saXNoZWQiO2I6MTtzOjc6ImRlbnNpdHkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4y" +
+                            "NTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2OiJjb2xvcnMiO2E6MTI6e2k6MDtzOjc6IiM" +
+                            "wMDAwMDAiO2k6MTtzOjc6IiNGRkZGRkYiO2k6MjtzOjc6IiNGRkZBRTAiO2k6MztzOjc6IiNGRj" +
+                            "BGMEYiO2k6NDtzOjc6IiNGRjgzMjQiO2k6NTtzOjc6IiNGRkE4QzgiO2k6NjtzOjc6IiNGN0ZGM" +
+                            "DAiO2k6NztzOjc6IiM3MEZGMzMiO2k6ODtzOjc6IiMxNDBBQTMiO2k6OTtzOjc6IiM4OTIxRkYi" +
+                            "O2k6MTA7czo3OiIjOTI5MUI1IjtpOjExO3M6NzoiIzg3NTkzRSI7fX1zOjI6IlBDIjthOjU6e3M" +
+                            "6ODoiZnVsbE5hbWUiO3M6MTM6IlBvbHljYXJib25hdGUiO3M6NToicHJpY2UiO2E6Mjp7czo2Oi" +
+                            "JhbW91bnQiO2Q6MC42O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb" +
+                            "2xpc2hlZCI7YjoxO3M6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjI7czo0OiJ1" +
+                            "bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjEyOntpOjA7czo3OiIjMDAwMDAwIjt" +
+                            "pOjE7czo3OiIjRkZGRkZGIjtpOjI7czo3OiIjRkZGQUUwIjtpOjM7czo3OiIjRkYwRjBGIjtpOj" +
+                            "Q7czo3OiIjRkY4MzI0IjtpOjU7czo3OiIjRkZBOEM4IjtpOjY7czo3OiIjRjdGRjAwIjtpOjc7c" +
+                            "zo3OiIjNzBGRjMzIjtpOjg7czo3OiIjMTQwQUEzIjtpOjk7czo3OiIjODkyMUZGIjtpOjEwO3M6" +
+                            "NzoiIzkyOTFCNSI7aToxMTtzOjc6IiM4NzU5M0UiO319czo1OiJOeWxvbiI7YTo1OntzOjg6ImZ" +
+                            "1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4zNTtzOjQ6InVuaX" +
+                            "QiO3M6NToiVVNEL2ciO31zOjE4OiJjYW5CZVZhcG9yUG9saXNoZWQiO2I6MDtzOjc6ImRlbnNpd" +
+                            "HkiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MS4yNTtzOjQ6InVuaXQiO3M6NjoiZy9jbV4zIjt9czo2" +
+                            "OiJjb2xvcnMiO2E6Njp7aTowO3M6NzoiIzAwMDAwMCI7aToxO3M6NzoiI0ZGRkZGRiI7aToyO3M" +
+                            "6NzoiI0ZGMEYwRiI7aTozO3M6NzoiIzcwRkYzMyI7aTo0O3M6NzoiIzE0MEFBMyI7aTo1O3M6NT" +
+                            "oiY2xlYXIiO319czo3OiJMYXlXb29kIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwcmljZ" +
+                            "SI7YToyOntzOjY6ImFtb3VudCI7ZDowLjg7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxODoi" +
+                            "Y2FuQmVWYXBvclBvbGlzaGVkIjtiOjA7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50Ijt" +
+                            "kOjEuMDU7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOj" +
+                            "c6IiNGRkZGRkYiO319czo3OiJCZW5kTEFZIjthOjU6e3M6ODoiZnVsbE5hbWUiO047czo1OiJwc" +
+                            "mljZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjU7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czox" +
+                            "ODoiY2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW5" +
+                            "0IjtkOjEuMDI7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MD" +
+                            "tzOjc6IiM4NzU5M0UiO319czozOiJUUEUiO2E6NTp7czo4OiJmdWxsTmFtZSI7czoyMzoiVGhlc" +
+                            "m1vcGxhc3RpYyBlbGFzdG9tZXIiO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC42" +
+                            "O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M" +
+                            "6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE7czo0OiJ1bml0IjtzOjY6ImcvY2" +
+                            "1eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtzOjU6ImNsZWFyIjt9fXM6NzoiU29mdFBMQSI7Y" +
+                            "To1OntzOjg6ImZ1bGxOYW1lIjtOO3M6NToicHJpY2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC41" +
+                            "O3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fXM6MTg6ImNhbkJlVmFwb3JQb2xpc2hlZCI7YjowO3M" +
+                            "6NzoiZGVuc2l0eSI7YToyOntzOjY6ImFtb3VudCI7ZDoxLjE1O3M6NDoidW5pdCI7czo2OiJnL2" +
+                            "NtXjMiO31zOjY6ImNvbG9ycyI7YTo0OntpOjA7czo3OiIjMDAwMDAwIjtpOjE7czo3OiIjRkYwR" +
+                            "jBGIjtpOjI7czo3OiIjMTQwQUEzIjtpOjM7czo3OiIjRkZGRkZGIjt9fXM6NDoiSElQUyI7YTo1" +
+                            "OntzOjg6ImZ1bGxOYW1lIjtzOjIzOiJIaWdoLWltcGFjdCBQb2x5c3R5cmVuZSI7czo1OiJwcml" +
+                            "jZSI7YToyOntzOjY6ImFtb3VudCI7ZDowLjI7czo0OiJ1bml0IjtzOjU6IlVTRC9nIjt9czoxOD" +
+                            "oiY2FuQmVWYXBvclBvbGlzaGVkIjtiOjE7czo3OiJkZW5zaXR5IjthOjI6e3M6NjoiYW1vdW50I" +
+                            "jtkOjEuMDY7czo0OiJ1bml0IjtzOjY6ImcvY21eMyI7fXM6NjoiY29sb3JzIjthOjE6e2k6MDtz" +
+                            "Ojc6IiNGRkZBRTAiO319fXM6MTI6InByaW50aW5nQ29zdCI7YToyOntzOjY6ImFtb3VudCI7czo" +
+                            "0OiI0LjAwIjtzOjQ6InVuaXQiO3M6ODoiVVNEL2hvdXIiO31zOjY6ImFkZE9ucyI7YTozOntzOj" +
+                            "I0OiJzdXBwb3J0UmVtb3ZhbE11bHRpcGxpZXIiO2Q6MS4zMztzOjI0OiJ2YXBvclBvbGlzaGluZ" +
+                            "011bHRpcGxpZXIiO2Q6MS4yNTtzOjIyOiJydXNoUHJpbnRpbmdNdWx0aXBsaWVyIjtkOjEuNTt9" +
+                            "czoxMzoiZGVsaXZlcnlDb3N0cyI7YToyOntzOjQ6ImJhc2UiO2E6Mjp7czo2OiJhbW91bnQiO2Q" +
+                            "6NS44O3M6NDoidW5pdCI7czozOiJVU0QiO31zOjExOiJ3ZWlnaHRQcmljZSI7YToyOntzOjY6Im" +
+                            "Ftb3VudCI7ZDowLjAxO3M6NDoidW5pdCI7czo1OiJVU0QvZyI7fX1zOjEyOiJzbGljZXJQYXJhb" +
+                            "XMiO2E6MTp7czo3OiJzbGljZXJzIjthOjE6e2k6MDtzOjQ6ImN1cmEiO319czoxMjoibGF5ZXJI" +
+                            "ZWlnaHRzIjthOjM6e3M6NzoiZGVmYXVsdCI7YToyOntzOjY6ImFtb3VudCI7czo1OiIwLjI1NCI" +
+                            "7czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtaW4iO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC4wNz" +
+                            "U7czo0OiJ1bml0IjtzOjI6Im1tIjt9czozOiJtYXgiO2E6Mjp7czo2OiJhbW91bnQiO2Q6MC40O" +
+                            "3M6NDoidW5pdCI7czoyOiJtbSI7fX1zOjExOiJwcmludFNwZWVkcyI7YToxOntzOjc6ImRlZmF1" +
+                            "bHQiO2E6Mjp7czo2OiJhbW91bnQiO2k6NTA7czo0OiJ1bml0IjtzOjQ6Im1tL3MiO319fQ%3D%3D";
 
 
-                try {
-                    requisição = requestMulti.Request(output_request, boundary);
-                    String tempo_get_json = requestMulti.getJsonTempo(requisição, velocidade_de_impressao);
-                    String tempo_set = tempo_get_json.replace(".", ",");
-                    String peso_get_json = requestMulti.getJsonPeso(requisição);
-                    String mao = mao_de_obra.getText().toString();
-                    Double preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, hora_maquina, preço_por_quilo);
-                    String preço_string = preço_getJson.toString();
-                    tempo.setText(tempo_set + " min");
-                    peso.setText(peso_get_json + " g");
-                    valor.setText(preço_string);
+                    $_POST.put("configFile",config);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    String boundary = "------WebKitFormBoundary" + "b511c710cb33734f";
+
+                    HashMap<String, HashMap<String, String>> $_FILES = new HashMap<>();
+                    HashMap<String, String>values_files = new HashMap<>();
+
+                    values_files.put("name", "Cube_3d_printing_sample.stl");
+                    values_files.put("type", "model/stl");
+                    try{
+                        values_files.put("tmp_name", arquivo);
+
+                    }catch (Exception e){
+                        showToast("Arquivo vazio!");
+
+                    }
+                    $_FILES.put("stlFiles[]", values_files);
+
+                    RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
+                    String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
+                    System.out.println(output_request);
+
+                    String impressora_escolhida = impressoras.getSelectedItem().toString();
+
+              
+                    String velocidade_de_impressao = "40";
+                    String hora_maquina = "15";
+
+                    System.out.println("velocidade_de_impressao: "+velocidade_de_impressao);
+
+
+                    try {
+                        requisição = requestMulti.Request(output_request, boundary);
+                        String tempo_get_json = requestMulti.getJsonTempo(requisição, velocidade_de_impressao);
+                        String tempo_set = tempo_get_json.replace(".", ",");
+                        String peso_get_json = requestMulti.getJsonPeso(requisição);
+                        String mao = mao_de_obra.getText().toString();
+                        Double preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, hora_maquina, preço_por_quilo);
+                        String preço_string = preço_getJson.toString();
+                        tempo.setText(tempo_set + " min");
+                        peso.setText(peso_get_json + " g");
+                        valor.setText(preço_string);
+
+                    for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
+                        if (impressora_escolhida.equals(set.getKey())){
+                            String valor_impressora = set.getValue();
+                            String[] valores = valor_impressora.split(",");
+                            velocidade = Double.parseDouble(valores[0]);
+                            horamaquina = Double.parseDouble(valores[1]);
+
+                        }
+                    }
 
 //              -------------------------------- TXT -----------------------------------------------------
 
-                String cliente_ = cliente.getText().toString();
-                String infill_ = infill.getText().toString();
-                String layer_ = layer.getText().toString();
-                String impressora = impressoras.getSelectedItem().toString();
-                String maodeobra = mao_de_obra.getText().toString();
-                String peso_ = peso.getText().toString();
-                String tempo_ = tempo.getText().toString();
-                String valor_ = valor.getText().toString();
+                    String cliente_ = cliente.getText().toString();
+                    String infill_ = infill.getText().toString();
+                    String layer_ = layer.getText().toString();
+                    String impressora = impressoras.getSelectedItem().toString();
+                    String maodeobra = mao_de_obra.getText().toString();
+                    String peso_ = peso.getText().toString();
+                    String tempo_ = tempo.getText().toString();
+                    String valor_ = valor.getText().toString();
 
-                String texto_final = "Cliente: "+ cliente_ + "  " + "Infill: " + infill_ + "  " + "Layer: "+ layer_ + "  " + "Impressora: " + impressora + "  "
-                        + "Material: " + material_escolhido + "  "+ "Mão de Obra: " + maodeobra + "  " + "Peso: " + peso_ + "  " + "Tempo: " +  tempo_ + "  " +"Valor: " + valor_;
+                    String texto_final = "Cliente: "+ cliente_ + "  " + "Infill: " + infill_ + "  " + "Layer: "+ layer_ + "  " + "Impressora: " + impressora + "  "
+                            + "Material: " + material_escolhido + "  "+ "Mão de Obra: " + maodeobra + "  " + "Peso: " + peso_ + "  " + "Tempo: " +  tempo_ + "  " +"Valor: " + valor_;
 
-                texto_final = texto_final.replace("  ","\n");
+                    texto_final = texto_final.replace("  ","\n");
 
-                String filename = "cotacao_"+cliente_+".txt";
+                    String filename = "cotacao_"+cliente_+".txt";
 
-                File file = new File(diretorio + "/" + filename);
+                    File file = new File(diretorio + "/" + filename);
 
-                if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    FileOutputStream outputStream = null;
-                    try {
-                        outputStream= new FileOutputStream(file);
-                        outputStream.write(texto_final.getBytes());
-                        showToast("Arquivo Criado");
-                    } catch (java.io.IOException e) {
-                        e.printStackTrace();
+                    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                        FileOutputStream outputStream = null;
+                        try {
+                            outputStream= new FileOutputStream(file);
+                            outputStream.write(texto_final.getBytes());
+                            showToast("Arquivo Criado");
+                        } catch (java.io.IOException e) {
+                            e.printStackTrace();
+                        }
                     }
+
+                    Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
+                    mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
+                    getOrcamentos();
+
+                    System.out.println(velocidade + " " + horamaquina);
+
+                }else{
+                    showToast("Preencha todos os campos");
                 }
-
-                Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
-                mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
-                getOrcamentos();
-
             }
         });
 

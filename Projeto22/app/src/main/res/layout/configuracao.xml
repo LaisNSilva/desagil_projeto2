@@ -72,6 +72,27 @@
             app:layout_constraintStart_toStartOf="@id/velocidade"
             app:layout_constraintTop_toBottomOf="@id/velocidade" />
 
+        <TextView
+            android:id="@+id/hora_maquina"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:text="Hora Maquina:"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/num_velocidade"
+            app:layout_constraintTop_toBottomOf="@id/num_velocidade"/>
+
+        <EditText
+            android:id="@+id/num_horamaquina"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:hint=""
+            android:textSize="20dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/hora_maquina"
+            app:layout_constraintTop_toBottomOf="@id/hora_maquina" />
+
         <Button
             android:id="@+id/botao_adicionar"
             android:layout_width="380dp"
@@ -80,8 +101,8 @@
             android:layout_marginTop="15dp"
             android:textColor="#FFFFFF"
             android:background="@drawable/custom"
-            app:layout_constraintStart_toStartOf="@id/num_velocidade"
-            app:layout_constraintTop_toBottomOf="@id/num_velocidade"/>
+            app:layout_constraintStart_toStartOf="@id/num_horamaquina"
+            app:layout_constraintTop_toBottomOf="@id/num_horamaquina"/>
 
         <Button
             android:id="@+id/botao_ler"
@@ -97,7 +118,7 @@
         <ListView
             android:id="@+id/lista_todas_impressoras"
             android:layout_width="380dp"
-            android:layout_height="250dp"
+            android:layout_height="150dp"
             android:textColor="@android:color/black"
             android:textSize="20dp"
             android:gravity="center"
