@@ -181,16 +181,27 @@ public class RequestMulti {
         return peso;
     }
 
-    public Double calculaPreço(String tempo_string, String peso_string, String mao_de_obra_string, Double hora_maquina_string, String preço_por_quilo_string){
+    public String calculaPreço(String tempo_string, String peso_string, String mao_de_obra_string, Double hora_maquina_string, String preço_por_quilo_string){
+        String preço_final = null;
         Double tempo = Double.valueOf(tempo_string)/60;  //horas
         Double peso = Double.valueOf(peso_string)/1000; // quilogramas
-        Double preço_por_quilo = Double.valueOf(preço_por_quilo_string)/1000; // quilogramas
+        Double preço_por_quilo = Double.valueOf(preço_por_quilo_string); // quilogramas
+
+        System.out.println("O que está dentro da função: " + preço_por_quilo);
         Double mao_de_obra = Double.valueOf(mao_de_obra_string); // reais
         Double hora_maquina = (hora_maquina_string); //horas
 
         Double preço = (tempo * hora_maquina) + (peso * preço_por_quilo) + mao_de_obra;
 
-        return preço;
+        String preço_string = String.valueOf(preço);
+        for (int carac = 0; carac < preço_string.length(); carac ++){
+            char caracter = preço_string.charAt(carac);
+            if (caracter == '.'){
+                preço_final = preço_string.substring(0, carac+3);
+            }
+        }
+
+        return "R$" + preço_final.replace('.',',');
 
     }
 }

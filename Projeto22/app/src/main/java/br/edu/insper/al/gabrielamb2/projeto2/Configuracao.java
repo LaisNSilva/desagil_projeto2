@@ -71,17 +71,12 @@ public class Configuracao extends AppCompatActivity {
         botao_adc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String nome_impressora = nome_impressora_et.getText().toString();
                 String num_velocidade = num_velocidade_et.getText().toString();
                 String num_horamaquina = num_horamaquina_et.getText().toString();
-
                 File file = new File(diretorio + "/" + filename);
-
                 String linha = nome_impressora + ":" + num_velocidade + "," + num_horamaquina +"  " + "\n";
-
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
                     if(file.exists()){
                         FileOutputStream outputStream = null;
                         try {
@@ -91,7 +86,6 @@ public class Configuracao extends AppCompatActivity {
                         } catch (java.io.IOException e) {
                             e.printStackTrace();
                         }
-
                     }else{
                         FileOutputStream outputStream = null;
                         try {
@@ -105,39 +99,28 @@ public class Configuracao extends AppCompatActivity {
                 }
             }
         });
-
         botao_ler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String data = "";
                 String buff = "";
-
                 File file = new File(diretorio + "/" + filename);
-
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
                     try{
-
                         FileInputStream inputStream = new FileInputStream(file);
                         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                         while ((data = bufferedReader.readLine()) != null){
                             buff += data;
                         }
-
                         HashMap<String,String> mapa_impressoras = new HashMap<>();
                         String[] array = buff.split("  ");
-
                         for(String linha : array){
                             String[] key_value = linha.split(":");
                             mapa_impressoras.put(key_value[0],key_value[1]);
                         }
-
                         String string_grande = "";
-
                         String velocidade;
                         String horamaquina;
-
 
                         for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
                             String valor_impressora = set.getValue();
@@ -146,29 +129,20 @@ public class Configuracao extends AppCompatActivity {
                             horamaquina = valores[1];
                             string_grande += "Impressora: " + set.getKey() + "; Velocidade: " + velocidade + "; Hora Maquina: "+ horamaquina+ "  ";
                         }
-
                         String[] impressoras = string_grande.split("  ");
-
                         ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Configuracao.this, android.R.layout.simple_list_item_1, impressoras);
                         lista.setAdapter(colocar_na_lista);
-
                         bufferedReader.close();
                         inputStream.close();
 
-
                     }catch (Exception e ){
                         showToast("ERRO");
-
                     }
-
                 }
-
             }
         });
 
     }
-
-
 
 }
 
