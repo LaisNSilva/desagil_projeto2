@@ -234,7 +234,7 @@ public class Cotacao extends AppCompatActivity{
 
                     HashMap<String, Object>$_POST = new HashMap<>();
 
-                    System.out.println("MATERIAL: " + material_escolhido);
+                    System.out.println("PREÇO: " + preço_por_quilo);
 
                     $_POST.put("material", materiais.getSelectedItem().toString());
                     $_POST.put("color", color);
@@ -355,12 +355,12 @@ public class Cotacao extends AppCompatActivity{
                         String tempo_get_json = requestMulti.getJsonTempo(requisição, velocidade);
                         String tempo_set = tempo_get_json.replace(".", ",");
                         String peso_get_json = requestMulti.getJsonPeso(requisição);
+                        String peso_set = peso_get_json.replace(".", ",");
                         String mao = mao_de_obra.getText().toString();
-                        Double preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, horamaquina, preço_por_quilo);
-                        String preço_string = preço_getJson.toString();
+                        String preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, horamaquina, preço_por_quilo);
                         tempo.setText(tempo_set + " min");
-                        peso.setText(peso_get_json + " g");
-                        valor.setText(preço_string);
+                        peso.setText(peso_set + " g");
+                        valor.setText(preço_getJson);
                     }catch (Exception e ){
 
                     }
