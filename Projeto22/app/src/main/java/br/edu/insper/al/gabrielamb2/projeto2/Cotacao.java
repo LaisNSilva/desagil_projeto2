@@ -341,34 +341,30 @@ public class Cotacao extends AppCompatActivity{
 
                     String impressora_escolhida = impressoras.getSelectedItem().toString();
 
-              
-                    String velocidade_de_impressao = "40";
-                    String hora_maquina = "15";
-
-                    System.out.println("velocidade_de_impressao: "+velocidade_de_impressao);
-
-
-                    try {
-                        requisição = requestMulti.Request(output_request, boundary);
-                        String tempo_get_json = requestMulti.getJsonTempo(requisição, velocidade_de_impressao);
-                        String tempo_set = tempo_get_json.replace(".", ",");
-                        String peso_get_json = requestMulti.getJsonPeso(requisição);
-                        String mao = mao_de_obra.getText().toString();
-                        Double preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, hora_maquina, preço_por_quilo);
-                        String preço_string = preço_getJson.toString();
-                        tempo.setText(tempo_set + " min");
-                        peso.setText(peso_get_json + " g");
-                        valor.setText(preço_string);
-
                     for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
                         if (impressora_escolhida.equals(set.getKey())){
                             String valor_impressora = set.getValue();
                             String[] valores = valor_impressora.split(",");
                             velocidade = Double.parseDouble(valores[0]);
                             horamaquina = Double.parseDouble(valores[1]);
-
                         }
                     }
+
+                    try {
+                        requisição = requestMulti.Request(output_request, boundary);
+                        String tempo_get_json = requestMulti.getJsonTempo(requisição, velocidade);
+                        String tempo_set = tempo_get_json.replace(".", ",");
+                        String peso_get_json = requestMulti.getJsonPeso(requisição);
+                        String mao = mao_de_obra.getText().toString();
+                        Double preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, horamaquina, preço_por_quilo);
+                        String preço_string = preço_getJson.toString();
+                        tempo.setText(tempo_set + " min");
+                        peso.setText(peso_get_json + " g");
+                        valor.setText(preço_string);
+                    }catch (Exception e ){
+
+                    }
+
 
 //              -------------------------------- TXT -----------------------------------------------------
 
