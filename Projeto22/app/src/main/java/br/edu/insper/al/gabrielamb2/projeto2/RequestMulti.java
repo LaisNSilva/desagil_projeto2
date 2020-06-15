@@ -123,7 +123,7 @@ public class RequestMulti {
 
     }
 
-    public String getJsonTempo(String jsonObject){
+    public String getJsonTempo(String jsonObject, String vel_impressora){
         String possivel = null;
         String tempo_final = null;
 
@@ -140,8 +140,10 @@ public class RequestMulti {
                     char letra = possivel.charAt(c);
                     if (letra == '"') {
                         String tempo = possivel.substring(0, c);
-                        int tempo_inteiro = Integer.parseInt(tempo)/60;
-                        tempo_final = String.valueOf(tempo_inteiro) + " min";
+                        int velocidade = Integer.parseInt(vel_impressora);
+                        int tempo_inteiro = Integer.parseInt(tempo)/60; //minutos
+                        int tempo_variado = (tempo_inteiro*50)/velocidade;
+                        tempo_final = String.valueOf(tempo_variado);
                         break;
 
                     }
@@ -169,7 +171,6 @@ public class RequestMulti {
                     char pesoletra = pesopeca.charAt(d);
                     if (pesoletra == '.') {
                         peso = pesopeca.substring(1, d+3);
-                        peso = peso.replace(".", ",") + " g";
                         break;
                     }
                 }
@@ -180,12 +181,16 @@ public class RequestMulti {
         return peso;
     }
 
-    public String calculaPreço(String tempo, String peso, String vel){
-        int tempo_inteiro = Integer.parseInt(tempo);
-        int peso_inteiro = Integer.parseInt(peso);
-        int vel_inteiro = Integer.parseInt(vel);
+    public Double calculaPreço(String tempo_string, String peso_string, String mao_de_obra_string, String hora_maquina_string, String preço_por_quilo_string){
+        Double tempo = Double.valueOf(tempo_string)/60;  //horas
+        Double peso = Double.valueOf(peso_string)/1000; // quilogramas
+        Double preço_por_quilo = Double.valueOf(preço_por_quilo_string)/1000; // quilogramas
+        Double mao_de_obra = Double.valueOf(mao_de_obra_string); // reais
+        Double hora_maquina = Double.valueOf(hora_maquina_string); //horas
 
-        return tempo;
+        Double preço = (tempo * hora_maquina) + (peso * preço_por_quilo) + mao_de_obra;
+
+        return preço;
 
     }
 }
