@@ -21,6 +21,7 @@ import java.util.LinkedList;
 
 public class LerExcel {
     String filename;
+    ArrayList<String> datas = new ArrayList<>();
     ArrayList<String> nomes = new ArrayList<>();
     public LerExcel(String nome_do_arquivo) {
         this.filename = nome_do_arquivo;
@@ -28,7 +29,7 @@ public class LerExcel {
 
     void readExcelFile(Context context) throws IOException {
         int i =0;
-
+        String data_nome ="";
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             // Creating Input Stream
@@ -53,11 +54,20 @@ public class LerExcel {
                 while (cellIter.hasNext()) {
                     HSSFCell myCell = (HSSFCell) cellIter.next();
                     Log.w("FileUtils", "Cell Value: " + myCell.toString());
-                    if ( i%8 == 0 & i!=0 ){
-                        nomes.add(myCell.toString());
-                        System.out.println(myCell.toString()+ "uhullll");
-
+                    if ( i%9 == 0 & i!=0 ){
+                        data_nome= myCell.toString()+ " ";
+                        System.out.println(myCell.toString()+ "uhullll9");
                     }
+                    if ( i%10 == 0 & i!=0 ){
+                        data_nome+= myCell.toString();
+                        System.out.println(myCell.toString()+ "uhullll10");
+                    }
+                    if ( i%11 == 0 & i!=0 ){
+                        nomes.add(data_nome);
+                        data_nome="";
+                        System.out.println(myCell.toString()+ "uhullll11");
+                    }
+
                     i+=1;
 
                 }
@@ -72,6 +82,9 @@ public class LerExcel {
 
     public ArrayList getlistanomes(){
         return nomes;
+    }
+    public ArrayList getlistadatas(){
+        return datas;
     }
 
 }

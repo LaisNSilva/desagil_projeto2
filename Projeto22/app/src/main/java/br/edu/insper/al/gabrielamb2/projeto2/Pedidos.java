@@ -47,6 +47,8 @@ public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClic
         lvcotacao = findViewById(R.id.Lvcotacao);
         ArrayList<String>arrayList;
 
+//        oiii gabi kkkk
+
         LerExcel lerExcel = new LerExcel("orcamentoantigo.xls");
 
         try {
@@ -64,8 +66,4 @@ public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?>parent, View view, int position, long id){
        //oq fazer quando clicar
     }
-
-
-
-
 }
