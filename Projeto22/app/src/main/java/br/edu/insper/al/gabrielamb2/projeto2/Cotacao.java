@@ -40,9 +40,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -358,7 +357,8 @@ public class Cotacao extends AppCompatActivity{
                         String peso_set = peso_get_json.replace(".", ",");
                         String mao = mao_de_obra.getText().toString();
                         String preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, horamaquina, preço_por_quilo);
-                        tempo.setText(tempo_set + " min");
+                        String tempo_imprimir = requestMulti.imprimeTempo(requisição, velocidade);
+                        tempo.setText(tempo_imprimir);
                         peso.setText(peso_set + " g");
                         valor.setText(preço_getJson);
                     }catch (Exception e ){

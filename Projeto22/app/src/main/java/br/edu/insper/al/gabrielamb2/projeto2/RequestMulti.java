@@ -123,9 +123,60 @@ public class RequestMulti {
 
     }
 
+    public  String imprimeTempo (String jsonObject, Double vel_impressora){
+        String possivel = null;
+        String tempo_imprime = null;
+        String horas = null;
+        String minutos = null;
+        String segundos = null;
+
+
+        try {
+            for (int i = 0; i < jsonObject.length() - 14; i++) {
+                String palavra = jsonObject.substring(i, i + 13);
+                if (palavra.equals("printDuration")) {
+                    possivel = jsonObject.substring(i + 13 + 25, i + 13 + 25 + 15);
+                    break;
+                }
+            }
+            if (possivel != null) {
+                for (int c = 0; c < possivel.length(); c++) {
+                    char letra = possivel.charAt(c);
+                    if (letra == '"') {
+                        String tempo = possivel.substring(0, c);
+                        double velocidade = (vel_impressora);
+                        int tempo_inteiro = Integer.parseInt(tempo); //segundos
+                        double tempo_variado = (tempo_inteiro*50)/velocidade;
+                        System.out.println("tempos_double "+tempo_variado);
+                        int tempo_fun = (int) tempo_variado;
+                        System.out.println("tempos_inteiro "+tempo_fun);
+                        int t_horas = tempo_fun /3600;
+                        int t_minutos = (tempo_fun - (t_horas*3600))/60;
+                        int t_segundos = tempo_fun % 60;
+                        horas = String.valueOf(t_horas);
+                        minutos = String.valueOf(t_minutos);
+                        segundos = String.valueOf(t_segundos);
+                        tempo_imprime = (horas+"h "+minutos+"m "+segundos+"s");
+                        System.out.println("tempos "+tempo_imprime);
+                        break;
+
+                    }
+                }
+            }
+        }catch (Exception e){
+            System.out.println("");
+        }
+        return tempo_imprime;
+
+    }
+
     public String getJsonTempo(String jsonObject, Double vel_impressora){
         String possivel = null;
         String tempo_final = null;
+        String horas = null;
+        String minutos = null;
+        String segundos = null;
+
 
         try {
             for (int i = 0; i < jsonObject.length() - 14; i++) {
