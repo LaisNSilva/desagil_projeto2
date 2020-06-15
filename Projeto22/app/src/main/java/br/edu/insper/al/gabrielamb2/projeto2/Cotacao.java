@@ -397,7 +397,7 @@ public class Cotacao extends AppCompatActivity{
                         }
                     }
 
-                    Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_);
+                    Cliente cliente = new Cliente(cliente_,infill.getText().toString(),layer.getText().toString(),impressoras.getSelectedItem().toString(),materiais.getSelectedItem().toString(),mao_de_obra.getText().toString(), peso_, tempo_,valor_);
                     mDatabase.child("users").child(String.valueOf(new Date().getTime())).setValue(cliente);
                     getOrcamentos();
 
@@ -478,6 +478,10 @@ public class Cotacao extends AppCompatActivity{
                 cell.setCellValue("Tempo");
                 cell.setCellStyle(cellStyle);
 
+                cell=row.createCell(9);
+                cell.setCellValue("Valor");
+                cell.setCellStyle(cellStyle);
+
 
                 sheet.setColumnWidth(0,(10*500));
                 sheet.setColumnWidth(1,(10*200));
@@ -488,6 +492,7 @@ public class Cotacao extends AppCompatActivity{
                 sheet.setColumnWidth(6,(10*200));
                 sheet.setColumnWidth(7,(10*200));
                 sheet.setColumnWidth(8,(10*200));
+                sheet.setColumnWidth(9,(10*200));
 
 
 
@@ -583,6 +588,7 @@ public class Cotacao extends AppCompatActivity{
             Object materiais = singlecotacao.get("materiais");
             Object peso = singlecotacao.get("peso");
             Object tempo = singlecotacao.get("tempo");
+            Object valor = singlecotacao.get("valor");
 
             cotcaoinidivual.add(hora);
             cotcaoinidivual.add(nome.toString());
@@ -593,6 +599,7 @@ public class Cotacao extends AppCompatActivity{
             cotcaoinidivual.add(materiais.toString());
             cotcaoinidivual.add(peso.toString());
             cotcaoinidivual.add(tempo.toString());
+            cotcaoinidivual.add(valor.toString());
 
             //  cotcaoinidivual.add(valor.toString());
 
@@ -642,6 +649,10 @@ public class Cotacao extends AppCompatActivity{
 
         cell=row1.createCell(8);
         cell.setCellValue(cotcaoinidivual.get(8));
+        cell.setCellStyle(cellStyle);
+
+        cell=row1.createCell(9);
+        cell.setCellValue(cotcaoinidivual.get(9));
         cell.setCellStyle(cellStyle);
 
     }

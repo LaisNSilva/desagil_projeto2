@@ -9,8 +9,8 @@ public class Cliente {
     private String mao_de_obra;
     private String peso;
     private String tempo;
-   // private String valor;
-    public Cliente(String cliente1, String infill1,String layer1,String impressoras1,String materiais1,String mao_de_obra1, String peso1, String tempo1){
+    private String valor;
+    public Cliente(String cliente1, String infill1,String layer1,String impressoras1,String materiais1,String mao_de_obra1, String peso1, String tempo1, String valor1){
         this.cliente= cliente1;
         this.infill= infill1;
         this.layer= layer1;
@@ -19,7 +19,7 @@ public class Cliente {
         this.mao_de_obra= mao_de_obra1;
         this.peso= peso1;
         this.tempo= tempo1;
-       // this.valor= valor1;
+         this.valor= valor1;
     }
 
 
@@ -51,12 +51,12 @@ public class Cliente {
         return materiais;
     }
 
-
-
     public String gettempo() {
         return tempo;
     }
 
-
+    public String getValor() {
+        return valor;
+    }
 
 }
