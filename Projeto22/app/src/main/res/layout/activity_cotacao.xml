@@ -92,12 +92,11 @@
 
         <TextView
             android:id="@+id/texto_arquivo"
-            android:layout_width="169dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="72dp"
+            android:layout_width="156dp"
+            android:layout_height="50dp"
             android:gravity="center_vertical"
             android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/cliente"
+            app:layout_constraintStart_toEndOf="@+id/texto_peca"
             app:layout_constraintTop_toBottomOf="@+id/maodeobra" />
 
         <Spinner
@@ -113,7 +112,6 @@
             android:id="@+id/texto_impressora"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_marginTop="16dp"
             android:gravity="center_vertical"
             android:text="Impressora:"
             android:textColor="@android:color/black"
@@ -125,7 +123,6 @@
             android:id="@+id/impressora"
             android:layout_width="230dp"
             android:layout_height="50dp"
-            android:layout_marginTop="16dp"
             android:textColor="@android:color/black"
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/texto_impressora"
@@ -173,7 +170,6 @@
             android:gravity="center_vertical"
             android:textSize="20dp"
             android:textColor="@android:color/black"
-            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/texto_material"
             app:layout_constraintTop_toBottomOf="@id/button_processar" />
 
@@ -181,7 +177,6 @@
             android:id="@+id/peso"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
             android:textSize="20dp"
             android:gravity="center_vertical"
             app:layout_constraintStart_toEndOf="@+id/texto_peso"
@@ -226,6 +221,16 @@
             android:gravity="center_vertical"
             app:layout_constraintStart_toEndOf="@+id/texto_valor"
             app:layout_constraintTop_toBottomOf="@id/texto_tempo" />
+
+        <TextView
+            android:id="@+id/extra"
+            android:layout_width="380dp"
+            android:layout_height="20dp"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@+id/button_enviar"
+            app:layout_constraintTop_toBottomOf="@id/button_enviar" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
