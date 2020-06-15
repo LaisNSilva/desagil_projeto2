@@ -359,6 +359,9 @@ public class Cotacao extends AppCompatActivity{
                         tempo.setText(tempo_set + " min");
                         peso.setText(peso_get_json + " g");
                         valor.setText(preço_string);
+                    }catch (Exception e ){
+
+                    }
 
                     for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
                         if (impressora_escolhida.equals(set.getKey())){
