@@ -578,7 +578,6 @@ public class Cotacao extends AppCompatActivity{
             Object peso = singlecotacao.get("peso");
             Object tempo = singlecotacao.get("tempo");
 
-
             cotcaoinidivual.add(hora);
             cotcaoinidivual.add(nome.toString());
             cotcaoinidivual.add(impressoras.toString());
@@ -650,7 +649,8 @@ public class Cotacao extends AppCompatActivity{
         if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
 
             Uri uri = resultData.getData();
-            textoarquivo.setText(uri.toString());
+            String sub = uri.toString().substring(uri.toString().length() - 10);
+            textoarquivo.setText(sub + "...");
 
             String path = uri.getPath();
             String filename = path.substring(path.lastIndexOf("/") + 1);
