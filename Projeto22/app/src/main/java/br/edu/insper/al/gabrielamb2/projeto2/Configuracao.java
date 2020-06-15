@@ -60,6 +60,7 @@ public class Configuracao extends AppCompatActivity {
 
         final EditText nome_impressora_et = findViewById(R.id.nome_impressora);
         final EditText num_velocidade_et = findViewById(R.id.num_velocidade);
+        final EditText num_horamaquina_et = findViewById(R.id.num_horamaquina);
 
         Button botao_adc = findViewById(R.id.botao_adicionar);
 
@@ -73,10 +74,11 @@ public class Configuracao extends AppCompatActivity {
 
                 String nome_impressora = nome_impressora_et.getText().toString();
                 String num_velocidade = num_velocidade_et.getText().toString();
+                String num_horamaquina = num_horamaquina_et.getText().toString();
 
                 File file = new File(diretorio + "/" + filename);
 
-                String linha = nome_impressora + ":" + num_velocidade + "  " + "\n";
+                String linha = nome_impressora + ":" + num_velocidade + "," + num_horamaquina +"  " + "\n";
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
@@ -95,7 +97,7 @@ public class Configuracao extends AppCompatActivity {
                         try {
                             outputStream= new FileOutputStream(file);
                             outputStream.write(linha.getBytes());
-                            showToast("Arquivo Criado");
+                            showToast("Adicionado");
                         } catch (java.io.IOException e) {
                             e.printStackTrace();
                         }
@@ -123,18 +125,26 @@ public class Configuracao extends AppCompatActivity {
                             buff += data;
                         }
 
-                        HashMap<String,Integer> mapa_impressoras = new HashMap<>();
+                        HashMap<String,String> mapa_impressoras = new HashMap<>();
                         String[] array = buff.split("  ");
 
                         for(String linha : array){
                             String[] key_value = linha.split(":");
-                            mapa_impressoras.put(key_value[0],Integer.parseInt(key_value[1]));
+                            mapa_impressoras.put(key_value[0],key_value[1]);
                         }
 
                         String string_grande = "";
 
-                        for(Map.Entry<String,Integer> set : mapa_impressoras.entrySet()){
-                            string_grande += "Impressora: " + set.getKey() + "; Velocidade: " + set.getValue() + "  ";
+                        String velocidade;
+                        String horamaquina;
+
+
+                        for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
+                            String valor_impressora = set.getValue();
+                            String[] valores = valor_impressora.split(",");
+                            velocidade = valores[0];
+                            horamaquina = valores[1];
+                            string_grande += "Impressora: " + set.getKey() + "; Velocidade: " + velocidade + "; Hora Maquina: "+ horamaquina+ "  ";
                         }
 
                         String[] impressoras = string_grande.split("  ");
