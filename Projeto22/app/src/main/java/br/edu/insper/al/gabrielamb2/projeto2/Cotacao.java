@@ -193,51 +193,57 @@ public class Cotacao extends AppCompatActivity{
 
                 String color = null;
                 String densidade = null;
+                String preço_por_quilo = null;
 
                 if (material_escolhido.equals("ABS")){
                     color = partPriceConfig.getABS_color();
                     densidade = partPriceConfig.getABS_density();
+                    preço_por_quilo = partPriceConfig.getABS_PK();
                 }
                 else if (material_escolhido.equals("PLA")){
                     color = partPriceConfig.getPLA_color();
                     densidade = partPriceConfig.getPLA_density();
+                    preço_por_quilo = partPriceConfig.getPLA_PK();
                 }
                 else if (material_escolhido.equals("PC")){
                     color = partPriceConfig.getPC_color();
                     densidade = partPriceConfig.getPC_density();
-                }
-                else if (material_escolhido.equals("Nylon")){
-                    color = partPriceConfig.getNylon_color();
-                    densidade = partPriceConfig.getNylon_density();
+                    preço_por_quilo = partPriceConfig.getPC_PK();
                 }
                 else if (material_escolhido.equals("LayWood")){
                     color = partPriceConfig.getLayWood_color();
                     densidade = partPriceConfig.getLayWood_density();
+                    preço_por_quilo = partPriceConfig.getLayWood_PK();
                 }
                 else if (material_escolhido.equals("BendLAY")){
                     color = partPriceConfig.getBendLAY_color();
                     densidade = partPriceConfig.getBendLAY_density();
+                    preço_por_quilo = partPriceConfig.getBendLAY_PK();
                 }
                 else if (material_escolhido.equals("TPE")){
                     color = partPriceConfig.getTPE_color();
                     densidade = partPriceConfig.getTPE_density();
+                    preço_por_quilo = partPriceConfig.getTPE_PK();
                 }
                 else if (material_escolhido.equals("SoftPLA")){
                     color = partPriceConfig.getSoftPLA_color();
                     densidade = partPriceConfig.getSoftPLA_density();
+                    preço_por_quilo = partPriceConfig.getSoftPLA_PK();
                 }
                 else if (material_escolhido.equals("HIPS")){
                     color = partPriceConfig.getHIPS_color();
                     densidade = partPriceConfig.getHIPS_density();
+                    preço_por_quilo = partPriceConfig.getHIPS_PK();
                 }
 
                 HashMap<String, Object>$_POST = new HashMap<>();
+
+                System.out.println("MATERIAL: " + material_escolhido);
 
                 $_POST.put("material", materiais.getSelectedItem().toString());
                 $_POST.put("color", color);
                 $_POST.put("layerHeight", layer.getText().toString());
                 $_POST.put("infillPercentage", infill.getText().toString());
-
 
                 $_POST.put("supportRemoval", false);
 
@@ -335,15 +341,25 @@ public class Cotacao extends AppCompatActivity{
 
                 RequestMulti requestMulti = new RequestMulti($_POST, $_FILES, boundary);
                 String output_request = requestMulti.buildMultipartPost($_POST, $_FILES, boundary);
-                System.out.println(output_request);
+                String impressora_escolhida = impressoras.getSelectedItem().toString();
+
+                String velocidade_de_impressao = "40";
+                String hora_maquina = "15";
+
+                System.out.println("velocidade_de_impressao: "+velocidade_de_impressao);
+
 
                 try {
                     requisição = requestMulti.Request(output_request, boundary);
-                    System.out.println("requisicao "+requisição);
-                    requestMulti.getJsonTempo(requisição);
-                    requestMulti.getJsonPeso(requisição);
-                    tempo.setText(requestMulti.getJsonTempo(requisição));
-                    peso.setText(requestMulti.getJsonPeso(requisição));
+                    String tempo_get_json = requestMulti.getJsonTempo(requisição, velocidade_de_impressao);
+                    String tempo_set = tempo_get_json.replace(".", ",");
+                    String peso_get_json = requestMulti.getJsonPeso(requisição);
+                    String mao = mao_de_obra.getText().toString();
+                    Double preço_getJson = requestMulti.calculaPreço(tempo_get_json, peso_get_json, mao, hora_maquina, preço_por_quilo);
+                    String preço_string = preço_getJson.toString();
+                    tempo.setText(tempo_set + " min");
+                    peso.setText(peso_get_json + " g");
+                    valor.setText(preço_string);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -562,7 +578,6 @@ public class Cotacao extends AppCompatActivity{
             Object peso = singlecotacao.get("peso");
             Object tempo = singlecotacao.get("tempo");
 
-
             cotcaoinidivual.add(hora);
             cotcaoinidivual.add(nome.toString());
             cotcaoinidivual.add(impressoras.toString());
@@ -634,7 +649,8 @@ public class Cotacao extends AppCompatActivity{
         if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
 
             Uri uri = resultData.getData();
-            textoarquivo.setText(uri.toString());
+            String sub = uri.toString().substring(uri.toString().length() - 10);
+            textoarquivo.setText(sub + "...");
 
             String path = uri.getPath();
             String filename = path.substring(path.lastIndexOf("/") + 1);
