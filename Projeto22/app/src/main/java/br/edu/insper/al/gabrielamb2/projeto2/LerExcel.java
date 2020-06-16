@@ -23,6 +23,16 @@ public class LerExcel {
     String filename;
     ArrayList<String> datas = new ArrayList<>();
     ArrayList<String> nomes = new ArrayList<>();
+    ArrayList<String> impressora = new ArrayList<>();
+    ArrayList<String> infill = new ArrayList<>();
+    ArrayList<String> layer = new ArrayList<>();
+    ArrayList<String> mao_de_obra = new ArrayList<>();
+    ArrayList<String> materiais = new ArrayList<>();
+    ArrayList<String> peso = new ArrayList<>();
+    ArrayList<String> tempo = new ArrayList<>();
+    ArrayList<String> valor = new ArrayList<>();
+    LinkedList<String> cotacao = new LinkedList<>();
+    LinkedList<LinkedList> cotacaogeral = new LinkedList();
     public LerExcel(String nome_do_arquivo) {
         this.filename = nome_do_arquivo;
     }
@@ -53,20 +63,56 @@ public class LerExcel {
                 Iterator<Cell> cellIter = myRow.cellIterator();
                 while (cellIter.hasNext()) {
                     HSSFCell myCell = (HSSFCell) cellIter.next();
-                    Log.w("FileUtils", "Cell Value: " + myCell.toString());
-                    if ( i%9 == 0 & i!=0 ){
-                        data_nome= myCell.toString()+ " ";
-                        System.out.println(myCell.toString()+ "uhullll9");
+                   // Log.w("FileUtils", "Cell Value: " + myCell.toString());
+                    cotacao.add(myCell.toString());
+                    //if(cotacao.size()>10){
+                   //    System.out.println(cotacao+"COTACAOOOOOOO");
+                   //     cotacao = null;
+                   // }
+                    if ( i%10 == 0 | i==0 ){
+                        datas.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "DATAAA");
                     }
-                    if ( i%10 == 0 & i!=0 ){
-                        data_nome+= myCell.toString();
-                        System.out.println(myCell.toString()+ "uhullll10");
+                    if ( i-11 == 0 | (i-11)%10 ==0 | i==1){
+                        nomes.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "NOMEEEE");
                     }
-                    if ( i%11 == 0 & i!=0 ){
-                        nomes.add(data_nome);
-                        data_nome="";
-                        System.out.println(myCell.toString()+ "uhullll11");
+                    if ( i-12 == 0 | (i-12)%10 ==0 | i==2){
+                        impressora.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "IMPRESSORA");
                     }
+                    if ( i-13 == 0 | (i-13)%10 ==0 | i==3){
+                        infill.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "infill");
+                    }
+
+                    if ( i-14 == 0 | (i-14)%10 ==0 | i==4){
+                        layer.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "layer");
+                    }
+
+                    if ( i-15 == 0 | (i-15)%10 ==0 | i==5){
+                        mao_de_obra.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "mao_de_obra");
+                    }
+                    if ( i-16 == 0 | (i-16)%10 ==0 | i==6){
+                        materiais.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "materiais");
+                    }
+                    if ( i-17 == 0 | (i-17)%10 ==0 | i==7){
+                        peso.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "peso");
+                    }
+                    if ( i-18 == 0 | (i-18)%10 ==0 | i==8){
+                        tempo.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "tempo");
+                    }
+                    if ( i-19 == 0 | (i-19)%10 ==0 | i==9){
+                        valor.add(myCell.toString());
+                        System.out.println(myCell.toString()+ "valor");
+                    }
+
+
 
                     i+=1;
 
@@ -86,5 +132,33 @@ public class LerExcel {
     public ArrayList getlistadatas(){
         return datas;
     }
+    public ArrayList getlistaimpressora(){
+        return impressora;
+    }
+    public ArrayList getlistainfill(){
+        return infill;
+    }
+    public ArrayList getlistalayer(){
+        return layer;
+    }
+    public ArrayList getlistamao_de_obra(){
+        return mao_de_obra;
+    }
+    public ArrayList getlistamateriais(){
+        return materiais;
+    }
+    public ArrayList getlistapeso(){return peso;    }
+    public ArrayList getlistatempo(){
+        return tempo;
+    }
+    public ArrayList getlistavalor(){
+        return valor;
+    }
+    public LinkedList<String> getlistacotacao(){
+        return cotacao;
+    }
+
+
+
 
 }

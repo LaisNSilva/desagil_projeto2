@@ -12,6 +12,8 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,31 +39,37 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClickListener{
+    TextView d , n, im, in , l, m , mat, p, t, v;
     String TAG = "main";
-    ListView lvcotacao;
+    TableLayout t1;
+    TableRow tr;
+    LinkedList<String>cotacoes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
 
-        lvcotacao = findViewById(R.id.Lvcotacao);
-        ArrayList<String>arrayList;
-
-//        oiii gabi kkkk
+       // t1 = (TableLayout)findViewById(R.id.t1);
+       // t1.setColumnStretchable(0,true);
 
         LerExcel lerExcel = new LerExcel("orcamentoantigo.xls");
 
         try {
             lerExcel.readExcelFile(this);
-            arrayList = lerExcel.getlistanomes();
-            ArrayAdapter cotacaoAdapter = new ArrayAdapter<>(this, R.layout.list_item,arrayList);
-            lvcotacao.setAdapter(cotacaoAdapter);
+            cotacoes = lerExcel.getlistacotacao();
 
-            lvcotacao.setOnItemClickListener(this);
-        } catch (IOException e) {
+
+            }
+         //   cotacao1=null;
+        //    tr = new TableRow(this);
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
     @Override
     public void onItemClick(AdapterView<?>parent, View view, int position, long id){
        //oq fazer quando clicar
