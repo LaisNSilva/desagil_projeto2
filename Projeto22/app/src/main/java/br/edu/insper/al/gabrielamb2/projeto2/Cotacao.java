@@ -128,7 +128,7 @@ public class Cotacao extends AppCompatActivity{
             }
 
             if(buff.equals("")){
-                showToast("Nada neste arquivo");
+                showToast("Adicione uma Impressora");
             }else {
 
                 //      -------------------------------Hashmap das Impressoras---------------------------------------------
