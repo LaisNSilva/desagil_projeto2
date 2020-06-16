@@ -37,6 +37,7 @@
             android:textSize="20dp"
             android:layout_marginLeft="10dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:errorEnabled="true"
             app:layout_constraintTop_toBottomOf="@+id/texto_titulo" />
 
         <EditText
@@ -46,6 +47,7 @@
             android:hint="Infill (%)"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@id/cliente"
+            app:errorEnabled="true"
             app:layout_constraintTop_toBottomOf="@id/cliente"/>
 
         <EditText
@@ -55,6 +57,7 @@
             android:hint="Layer"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/cliente"
+            app:errorEnabled="true"
             app:layout_constraintTop_toBottomOf="@id/infill" />
 
         <EditText
@@ -64,6 +67,7 @@
             android:hint="Mão de Obra"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@id/cliente"
+            app:errorEnabled="true"
             app:layout_constraintTop_toBottomOf="@id/layer" />
 
         <TextView
