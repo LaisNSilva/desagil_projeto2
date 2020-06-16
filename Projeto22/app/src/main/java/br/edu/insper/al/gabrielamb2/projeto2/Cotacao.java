@@ -43,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,6 +54,8 @@ public class Cotacao extends AppCompatActivity{
     private static final int READ_REQUEST_CODE = 42;
     private static final String TAG = "Uri";
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+    TextView textoarquivo;
 
     String arquivo;
     private String requisição;
@@ -73,6 +76,7 @@ public class Cotacao extends AppCompatActivity{
     boolean segundo = false;
     boolean terceiro = false;
     boolean quarto = false;
+    boolean quinto = false;
 
     boolean processar_clicado = false;
 
@@ -102,6 +106,8 @@ public class Cotacao extends AppCompatActivity{
         final EditText infill = findViewById(R.id.infill);
         final EditText layer = findViewById(R.id.layer);
         final EditText mao_de_obra = findViewById(R.id.maodeobra);
+
+        textoarquivo = findViewById(R.id.texto_arquivo);
 
         final TextView peso = findViewById(R.id.peso);
         final TextView tempo = findViewById(R.id.tempo);
@@ -134,7 +140,7 @@ public class Cotacao extends AppCompatActivity{
                     primeiro = false;
                 }
 
-                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true && quinto==true){
                     processar.setBackgroundResource(R.color.Red);
                 }else{
                     processar.setBackgroundResource(R.color.Gray);
@@ -168,7 +174,7 @@ public class Cotacao extends AppCompatActivity{
                     segundo = false;
 
                 }
-                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true && quinto==true){
                     processar.setBackgroundResource(R.color.Red);
                 }else{
                     processar.setBackgroundResource(R.color.Gray);
@@ -202,7 +208,7 @@ public class Cotacao extends AppCompatActivity{
                     terceiro = false;
 
                 }
-                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true && quinto==true){
                     processar.setBackgroundResource(R.color.Red);
                 }else{
                     processar.setBackgroundResource(R.color.Gray);
@@ -236,7 +242,7 @@ public class Cotacao extends AppCompatActivity{
                     quarto = false;
 
                 }
-                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true && quinto==true){
                     processar.setBackgroundResource(R.color.Red);
                 }else{
                     processar.setBackgroundResource(R.color.Gray);
@@ -249,7 +255,38 @@ public class Cotacao extends AppCompatActivity{
             }
         });
 
-// ----------------------- Text View Peça_Arquivo ---------------------
+// ----------------------- Text View Peça_Arquivo
+        textoarquivo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                System.out.println("cliente" + textoarquivo.getText().toString() + "aaa");
+                if (textoarquivo.getText().length() >0) {
+                    System.out.println("quarto ficando true");
+                    quinto = true;
+                    System.out.println("entrei");
+
+                } else {
+                    quinto = false;
+
+                }
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true && quinto==true){
+                    processar.setBackgroundResource(R.color.Red);
+                }else{
+                    processar.setBackgroundResource(R.color.Gray);
+                }
+
+                System.out.println("primeiro: " + primeiro);
+                System.out.println("segundo: " + segundo);
+                System.out.println("terceiro: " + terceiro);
+                System.out.println("quarto: " + quarto);
+            }
+        });
 
 
 // ------------------ mudando a cor do botão para azul -----------
@@ -327,8 +364,11 @@ public class Cotacao extends AppCompatActivity{
                 pasta.addCategory(Intent.CATEGORY_OPENABLE);
 
                 pasta.setType("*/*");
+                Uri tentativa = pasta.getData();
+                System.out.println("tentativa"+tentativa);
 
                 startActivityForResult(pasta, READ_REQUEST_CODE);
+
 
             }
         });
@@ -857,11 +897,13 @@ public class Cotacao extends AppCompatActivity{
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
-        final TextView textoarquivo = findViewById(R.id.texto_arquivo);
+
 
         if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
 
             Uri uri = resultData.getData();
+
+
             String sub = uri.toString().substring(uri.toString().length() - 10);
             textoarquivo.setText(sub + "...");
 
