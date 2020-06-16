@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -66,6 +68,14 @@ public class Cotacao extends AppCompatActivity{
     Sheet sheet = wb.createSheet("Orçamentos Antigos");
     int linhas = 0;
 
+// ----------- Variaveis- Botão inativo ---------
+    boolean first = false;
+    boolean segundo = false;
+    boolean terceiro = false;
+    boolean quarto = false;
+    boolean AllCheck = false;
+
+
 
     private void showToast(String text) {
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
@@ -97,8 +107,120 @@ public class Cotacao extends AppCompatActivity{
         final TextView valor = findViewById(R.id.valor);
 
         Button buttonArq = findViewById(R.id.escolher_arquivo);
-        Button processar = findViewById(R.id.button_processar);
+        final Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
+
+// ----------------- Text View Cliente--------------------
+        cliente.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                System.out.println("cliente" + cliente.getText().toString() + "aaa");
+                if (cliente.getText().length() >0) {
+                    first = true;
+                    AllCheck = true;
+                    System.out.println("entrei");
+
+                } else {
+                    first = false;
+                    AllCheck = false;
+                }
+
+                System.out.println("AllCheck: " + AllCheck);
+            }
+        });
+
+// ------------------ Text View Infill ---------------------------
+        infill.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                System.out.println("cliente" + infill.getText().toString() + "aaa");
+                if (infill.getText().length() >0) {
+                    segundo = true;
+                    AllCheck = true;
+                    System.out.println("entrei");
+
+                } else {
+                    segundo = false;
+                    AllCheck = false;
+
+                }
+
+                System.out.println("AllCheck: " + AllCheck);
+            }
+        });
+
+// -------------- Text View Layer ----------------
+        layer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                System.out.println("cliente" + layer.getText().toString() + "aaa");
+                if (layer.getText().length() >0) {
+                    terceiro = true;
+                    AllCheck = true;
+                    System.out.println("entrei");
+
+                } else {
+                    terceiro = false;
+                    AllCheck = false;
+
+                }
+
+                System.out.println("AllCheck: " + AllCheck);
+            }
+        });
+
+// ------------ mao_de_obra -------------------------------
+        mao_de_obra.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                System.out.println("cliente" + mao_de_obra.getText().toString() + "aaa");
+                if (mao_de_obra.getText().length() >0) {
+                    quarto = true;
+                    AllCheck = true;
+                    System.out.println("entrei");
+
+                } else {
+                    quarto = false;
+                    AllCheck = false;
+
+                }
+
+                System.out.println("AllCheck: " + AllCheck);
+            }
+        });
+
+// ----------------------- Text View Peça_Arquivo ---------------------
+
+
+// ------------------ mudando a cor do botão para azul -----------
+        if (first == true && segundo==true && terceiro==true && quarto==true){
+            processar.setBackgroundResource(R.color.Red);
+        }
+
 
 //      =======================Ler o nome e velocidade das impressoras===================================
 
