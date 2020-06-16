@@ -70,21 +70,7 @@ public class LerExcel {
                     //    System.out.println(cotacao+"COTACAOOOOOOO");
                     //     cotacao = null;
                     // }
-                    for (int e = 0; e < cotacao.size(); e++) {
-                        // System.out.print("COTACAO.GETE" + cotacao.get(e));
-                        String elemento = cotacao.get(e);
-                        linha.add(elemento);
-                        System.out.println(e%10);
 
-                        if(e%9 == 0 && e != 0){
-                            System.out.println(e);
-                            System.out.println("LISTA ?" + linha);
-                            linha.clear();
-                        }
-
-
-
-                    }
                     if ( i%10 == 0 | i==0 ){
                         datas.add(myCell.toString());
                         System.out.println(myCell.toString()+ "DATAAA");
@@ -134,6 +120,19 @@ public class LerExcel {
 
                 }
             }
+            for (int e = 0; e < cotacao.size(); e++) {
+                // System.out.print("COTACAO.GETE" + cotacao.get(e));
+                if(e>9) {
+                    String elemento = cotacao.get(e);
+                    linha.add(elemento);
+                    if (e - 19 == 0 | (e - 19) % 10 == 0) {
+                        System.out.println(e);
+                        getlistacotacao(linha);
+                        System.out.println("LISTA ?" + linha);
+                        linha = new LinkedList<>();
+                    }
+                }
+            }
 
         } else {
             // External storage is not usable
@@ -170,8 +169,8 @@ public class LerExcel {
     public ArrayList getlistavalor(){
         return valor;
     }
-    public LinkedList<String> getlistacotacao(){
-        return cotacao;
+    public LinkedList<String> getlistacotacao(LinkedList<String>linha){
+        return linha;
     }
 
 

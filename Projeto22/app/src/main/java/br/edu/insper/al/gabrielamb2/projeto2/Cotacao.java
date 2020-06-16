@@ -109,29 +109,7 @@ public class Cotacao extends AppCompatActivity{
         Button buttonArq = findViewById(R.id.escolher_arquivo);
         final Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
-        final boolean[] first = new boolean[1];
-        final boolean[] AllCheck = new boolean[1];
-        cliente.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (cliente.getText().toString().length() > 0){
-                    first[0] = true;
-                }else{
-                    first[0] = false;
-                    AllCheck[0] = false;
-                    processar.setEnabled(false);
-                }
-                if (AllCheck[0] == true){
-                    processar.setEnabled(true);
-                }
-            }
-        });
+
 
 // ----------------- Text View Cliente--------------------
         cliente.addTextChangedListener(new TextWatcher() {
