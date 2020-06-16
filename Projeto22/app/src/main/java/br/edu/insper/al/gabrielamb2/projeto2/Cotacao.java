@@ -69,11 +69,12 @@ public class Cotacao extends AppCompatActivity{
     int linhas = 0;
 
 // ----------- Variaveis- Botão inativo ---------
-    boolean first = false;
+    boolean primeiro = false;
     boolean segundo = false;
     boolean terceiro = false;
     boolean quarto = false;
-    boolean AllCheck = false;
+
+    boolean processar_clicado = false;
 
 
 
@@ -108,7 +109,10 @@ public class Cotacao extends AppCompatActivity{
 
         Button buttonArq = findViewById(R.id.escolher_arquivo);
         final Button processar = findViewById(R.id.button_processar);
-        Button enviar = findViewById(R.id.button_enviar);
+        final Button enviar = findViewById(R.id.button_enviar);
+
+        enviar.setBackgroundResource(R.color.Gray);
+
 
 // ----------------- Text View Cliente--------------------
         cliente.addTextChangedListener(new TextWatcher() {
@@ -122,16 +126,25 @@ public class Cotacao extends AppCompatActivity{
             public void afterTextChanged(Editable editable) {
                 System.out.println("cliente" + cliente.getText().toString() + "aaa");
                 if (cliente.getText().length() >0) {
-                    first = true;
-                    AllCheck = true;
+                    System.out.println("primeiro ficando true");
+                    primeiro = true;
                     System.out.println("entrei");
 
                 } else {
-                    first = false;
-                    AllCheck = false;
+                    primeiro = false;
                 }
 
-                System.out.println("AllCheck: " + AllCheck);
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                    processar.setBackgroundResource(R.color.Red);
+                }else{
+                    processar.setBackgroundResource(R.color.Gray);
+                }
+
+                System.out.println("primeiro: " + primeiro);
+                System.out.println("segundo: " + segundo);
+                System.out.println("terceiro: " + terceiro);
+                System.out.println("quarto: " + quarto);
+
             }
         });
 
@@ -145,19 +158,27 @@ public class Cotacao extends AppCompatActivity{
             }
             @Override
             public void afterTextChanged(Editable editable) {
-                System.out.println("cliente" + infill.getText().toString() + "aaa");
+
                 if (infill.getText().length() >0) {
+                    System.out.println("segundo ficando true");
                     segundo = true;
-                    AllCheck = true;
                     System.out.println("entrei");
 
                 } else {
                     segundo = false;
-                    AllCheck = false;
 
                 }
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                    processar.setBackgroundResource(R.color.Red);
+                }else{
+                    processar.setBackgroundResource(R.color.Gray);
+                }
 
-                System.out.println("AllCheck: " + AllCheck);
+                System.out.println("primeiro: " + primeiro);
+                System.out.println("segundo: " + segundo);
+                System.out.println("terceiro: " + terceiro);
+                System.out.println("quarto: " + quarto);
+
             }
         });
 
@@ -173,17 +194,25 @@ public class Cotacao extends AppCompatActivity{
             public void afterTextChanged(Editable editable) {
                 System.out.println("cliente" + layer.getText().toString() + "aaa");
                 if (layer.getText().length() >0) {
+                    System.out.println("terceiro ficando true");
                     terceiro = true;
-                    AllCheck = true;
                     System.out.println("entrei");
 
                 } else {
                     terceiro = false;
-                    AllCheck = false;
 
                 }
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                    processar.setBackgroundResource(R.color.Red);
+                }else{
+                    processar.setBackgroundResource(R.color.Gray);
+                }
 
-                System.out.println("AllCheck: " + AllCheck);
+                System.out.println("primeiro: " + primeiro);
+                System.out.println("segundo: " + segundo);
+                System.out.println("terceiro: " + terceiro);
+                System.out.println("quarto: " + quarto);
+
             }
         });
 
@@ -199,17 +228,24 @@ public class Cotacao extends AppCompatActivity{
             public void afterTextChanged(Editable editable) {
                 System.out.println("cliente" + mao_de_obra.getText().toString() + "aaa");
                 if (mao_de_obra.getText().length() >0) {
+                    System.out.println("quarto ficando true");
                     quarto = true;
-                    AllCheck = true;
                     System.out.println("entrei");
 
                 } else {
                     quarto = false;
-                    AllCheck = false;
 
                 }
+                if (primeiro == true && segundo == true && terceiro == true && quarto == true){
+                    processar.setBackgroundResource(R.color.Red);
+                }else{
+                    processar.setBackgroundResource(R.color.Gray);
+                }
 
-                System.out.println("AllCheck: " + AllCheck);
+                System.out.println("primeiro: " + primeiro);
+                System.out.println("segundo: " + segundo);
+                System.out.println("terceiro: " + terceiro);
+                System.out.println("quarto: " + quarto);
             }
         });
 
@@ -217,9 +253,6 @@ public class Cotacao extends AppCompatActivity{
 
 
 // ------------------ mudando a cor do botão para azul -----------
-        if (first == true && segundo==true && terceiro==true && quarto==true){
-            processar.setBackgroundResource(R.color.Red);
-        }
 
 
 //      =======================Ler o nome e velocidade das impressoras===================================
@@ -304,9 +337,43 @@ public class Cotacao extends AppCompatActivity{
         processar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String cliente_ = cliente.getText().toString();
+                String infill_ = infill.getText().toString();
+                String layer_ = layer.getText().toString();
+                String maodeobra = mao_de_obra.getText().toString();
+
+                Double infill_double = -1.0;
+                Double layer_double = -1.0;
+
+
+                try {
+                    infill_double = Double.parseDouble(infill_);
+                }catch (Exception e){
+                    infill.setError("O valor deve estar entre 0 e 100");
+                }
+                try {
+                    layer_double = Double.parseDouble(layer_);
+                }catch (Exception e){
+                    layer.setError("O valor deve estar entre 0 e 1,2");
+                }
+
+
+                boolean infill_boolean = true;
+                boolean layer_boolean = true;
+
+                if (infill_double > 100 || infill_double < 0){
+                    infill_boolean = false;
+                    infill.setError("O valor deve estar entre 0 e 100");
+                }if (layer_double > 1.2 || layer_double <= 0){
+                    layer_boolean = false;
+                    layer.setError("O valor deve estar entre 0 e 1,2");
+                }
+
 
                 if(!cliente.getText().toString().equals("") && !infill.getText().toString().equals("") &&
-                        !layer.getText().toString().equals("") && !mao_de_obra.getText().toString().equals("")){
+                        !layer.getText().toString().equals("") && !mao_de_obra.getText().toString().equals("") && layer_boolean != false && infill_boolean != false){
+
+                    processar_clicado = true;
 
                     PartPriceConfig partPriceConfig = new PartPriceConfig();
                     String material_escolhido = materiais.getSelectedItem().toString();
@@ -493,11 +560,8 @@ public class Cotacao extends AppCompatActivity{
 
 //              -------------------------------- TXT -----------------------------------------------------
 
-                    String cliente_ = cliente.getText().toString();
-                    String infill_ = infill.getText().toString();
-                    String layer_ = layer.getText().toString();
+
                     String impressora = impressoras.getSelectedItem().toString();
-                    String maodeobra = mao_de_obra.getText().toString();
                     String peso_ = peso.getText().toString();
                     String tempo_ = tempo.getText().toString();
                     String valor_ = valor.getText().toString();
@@ -528,138 +592,145 @@ public class Cotacao extends AppCompatActivity{
 
                     System.out.println(velocidade + " " + horamaquina);
 
+                    enviar.setBackgroundResource(R.color.Red);
+
                 }else{
-                    showToast("Preencha todos os campos");
+                    showToast("Preencha todos os campos corretamente");
                 }
             }
         });
+
+
 
 //      ===========================Compartilhar + Criar EXCEL======================================
 
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (processar_clicado == false){
+                    showToast("Processe as informações primeiro!");
 
-                String cliente_ = cliente.getText().toString();
-                String filename = "cotacao_"+cliente_+".txt";
-                String path = diretorio+filename;
-                File minhaFile = new File(path);
+                }else{
+                    String cliente_ = cliente.getText().toString();
+                    String filename = "cotacao_"+cliente_+".txt";
+                    String path = diretorio+filename;
+                    File minhaFile = new File(path);
 
-                try{
-                    Uri uri = FileProvider.getUriForFile(Cotacao.this, "br.edu.insper.al.gabrielamb2.projeto2.fileprovider", minhaFile);
-                    Intent share = new Intent();
+                    try{
+                        Uri uri = FileProvider.getUriForFile(Cotacao.this, "br.edu.insper.al.gabrielamb2.projeto2.fileprovider", minhaFile);
+                        Intent share = new Intent();
 
-                    share.setAction(Intent.ACTION_SEND);
-                    share.setType("text/plain");
-                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    share.putExtra(Intent.EXTRA_STREAM, uri);
-                    startActivity(share);
+                        share.setAction(Intent.ACTION_SEND);
+                        share.setType("text/plain");
+                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(share);
 
-                }catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
-
-                //PARTE DE CRIAR UM EXCEL
-
-
-
-
-                //Now column and row
-                Row row =sheet.createRow(0);
-
-                cell=row.createCell(0);
-                cell.setCellValue("Dia e Hora");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(1);
-                cell.setCellValue("Cliente");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(2);
-                cell.setCellValue("Impressora");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(3);
-                cell.setCellValue("Infill");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(4);
-                cell.setCellValue("Layer");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(5);
-                cell.setCellValue("Mão de obra");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(6);
-                cell.setCellValue("Materiais");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(7);
-                cell.setCellValue("Peso");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(8);
-                cell.setCellValue("Tempo");
-                cell.setCellStyle(cellStyle);
-
-                cell=row.createCell(9);
-                cell.setCellValue("Valor");
-                cell.setCellStyle(cellStyle);
-
-
-                sheet.setColumnWidth(0,(10*500));
-                sheet.setColumnWidth(1,(10*200));
-                sheet.setColumnWidth(2,(10*300));
-                sheet.setColumnWidth(3,(10*200));
-                sheet.setColumnWidth(4,(10*200));
-                sheet.setColumnWidth(5,(10*400));
-                sheet.setColumnWidth(6,(10*200));
-                sheet.setColumnWidth(7,(10*200));
-                sheet.setColumnWidth(8,(10*200));
-                sheet.setColumnWidth(9,(10*200));
-
-
-
-                //      cell=row.createCell(6);
-                //     cell.setCellValue("Support Removal");
-                //      cell.setCellStyle(cellStyle);
-
-                //       cell=row.createCell(7);
-                //       cell.setCellValue("Vapor Polishing");
-                //       cell.setCellStyle(cellStyle);
-
-                //  cell=row.createCell(1);
-                //   cell.setCellValue("Peça");
-                //  cell.setCellStyle(cellStyle);
-
-                //  cell=row.createCell(11);
-                // cell.setCellValue("Valor");
-                //  cell.setCellStyle(cellStyle);
-
-
-
-                if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    File file = new File(getExternalFilesDir(null),"orcamentoantigo.xls");
-                    FileOutputStream outputStream = null;
-                    try {
-                        outputStream=new FileOutputStream(file);
-                        wb.write(outputStream);
-                        Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
-                    } catch (java.io.IOException e) {
-                        e.printStackTrace();
-
-                        Toast.makeText(getApplicationContext(),"NO OK",Toast.LENGTH_LONG).show();
-                        try {
-                            assert outputStream != null;
-                            outputStream.close();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
                     }
 
-                } else {
-                    showToast("Nao foi possivel acessar o arquivo");
+                    //PARTE DE CRIAR UM EXCEL
+
+
+
+
+                    //Now column and row
+                    Row row =sheet.createRow(0);
+
+                    cell=row.createCell(0);
+                    cell.setCellValue("Dia e Hora");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(1);
+                    cell.setCellValue("Cliente");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(2);
+                    cell.setCellValue("Impressora");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(3);
+                    cell.setCellValue("Infill");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(4);
+                    cell.setCellValue("Layer");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(5);
+                    cell.setCellValue("Mão de obra");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(6);
+                    cell.setCellValue("Materiais");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(7);
+                    cell.setCellValue("Peso");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(8);
+                    cell.setCellValue("Tempo");
+                    cell.setCellStyle(cellStyle);
+
+                    cell=row.createCell(9);
+                    cell.setCellValue("Valor");
+                    cell.setCellStyle(cellStyle);
+
+
+                    sheet.setColumnWidth(0,(10*500));
+                    sheet.setColumnWidth(1,(10*200));
+                    sheet.setColumnWidth(2,(10*300));
+                    sheet.setColumnWidth(3,(10*200));
+                    sheet.setColumnWidth(4,(10*200));
+                    sheet.setColumnWidth(5,(10*400));
+                    sheet.setColumnWidth(6,(10*200));
+                    sheet.setColumnWidth(7,(10*200));
+                    sheet.setColumnWidth(8,(10*200));
+                    sheet.setColumnWidth(9,(10*200));
+
+
+
+                    //      cell=row.createCell(6);
+                    //     cell.setCellValue("Support Removal");
+                    //      cell.setCellStyle(cellStyle);
+
+                    //       cell=row.createCell(7);
+                    //       cell.setCellValue("Vapor Polishing");
+                    //       cell.setCellStyle(cellStyle);
+
+                    //  cell=row.createCell(1);
+                    //   cell.setCellValue("Peça");
+                    //  cell.setCellStyle(cellStyle);
+
+                    //  cell=row.createCell(11);
+                    // cell.setCellValue("Valor");
+                    //  cell.setCellStyle(cellStyle);
+
+
+
+                    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                        File file = new File(getExternalFilesDir(null),"orcamentoantigo.xls");
+                        FileOutputStream outputStream = null;
+                        try {
+                            outputStream=new FileOutputStream(file);
+                            wb.write(outputStream);
+
+                        } catch (java.io.IOException e) {
+                            e.printStackTrace();
+
+                            try {
+                                assert outputStream != null;
+                                outputStream.close();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+
+                    }else {
+                        showToast("Nao foi possivel acessar o arquivo");
+                    }
                 }
             }
         });
