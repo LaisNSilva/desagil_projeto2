@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Impressoras">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/toolbar"/>
+
+        <TextView
+            android:id="@+id/texto_titulo"
+            android:textColor="#042e48"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="IMPRESSORAS"
+            android:textSize="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/texto_titulo"/>
+
+        <Button
+            android:id="@+id/botao_ler"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:text="Ver detalhes"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/custom"
+            app:layout_constraintStart_toEndOf="@id/spinner"
+            app:layout_constraintTop_toBottomOf="@id/texto_titulo"/>
+
+        <TextView
+            android:id="@+id/vel"
+            android:layout_width="200dp"
+            android:text="Velocidade: "
+            android:textSize="20dp"
+            android:textColor="@android:color/black"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@id/spinner"
+            app:layout_constraintTop_toBottomOf="@id/botao_ler"/>
+
+        <TextView
+            android:id="@+id/vel2"
+            android:layout_width="180dp"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/vel"
+            app:layout_constraintTop_toBottomOf="@id/botao_ler"/>
+
+        <TextView
+            android:id="@+id/hora"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:text="Hora Máquina:"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@id/spinner"
+            app:layout_constraintTop_toBottomOf="@id/vel2"/>
+
+        <TextView
+            android:id="@+id/hora2"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/hora"
+            app:layout_constraintTop_toBottomOf="@id/vel2"/>
+
+        <Button
+            android:id="@+id/botao_apagar"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:text="Apagar Impressora Selecionada"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/custom"
+            app:layout_constraintStart_toStartOf="@id/spinner"
+            app:layout_constraintTop_toBottomOf="@id/hora2"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
