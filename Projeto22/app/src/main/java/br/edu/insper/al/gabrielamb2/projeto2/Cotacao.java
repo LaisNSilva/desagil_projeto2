@@ -148,7 +148,7 @@ public class Cotacao extends AppCompatActivity{
             impressoras = findViewById(R.id.impressora);
             impressoras.setAdapter(colocar_na_lista);
 
-            //      ------------------------------Velocidade de acordo com a Impressora------------------------------
+            //     ------------------------------Velocidade de acordo com a Impressora------------------------------
 
         }else {
             showToast("Adicione uma impressora primeiro!");
