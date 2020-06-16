@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -97,8 +99,31 @@ public class Cotacao extends AppCompatActivity{
         final TextView valor = findViewById(R.id.valor);
 
         Button buttonArq = findViewById(R.id.escolher_arquivo);
-        Button processar = findViewById(R.id.button_processar);
+        final Button processar = findViewById(R.id.button_processar);
         Button enviar = findViewById(R.id.button_enviar);
+        final boolean[] first = new boolean[1];
+        final boolean[] AllCheck = new boolean[1];
+        cliente.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (cliente.getText().toString().length() > 0){
+                    first[0] = true;
+                }else{
+                    first[0] = false;
+                    AllCheck[0] = false;
+                    processar.setEnabled(false);
+                }
+                if (AllCheck[0] == true){
+                    processar.setEnabled(true);
+                }
+            }
+        });
 
 //      =======================Ler o nome e velocidade das impressoras===================================
 

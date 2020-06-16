@@ -54,18 +54,16 @@ public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClic
        // t1.setColumnStretchable(0,true);
 
         LerExcel lerExcel = new LerExcel("orcamentoantigo.xls");
-
+        System.out.print("BBBBBB");
         try {
+            System.out.print("FUNCAO DOIS");
             lerExcel.readExcelFile(this);
-            cotacoes = lerExcel.getlistacotacao();
-
-
-            }
-         //   cotacao1=null;
-        //    tr = new TableRow(this);
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        cotacoes = lerExcel.getlistacotacao();
+
+
     }
 
 
