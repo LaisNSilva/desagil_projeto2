@@ -127,29 +127,32 @@ public class Cotacao extends AppCompatActivity{
                 buff += data;
             }
 
-            //      -------------------------------Hashmap das Impressoras---------------------------------------------
+            if(buff.equals("")){
+                showToast("Nada neste arquivo");
+            }else {
 
-            String[] array = buff.split("     ");
+                //      -------------------------------Hashmap das Impressoras---------------------------------------------
 
-            for(String linha : array){
-                String[] key_value = linha.split(":");
-                mapa_impressoras.put(key_value[0],key_value[1]);
+                String[] array = buff.split("     ");
+
+                for(String linha : array){
+                    String[] key_value = linha.split(":");
+                    mapa_impressoras.put(key_value[0],key_value[1]);
+                }
+
+                String nomes_impressoras = "";
+
+                for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
+                    nomes_impressoras += set.getKey() + "  ";
+                }
+
+                String[] impressoras_array = nomes_impressoras.split("  ");
+                ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Cotacao.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
+
+                impressoras = findViewById(R.id.impressora);
+                impressoras.setAdapter(colocar_na_lista);
+
             }
-
-            String nomes_impressoras = "";
-
-            for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
-                nomes_impressoras += set.getKey() + "  ";
-            }
-
-            String[] impressoras_array = nomes_impressoras.split("  ");
-            ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Cotacao.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
-
-            impressoras = findViewById(R.id.impressora);
-            impressoras.setAdapter(colocar_na_lista);
-
-            //     ------------------------------Velocidade de acordo com a Impressora------------------------------
-
         }else {
             showToast("Adicione uma impressora primeiro!");
         }

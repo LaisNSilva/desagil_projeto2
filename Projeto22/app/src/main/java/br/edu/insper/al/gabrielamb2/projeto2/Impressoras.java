@@ -57,8 +57,6 @@ public class Impressoras extends AppCompatActivity {
             String data = "";
             String buff = "";
 
-
-
             FileInputStream inputStream = null;
             try {
                 inputStream = new FileInputStream(file);
