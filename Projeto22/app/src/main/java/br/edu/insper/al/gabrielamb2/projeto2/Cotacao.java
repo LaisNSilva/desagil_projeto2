@@ -114,6 +114,7 @@ public class Cotacao extends AppCompatActivity{
         enviar.setBackgroundResource(R.color.Gray);
 
 
+
 // ----------------- Text View Cliente--------------------
         cliente.addTextChangedListener(new TextWatcher() {
             @Override
