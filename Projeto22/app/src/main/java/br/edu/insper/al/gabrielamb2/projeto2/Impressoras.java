@@ -57,8 +57,6 @@ public class Impressoras extends AppCompatActivity {
             String data = "";
             String buff = "";
 
-
-
             FileInputStream inputStream = null;
             try {
                 inputStream = new FileInputStream(file);
@@ -75,35 +73,41 @@ public class Impressoras extends AppCompatActivity {
                 buff += data;
             }
 
-            nova_linha = buff;
+            if(buff.equals("")){
+                showToast("Nenhuma Impressora adcionada");
+            }else {
 
-            final String[] array = buff.split("     ");
+                nova_linha = buff;
 
-            for(String linha : array){
-                String[] key_value = linha.split(":");
-                mapa_impressoras.put(key_value[0],key_value[1]);
-            }
+                final String[] array = buff.split("     ");
 
-            String nomes_impressoras = "";
+                for(String linha : array){
+                    String[] key_value = linha.split(":");
+                    mapa_impressoras.put(key_value[0],key_value[1]);
+                }
 
-            for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
-                nomes_impressoras += set.getKey() + "  ";
-            }
+                String nomes_impressoras = "";
 
-            String[] impressoras_array = nomes_impressoras.split("  ");
-            ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Impressoras.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
+                for(Map.Entry<String,String> set : mapa_impressoras.entrySet()){
+                    nomes_impressoras += set.getKey() + "  ";
+                }
 
-            lista.setAdapter(colocar_na_lista);
+                String[] impressoras_array = nomes_impressoras.split("  ");
+                ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Impressoras.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
 
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                lista.setAdapter(colocar_na_lista);
+
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             botao_ler.setOnClickListener(new View.OnClickListener() {

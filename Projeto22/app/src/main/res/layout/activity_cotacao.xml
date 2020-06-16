@@ -144,7 +144,7 @@
             android:layout_width="380dp"
             android:layout_height="50dp"
             android:text="Processar"
-            android:background="@drawable/custom"
+            android:background="@android:color/darker_gray"
             android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="@id/cliente"
             app:layout_constraintTop_toBottomOf="@id/texto_material" />
