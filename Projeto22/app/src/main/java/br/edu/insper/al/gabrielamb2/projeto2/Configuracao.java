@@ -1,39 +1,18 @@
 package br.edu.insper.al.gabrielamb2.projeto2;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 public class Configuracao extends AppCompatActivity {
 
@@ -42,12 +21,10 @@ public class Configuracao extends AppCompatActivity {
         toast.show();
     }
 
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-//        Toolbar toolbar = findViewById(R.id.mytoolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setLogo(R.drawable.logo_titulo);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configuracao);
@@ -62,6 +39,10 @@ public class Configuracao extends AppCompatActivity {
 
         Button botao_adc = findViewById(R.id.botao_adicionar);
         Button botao_ver = findViewById(R.id.botao_ver);
+
+        toolbar = findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.logo_titulo);
 
 
         botao_adc.setOnClickListener(new View.OnClickListener() {

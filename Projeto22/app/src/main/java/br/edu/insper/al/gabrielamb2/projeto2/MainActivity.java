@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.HashMap;
-import java.util.ResourceBundle;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         Button buttonCotacao = findViewById(R.id.button_orcamento);
         Button buttonPedidos = findViewById(R.id.button_orcamento_antigos);
         Button buttonConfiguracao = findViewById(R.id.button_configuracoes);
+
         Toolbar toolbar = findViewById(R.id.mytoolbar);
 
         setSupportActionBar(toolbar);

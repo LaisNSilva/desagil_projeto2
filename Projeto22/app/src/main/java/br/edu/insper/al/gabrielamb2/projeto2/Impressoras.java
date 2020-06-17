@@ -1,6 +1,7 @@
 package br.edu.insper.al.gabrielamb2.projeto2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class Impressoras extends AppCompatActivity {
     String horamaquina;
     HashMap<String,String> mapa_impressoras = new HashMap<>();
     String nova_linha;
+    private Toolbar toolbar;
 
     private void showToast(String text) {
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -37,7 +39,6 @@ public class Impressoras extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_impressoras);
 
-
         final TextView valor_vel = findViewById(R.id.vel2);
         final TextView valor_hora = findViewById(R.id.hora2);
 
@@ -46,6 +47,10 @@ public class Impressoras extends AppCompatActivity {
         final Button botao_ler = findViewById(R.id.botao_ler);
 
         final Button botao_apagar = findViewById(R.id.botao_apagar);
+
+        toolbar = findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.logo_titulo);
 
         final File diretorio = getApplicationContext().getExternalFilesDir(null);
         final String filename = "impressoras.txt";
@@ -96,17 +101,6 @@ public class Impressoras extends AppCompatActivity {
                 ArrayAdapter<String> colocar_na_lista = new ArrayAdapter<String>(Impressoras.this, android.R.layout.simple_spinner_dropdown_item, impressoras_array);
 
                 lista.setAdapter(colocar_na_lista);
-
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             }
 

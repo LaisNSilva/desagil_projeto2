@@ -1,6 +1,7 @@
 package br.edu.insper.al.gabrielamb2.projeto2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -45,6 +46,7 @@ public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClic
     TableLayout t1;
     LinkedList<String> linha = new LinkedList<>();
     LinkedList<String> cotacao = new LinkedList<>();
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,10 @@ public class Pedidos extends AppCompatActivity implements AdapterView.OnItemClic
 
         t1 = (TableLayout)findViewById(R.id.t1);
         t1.setColumnStretchable(0,true);
+
+        toolbar = findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.logo_titulo);
 
         try {
             readExcelFile(this);
