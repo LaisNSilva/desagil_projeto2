@@ -119,7 +119,7 @@ public class Impressoras extends AppCompatActivity {
                         }
                     }
                     valor_vel.setText(velocidade + "mm/s");
-                    valor_hora.setText(horamaquina);
+                    valor_hora.setText(horamaquina + "R$/hr");
 
                 }
             });

@@ -58,7 +58,7 @@
             android:layout_width="240dp"
             android:layout_height="50dp"
             android:hint=""
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@id/impressora"
             app:layout_constraintTop_toBottomOf="@id/adc" />
@@ -80,7 +80,7 @@
             android:layout_height="50dp"
             android:hint=""
             android:textSize="20dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             app:layout_constraintStart_toEndOf="@id/velocidade"
             app:layout_constraintTop_toBottomOf="@id/nome_impressora" />
 
@@ -101,7 +101,7 @@
             android:layout_height="50dp"
             android:hint=""
             android:textSize="20dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             app:layout_constraintStart_toEndOf="@id/hora_maquina"
             app:layout_constraintTop_toBottomOf="@id/velocidade" />
 
