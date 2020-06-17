@@ -395,7 +395,7 @@ public class Cotacao extends AppCompatActivity{
                 try {
                     layer_double = Double.parseDouble(layer_);
                 }catch (Exception e){
-                    layer.setError("O valor deve estar entre 0 e 1,2");
+                    layer.setError("O valor deve estar entre 0,1 e 1,2");
                 }
 
 
@@ -405,9 +405,9 @@ public class Cotacao extends AppCompatActivity{
                 if (infill_double > 100 || infill_double < 0){
                     infill_boolean = false;
                     infill.setError("O valor deve estar entre 0 e 100");
-                }if (layer_double > 1.2 || layer_double <= 0){
+                }if (layer_double > 1.2 || layer_double <= 0.1){
                     layer_boolean = false;
-                    layer.setError("O valor deve estar entre 0 e 1,2");
+                    layer.setError("O valor deve estar entre 0,1 e 1,2");
                 }
 
 
