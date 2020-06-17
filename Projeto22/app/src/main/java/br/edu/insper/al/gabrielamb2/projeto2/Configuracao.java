@@ -76,6 +76,10 @@ public class Configuracao extends AppCompatActivity {
                         }
                     }
                 }
+
+                nome_impressora_et.setText("");
+                num_horamaquina_et.setText("");
+                num_velocidade_et.setText("");
             }
         });
 

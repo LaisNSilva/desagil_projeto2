@@ -118,7 +118,7 @@ public class Impressoras extends AppCompatActivity {
                             horamaquina = valores[1];
                         }
                     }
-                    valor_vel.setText(velocidade);
+                    valor_vel.setText(velocidade + "mm/s");
                     valor_hora.setText(horamaquina);
 
                 }
