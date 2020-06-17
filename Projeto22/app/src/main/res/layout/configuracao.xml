@@ -79,6 +79,7 @@
             android:layout_width="240dp"
             android:layout_height="50dp"
             android:hint=""
+            app:errorEnabled="true"
             android:textSize="20dp"
             android:gravity="center_vertical"
             app:layout_constraintStart_toEndOf="@id/velocidade"
@@ -101,6 +102,7 @@
             android:layout_height="50dp"
             android:hint=""
             android:textSize="20dp"
+            app:errorEnabled="true"
             android:gravity="center_vertical"
             app:layout_constraintStart_toEndOf="@id/hora_maquina"
             app:layout_constraintTop_toBottomOf="@id/velocidade" />

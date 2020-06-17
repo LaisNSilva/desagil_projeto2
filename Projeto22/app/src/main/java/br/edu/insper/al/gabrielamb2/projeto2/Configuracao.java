@@ -48,12 +48,28 @@ public class Configuracao extends AppCompatActivity {
         botao_adc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String nome_impressora = nome_impressora_et.getText().toString();
                 String num_velocidade = num_velocidade_et.getText().toString();
                 String num_horamaquina = num_horamaquina_et.getText().toString();
                 File file = new File(diretorio + "/" + filename);
 
-                String linha = nome_impressora + ":" + num_velocidade + "," + num_horamaquina + "     " + "\n";
+                String novo_num_velocidade;
+                String novo_num_horamaquina;
+
+                if(num_velocidade.contains(",")){
+                    novo_num_velocidade = num_velocidade.replace(",",".");
+                }else{
+                    novo_num_velocidade = num_velocidade;
+                }
+
+                if(num_horamaquina.contains(",")){
+                    novo_num_horamaquina = num_horamaquina.replace(",",".");
+                }else {
+                    novo_num_horamaquina = num_horamaquina;
+                }
+
+                String linha = nome_impressora + ":" + novo_num_velocidade + "," + novo_num_horamaquina + "     " + "\n";
 
                 if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     if(file.exists()){
