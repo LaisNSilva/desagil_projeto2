@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
                     getClientes((Map<String, Object>)dataSnapshot.getValue());
 
-                    System.out.println( "foiiiii");
 
                 } else {
                     System.out.println("DEU RUIM");
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void getClientes(Map<String, Object> cotacoes) {
-        System.out.print(cotacoes+"COTACOESSSSSSSSSSSSSSSSSSSSSSSS");
+        
         LinkedList<String> cotcaoinidivual = new LinkedList<>();
         for(Map.Entry<String,Object>entry: cotacoes.entrySet()){
             Map singlecotacao = (Map) entry.getValue();
