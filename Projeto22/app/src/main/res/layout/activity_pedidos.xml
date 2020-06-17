@@ -131,14 +131,6 @@
                     android:background="#000000"></View>
 
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
             </TableLayout>
         </LinearLayout>
     </HorizontalScrollView>
